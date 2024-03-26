@@ -1,9 +1,9 @@
 package seniorcare.crudseniorcare.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import seniorcare.crudseniorcare.*;
+import seniorcare.crudseniorcare.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,47 +62,50 @@ public class UsuarioController {
 
 
     //===============================Métodos POST do usuario================================//
-    @PostMapping
-    public ResponseEntity<Usuario> cadastrarUsuario(@RequestBody Usuario novoUsuario) {
-
-        if (!Validation.isValidEmail(novoUsuario.getEmail()) ||
-                !Validation.isValidPassword(novoUsuario.getSenha()) ||
-                !Validation.isValidUsername(novoUsuario.getNome())) {
+    @PostMapping("/responsavel")
+    public ResponseEntity<Responsavel> cadastrarResponsavel(@RequestBody Responsavel novoResponsavel)
+    {
+        if (!Validation.isValidEmail(novoResponsavel.getEmail()) ||
+                !Validation.isValidPassword(novoResponsavel.getSenha()) ||
+                !Validation.isValidUsername(novoResponsavel.getNome())) {
             return ResponseEntity.status(400).build();
         }
 
-        if (emailExist(novoUsuario.getEmail())) {
+        if (emailExist(novoResponsavel.getEmail())) {
             return ResponseEntity.status(409).build();
         }
 
 
-        novoUsuario.setId_usuario(++id_Usuario);
-        usuarios.add(novoUsuario);
+        novoResponsavel.setId_usuario(++id_Usuario);
+        usuarios.add(novoResponsavel);
 
-        // Verifica se o usuário deseja se cadastrar como Cuidador
-        if (novoUsuario instanceof Cuidador novoCuidador) {
-            // Converte o usuário para Cuidador
-            novoCuidador.setExperiencia(novoCuidador.getExperiencia());
-            novoCuidador.setFaixaEtaria(novoCuidador.getFaixaEtaria());
-            novoCuidador.setQtdIdoso(novoCuidador.getQtdIdoso());
-            novoCuidador.setPrecoHora(novoCuidador.getPrecoHora());
 
-            // Retorna a resposta com o cuidador cadastrado
-            return ResponseEntity.status(201).body(novoCuidador);
-        }
-
-        // Verifica se o usuário deseja se cadastrar como Responsavel
-        if (novoUsuario instanceof Responsavel novoResponsavel) {
-            // Converte o usuário para Responsavel
-            novoResponsavel.setPrecoHora(novoResponsavel.getPrecoHora());
-            // Retorna a resposta com o responsável cadastrado
-            return ResponseEntity.status(201).body(novoResponsavel);
-        }
 
         // Retorna a resposta com o usuário genérico cadastrado
-        return ResponseEntity.status(201).body(novoUsuario);
+        return ResponseEntity.status(201).body(novoResponsavel);
     }
+    @PostMapping("/cuidador")
+    public ResponseEntity<Cuidador> cadastrarResponsavel(@RequestBody Cuidador novoCuidador)
+    {
+        if (!Validation.isValidEmail(novoCuidador.getEmail()) ||
+                !Validation.isValidPassword(novoCuidador.getSenha()) ||
+                !Validation.isValidUsername(novoCuidador.getNome())) {
+            return ResponseEntity.status(400).build();
+        }
 
+        if (emailExist(novoCuidador.getEmail())) {
+            return ResponseEntity.status(409).build();
+        }
+
+
+        novoCuidador.setId_usuario(++id_Usuario);
+        usuarios.add(novoCuidador);
+
+
+
+        // Retorna a resposta com o usuário genérico cadastrado
+        return ResponseEntity.status(201).body(novoCuidador);
+    }
 
     @PostMapping("/{id_usuario}/enderecos")
     public ResponseEntity<Endereco> adicionarEndereco(@PathVariable int id_usuario, @RequestBody Endereco novoEndereco) {

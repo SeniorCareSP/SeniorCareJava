@@ -3,9 +3,10 @@ package seniorcare.crudseniorcare.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import seniorcare.crudseniorcare.*;
-
-import java.util.List;
+import seniorcare.crudseniorcare.model.Ajuda;
+import seniorcare.crudseniorcare.model.Caracteristica;
+import seniorcare.crudseniorcare.model.Cuidador;
+import seniorcare.crudseniorcare.model.Usuario;
 
 @RestController
 @RequestMapping("/cuidadores")
@@ -18,14 +19,13 @@ public class CuidadorController {
     private UsuarioController usuarioController;
 
 
-
     @PostMapping("/{id_usuario}/caracteristica")
     public ResponseEntity<Caracteristica> adicionarCaracteristica(@PathVariable int id_usuario, @RequestBody Caracteristica novaCaracteristica){
         // Encontrar o usuário com o ID fornecido
         Usuario usuario = usuarioController.encontrarUsuarioPorId(id_usuario);
 
         // Verificar se o usuário existe e é um Cuidador
-        if (usuario == null || !(usuario instanceof Cuidador cuidador)) {
+        if (!(usuario instanceof Cuidador cuidador)) {
             return ResponseEntity.status(404).build(); // Usuário não encontrado ou não é um Cuidador
         }
 

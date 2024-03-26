@@ -1,4 +1,4 @@
-package seniorcare.crudseniorcare;
+package seniorcare.crudseniorcare.model;
 
 public class Caracteristica {
     private int id_caracteristica;

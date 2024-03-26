@@ -1,4 +1,4 @@
-package seniorcare.crudseniorcare;
+package seniorcare.crudseniorcare.model;
 
 public class Agenda {
     private int id_Agenda;

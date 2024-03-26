@@ -1,24 +1,22 @@
 package seniorcare.crudseniorcare.controller;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import seniorcare.crudseniorcare.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import seniorcare.crudseniorcare.model.Idoso;
+import seniorcare.crudseniorcare.model.Responsavel;
+import seniorcare.crudseniorcare.model.Usuario;
 
 @RestController
 @RequestMapping("/responsaveis")
-public class ResponsavelController{
+public class ResponsavelController {
 
     @Autowired
     private UsuarioController usuarioController;
     private int id_Idoso;
 
     @PostMapping("/{id_usuario}/idoso")
-    public ResponseEntity<Idoso> adicionarIdoso(@PathVariable int id_usuario, @RequestBody Idoso novoIdoso){
+    public ResponseEntity<Idoso> adicionarIdoso(@PathVariable int id_usuario, @RequestBody Idoso novoIdoso) {
         // Encontrar o usuário com o ID fornecido
         Usuario usuario = usuarioController.encontrarUsuarioPorId(id_usuario);
 
@@ -36,34 +34,33 @@ public class ResponsavelController{
     }
 
     @GetMapping("/{id_usuario}/idoso/{id_idoso}")
-    public ResponseEntity<Idoso> BuscarIdoso(@PathVariable int id_usuario, @PathVariable int id_Idoso){
+    public ResponseEntity<Idoso> BuscarIdoso(@PathVariable int id_usuario, @PathVariable int id_Idoso) {
         Usuario usuario = usuarioController.encontrarUsuarioPorId(id_usuario);
-        if (usuario == null || !(usuario instanceof Responsavel responsavel)){
+        if (usuario == null || !(usuario instanceof Responsavel responsavel)) {
             return ResponseEntity.status(404).build();
-        }else if(responsavel.getIdosos() == null){
+        } else if (responsavel.getIdosos() == null) {
             return ResponseEntity.status(204).build();
         }
         return ResponseEntity.status(200).body(responsavel.getIdosos().get(id_Idoso));
     }
 
-//    @PutMapping("/{id_usuario}/idoso/{id_idoso}")
-//    public ResponseEntity<Idoso> atualizarIdoso(@PathVariable int id_usuario, @PathVariable int id_Idoso, @RequestBody Idoso attIdoso){
-//        Usuario usuario = usuarioController.encontrarUsuarioPorId(id_usuario);
-//        if (usuario == null || !(usuario instanceof Responsavel responsavel)){
-//            return ResponseEntity.status(404).build();
-//        }else if(responsavel.getIdosos() == null){
-//            return ResponseEntity.status(204).build();
-//        }
-//
-//
-//    }
+    @PutMapping("/{id_usuario}/idoso/{id_idoso}")
+    public ResponseEntity<Idoso> atualizarIdoso(@PathVariable int id_usuario, @PathVariable int id_Idoso, @RequestBody Idoso attIdoso) {
+        Usuario usuario = usuarioController.encontrarUsuarioPorId(id_usuario);
+        if (usuario == null || !(usuario instanceof Responsavel responsavel)) {
+            return ResponseEntity.status(404).build();
+        } else if (responsavel.getIdosos() == null) {
+            return ResponseEntity.status(204).build();
+        }
+        return ResponseEntity.status(200).body(attIdoso);
+    }
 
     @DeleteMapping("/{id_usuario}/idoso/{id_idoso}")
-    public ResponseEntity<Idoso> deletarIdoso(@PathVariable int id_usuario, @PathVariable int id_Idoso){
+    public ResponseEntity<Idoso> deletarIdoso(@PathVariable int id_usuario, @PathVariable int id_Idoso) {
         Usuario usuario = usuarioController.encontrarUsuarioPorId(id_usuario);
-        if (usuario == null || !(usuario instanceof Responsavel responsavel)){
+        if (usuario == null || !(usuario instanceof Responsavel responsavel)) {
             return ResponseEntity.status(404).build();
-        }else if(responsavel.getIdosos() == null){
+        } else if (responsavel.getIdosos() == null) {
             return ResponseEntity.status(204).build();
         }
         responsavel.getIdosos().remove(id_Idoso);

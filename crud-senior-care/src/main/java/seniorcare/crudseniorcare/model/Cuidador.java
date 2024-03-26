@@ -1,6 +1,5 @@
-package seniorcare.crudseniorcare;
+package seniorcare.crudseniorcare.model;
 
-import java.nio.DoubleBuffer;
 import java.util.List;
 
 public class Cuidador extends Usuario{

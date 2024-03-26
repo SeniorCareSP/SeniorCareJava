@@ -1,4 +1,4 @@
-package seniorcare.crudseniorcare;
+package seniorcare.crudseniorcare.model;
 
 public class Endereco {
     private int id_endereco;

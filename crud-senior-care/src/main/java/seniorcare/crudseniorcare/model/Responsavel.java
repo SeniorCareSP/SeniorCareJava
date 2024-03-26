@@ -1,4 +1,4 @@
-package seniorcare.crudseniorcare;
+package seniorcare.crudseniorcare.model;
 
 import java.util.List;
 

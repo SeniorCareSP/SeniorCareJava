@@ -1,4 +1,4 @@
-package seniorcare.crudseniorcare;
+package seniorcare.crudseniorcare.model;
 
 import java.time.LocalDate;
 import java.util.List;
