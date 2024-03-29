@@ -20,5 +20,4 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID> {
 
     boolean existByIndice(int indice);
 
-    List<Cuidador> cuidadores = findBy
 }

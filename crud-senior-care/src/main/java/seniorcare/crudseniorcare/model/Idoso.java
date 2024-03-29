@@ -1,7 +1,9 @@
 package seniorcare.crudseniorcare.model;
 
+import java.util.UUID;
+
 public class Idoso {
-    private int id_idoso;
+    private UUID idoso;
     private String nome;
     private boolean mobilidade;
     private boolean lucido;
@@ -9,12 +11,12 @@ public class Idoso {
 
     private Boolean cuidadosMin;
 
-    public int getId_idoso() {
-        return id_idoso;
+    public UUID getIdoso() {
+        return idoso;
     }
 
-    public void setId_idoso(int id_idoso) {
-        this.id_idoso = id_idoso;
+    public void setIdoso(UUID idoso) {
+        this.idoso = idoso;
     }
 
     public String getNome() {

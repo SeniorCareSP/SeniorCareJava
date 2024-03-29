@@ -6,6 +6,12 @@ import org.springframework.web.bind.annotation.*;
 import seniorcare.crudseniorcare.model.Idoso;
 import seniorcare.crudseniorcare.model.Responsavel;
 import seniorcare.crudseniorcare.model.Usuario;
+import seniorcare.crudseniorcare.repository.ResponsavelRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/responsaveis")
@@ -13,57 +19,49 @@ public class ResponsavelController {
 
     @Autowired
     private UsuarioController usuarioController;
-    private int id_Idoso;
+    @Autowired
+    private ResponsavelRepository responsavelRepository;
 
-    @PostMapping("/{id_usuario}/idoso")
-    public ResponseEntity<Idoso> adicionarIdoso(@PathVariable int id_usuario, @RequestBody Idoso novoIdoso) {
+
+    @GetMapping("/responsaveis")
+    public ResponseEntity<List<Responsavel>> getResponsaveis() {
+        List<Responsavel> responsaveis = responsavelRepository.findAll();
+
+        if (responsaveis.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+        return ResponseEntity.status(200).body(responsaveis);
+    }
+
+
+
+    @PostMapping("/{idUsuario}/idoso")
+    public ResponseEntity<Idoso> adicionarIdoso(@PathVariable UUID idUsuario, @RequestBody Idoso novoIdoso) {
         // Encontrar o usuário com o ID fornecido
-        Usuario usuario = usuarioController.encontrarUsuarioPorId(id_usuario);
+        Optional<Responsavel> responsavelEncontrado = responsavelRepository.findById(idUsuario);
 
         // Verificar se o usuário existe e é um Cuidador
-        if (usuario == null || !(usuario instanceof Responsavel responsavel)) {
-            return ResponseEntity.status(404).build(); // Usuário não encontrado ou não é um Cuidador
+        if (responsavelEncontrado.isEmpty()) {
+            return ResponseEntity.status(404).build(); // Usuário não encontrado
         }
 
-        novoIdoso.setId_idoso(++id_Idoso);
         // Adicionar a característica ao Cuidador
-        responsavel.getIdosos().add(novoIdoso);
+        responsavelEncontrado.get().getIdosos().add(novoIdoso);
 
-        // Retornar uma resposta com o Cuidador atualizado
-        return ResponseEntity.status(201).body(novoIdoso);
+        // Retornar uma resposta com o Idoso adicionado
+        return ResponseEntity.status(200).body(novoIdoso);
     }
 
-    @GetMapping("/{id_usuario}/idoso/{id_idoso}")
-    public ResponseEntity<Idoso> BuscarIdoso(@PathVariable int id_usuario, @PathVariable int id_Idoso) {
-        Usuario usuario = usuarioController.encontrarUsuarioPorId(id_usuario);
-        if (usuario == null || !(usuario instanceof Responsavel responsavel)) {
-            return ResponseEntity.status(404).build();
-        } else if (responsavel.getIdosos() == null) {
+    @GetMapping("/{idUsuario}/idoso/{idIdoso}")
+    public ResponseEntity<List<Responsavel>> BuscarIdososPeloResponsavel(@PathVariable UUID idUsuario, @PathVariable int idIdoso) {
+
+       List<Responsavel> idososEncontrados = responsavelRepository.findByIdByIdoso(idUsuario);
+
+        if (idososEncontrados.isEmpty()){
             return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(200).body(responsavel.getIdosos().get(id_Idoso));
+
+       return ResponseEntity.status(200).body(idososEncontrados);
     }
 
-    @PutMapping("/{id_usuario}/idoso/{id_idoso}")
-    public ResponseEntity<Idoso> atualizarIdoso(@PathVariable int id_usuario, @PathVariable int id_Idoso, @RequestBody Idoso attIdoso) {
-        Usuario usuario = usuarioController.encontrarUsuarioPorId(id_usuario);
-        if (usuario == null || !(usuario instanceof Responsavel responsavel)) {
-            return ResponseEntity.status(404).build();
-        } else if (responsavel.getIdosos() == null) {
-            return ResponseEntity.status(204).build();
-        }
-        return ResponseEntity.status(200).body(attIdoso);
-    }
-
-    @DeleteMapping("/{id_usuario}/idoso/{id_idoso}")
-    public ResponseEntity<Idoso> deletarIdoso(@PathVariable int id_usuario, @PathVariable int id_Idoso) {
-        Usuario usuario = usuarioController.encontrarUsuarioPorId(id_usuario);
-        if (usuario == null || !(usuario instanceof Responsavel responsavel)) {
-            return ResponseEntity.status(404).build();
-        } else if (responsavel.getIdosos() == null) {
-            return ResponseEntity.status(204).build();
-        }
-        responsavel.getIdosos().remove(id_Idoso);
-        return ResponseEntity.status(200).build();
-    }
 }

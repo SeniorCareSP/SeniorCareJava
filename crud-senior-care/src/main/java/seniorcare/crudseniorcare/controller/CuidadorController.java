@@ -7,16 +7,28 @@ import seniorcare.crudseniorcare.model.Ajuda;
 import seniorcare.crudseniorcare.model.Caracteristica;
 import seniorcare.crudseniorcare.model.Cuidador;
 import seniorcare.crudseniorcare.model.Usuario;
+import seniorcare.crudseniorcare.repository.CuidadorRepository;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/cuidadores")
 public class CuidadorController {
-    private int id_Caracteristica;
-    private int id_Ajuda;
-
-
     @Autowired
     private UsuarioController usuarioController;
+    @Autowired
+    private CuidadorRepository cuidadorRepository;
+
+
+    @GetMapping("/cuidadores")
+    public ResponseEntity<List<Cuidador>> getCuidadores() {
+
+        List<Cuidador> cuidadores = cuidadorRepository.findAll();
+        if (cuidadores.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+        return ResponseEntity.status(200).body(cuidadores);
+    }
 
 
     @PostMapping("/{id_usuario}/caracteristica")

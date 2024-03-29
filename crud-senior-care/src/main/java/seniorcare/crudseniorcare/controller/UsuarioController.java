@@ -16,8 +16,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
-
-
     @Autowired private UsuarioRepository usuarioRepository;
 
     @PostMapping("/{idUsuario}/comentarios")
@@ -142,29 +140,7 @@ Optional <Usuario> usuarioEncontrado = usuarioRepository.findById(idUsuario);
         return ResponseEntity.status(200).body(usuarios);
     }
 
-    @GetMapping("/cuidadores")
-    public ResponseEntity<List<Cuidador>> getCuidadores() {
-
-        List<Cuidador> cuidadores = usuarioRepository.findAll
-        for (Usuario usuario : usuarios) {
-            if (usuario instanceof Cuidador) {
-                cuidadores.add((Cuidador) usuario);
-            }
-        }
-        return ResponseEntity.ok(cuidadores);
-    }
-
     // Função para retornar todos os responsáveis cadastrados
-    @GetMapping("/responsaveis")
-    public ResponseEntity<List<Responsavel>> getResponsaveis() {
-        List<Responsavel> responsaveis = new ArrayList<>();
-        for (Usuario usuario : usuarios) {
-            if (usuario instanceof Responsavel) {
-                responsaveis.add((Responsavel) usuario);
-            }
-        }
-        return ResponseEntity.ok(responsaveis);
-    }
 
     @GetMapping("/{id_usuario}/enderecos")
     public ResponseEntity<List<Endereco>> listarEndereco(@PathVariable int id_usuario) {
