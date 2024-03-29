@@ -1,20 +1,41 @@
 package seniorcare.crudseniorcare.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.*;
+import org.hibernate.validator.constraints.br.CPF;
+
 import java.time.LocalDate;
 import java.util.List;
-
+import java.util.UUID;
+@Entity
 public abstract  class Usuario{
-
-    private int id_usuario;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID idUsuario;
+    @Size(min = 3)
+    @NotBlank
     private String nome;
+    @Email
+    @NotBlank
     private String email;
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$")
+    @NotBlank
     private String senha;
+    @Pattern(regexp = "^\\([1-9]{2}\\)\\s9?[0-9]{4}-?[0-9]{4}$")
     private String telefone;
+
+    @CPF
     private String cpf;
     private String sexoBiologico;
+    @Past
+    @NotNull
     private LocalDate dtNascimento;
     private String apresentacao;
-
+    @NotNull
+    private LocalDate dtCadastro;
     private List<Agenda> agendas;
     private List<Lingua> linguas;
     private List<Endereco> enderecos;
@@ -52,12 +73,12 @@ public abstract  class Usuario{
         this.enderecos = enderecos;
     }
 
-    public int getId_usuario() {
-        return id_usuario;
+    public UUID getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setId_usuario(int id_usuario) {
-        this.id_usuario = id_usuario;
+    public void setIdUsuario(UUID idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getNome() {
@@ -124,10 +145,18 @@ public abstract  class Usuario{
         this.apresentacao = apresentacao;
     }
 
+    public LocalDate getDtCadastro() {
+        return dtCadastro;
+    }
+
+    public void setDtCadastro(LocalDate dtCadastro) {
+        this.dtCadastro = dtCadastro;
+    }
+
     @Override
     public String toString() {
         return "Usuario{" +
-                "id_usuario=" + id_usuario +
+                "idUsuario=" + idUsuario +
                 ", nome='" + nome + '\'' +
                 ", email='" + email + '\'' +
                 ", senha='" + senha + '\'' +

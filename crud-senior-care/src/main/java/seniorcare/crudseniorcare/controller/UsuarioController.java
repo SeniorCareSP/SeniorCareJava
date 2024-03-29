@@ -1,61 +1,66 @@
 package seniorcare.crudseniorcare.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import seniorcare.crudseniorcare.*;
 import seniorcare.crudseniorcare.model.*;
+import seniorcare.crudseniorcare.repository.UsuarioRepository;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
-    private final List<Usuario> usuarios = new ArrayList<>();
-    private int id_Usuario;
-    private int id_Endereco;
-    private int id_Lingua;
-    private int id_Agenda;
 
+    @Autowired private UsuarioRepository usuarioRepository;
 
-    @PostMapping("/{id_usuario}/comentarios")
-    public ResponseEntity<Comentario> adicionarComentario(@PathVariable int id_usuario, @RequestBody Comentario novoComentario) {
-        Usuario usuario = encontrarUsuarioPorId(id_usuario);
-        if (usuario == null) {
+    @PostMapping("/{idUsuario}/comentarios")
+    public ResponseEntity<Comentario> adicionarComentario(@PathVariable UUID idUsuario, @RequestBody Comentario novoComentario) {
+Optional <Usuario> usuarioEncontrado = usuarioRepository.findById(idUsuario);
+    if (usuarioEncontrado.isEmpty()) {
             return ResponseEntity.status(404).build(); // Usuário não encontrado
         }
 
+        usuarioEncontrado.get().getComentarios().add(novoComentario);
 
-        usuario.getComentarios().add(novoComentario);
         return ResponseEntity.status(201).body(novoComentario);
     }
 
-    @GetMapping("/{id_usuario}/comentarios")
-    public ResponseEntity<List<Comentario>> listarComentarios(@PathVariable int id_usuario) {
-        Usuario usuario = encontrarUsuarioPorId(id_usuario);
-        if (usuario == null) {
+    @GetMapping("/{idUsuario}/comentarios")
+    public ResponseEntity<List<Comentario>> listarComentarios(@PathVariable UUID idUsuario) {
+        Optional <Usuario> usuarioEncontrado = usuarioRepository.findById(idUsuario);
+        if (usuarioEncontrado.isEmpty()) {
             return ResponseEntity.status(404).build(); // Usuário não encontrado
         }
 
         // Obter a lista de comentários do usuário
-        return ResponseEntity.status(201).body(usuario.getComentarios());
+        return ResponseEntity.status(201).body(usuarioEncontrado.get().getComentarios());
     }
 
-    @DeleteMapping("/{id_usuario}/comentarios/{id_comentario}")
-    public ResponseEntity<Usuario> removerComentario(@PathVariable int id_usuario, @PathVariable int id_comentario) {
-        Usuario usuario = encontrarUsuarioPorId(id_usuario);
-        if (usuario == null) {
+    @DeleteMapping("/{idUsuario}/agenda/{idAgenda}")
+    public ResponseEntity<Usuario> removerAgenda(@PathVariable UUID idUsuario, @PathVariable int idAgenda) {
+        Optional <Usuario> usuarioEncontrado = usuarioRepository.findById(idUsuario);
+        if (usuarioEncontrado.isEmpty()) {
             return ResponseEntity.status(404).build(); // Usuário não encontrado
         }
-        // Remover a agenda da lista de agendas do usuário
-        if (exstIndice(id_comentario, usuario.getAgendas())) {
-            usuario.getAgendas().remove(id_comentario);
-            return ResponseEntity.status(200).body(usuario);
-        } else {
-            return ResponseEntity.status(404).build(); // Agenda não encontrada
-        }
 
+
+
+
+
+
+
+
+        // Remover a agenda da lista de agendas do usuário
+        //aqui falta verificar se Agenda existe, se nao existir tem ue mapear erro tbm.
+
+            return ResponseEntity.status(200).body(usuarioEncontrado.get());
     }
 
 // Outros métodos também devem seguir o mesmo padrão
@@ -65,83 +70,62 @@ public class UsuarioController {
     @PostMapping("/responsavel")
     public ResponseEntity<Responsavel> cadastrarResponsavel(@RequestBody Responsavel novoResponsavel)
     {
-        if (!Validation.isValidEmail(novoResponsavel.getEmail()) ||
-                !Validation.isValidPassword(novoResponsavel.getSenha()) ||
-                !Validation.isValidUsername(novoResponsavel.getNome())) {
-            return ResponseEntity.status(400).build();
-        }
+        novoResponsavel.setIdUsuario(null);
 
-        if (emailExist(novoResponsavel.getEmail())) {
+        if (usuarioRepository.existsByEmail(novoResponsavel.getEmail())) {
             return ResponseEntity.status(409).build();
         }
-
-
-        novoResponsavel.setId_usuario(++id_Usuario);
-        usuarios.add(novoResponsavel);
-
-
-
+        Usuario novoUsuario = usuarioRepository.save(novoResponsavel);
         // Retorna a resposta com o usuário genérico cadastrado
         return ResponseEntity.status(201).body(novoResponsavel);
     }
     @PostMapping("/cuidador")
-    public ResponseEntity<Cuidador> cadastrarResponsavel(@RequestBody Cuidador novoCuidador)
+    public ResponseEntity<Cuidador> cadastrarCuidador(@RequestBody Cuidador novoCuidador)
     {
-        if (!Validation.isValidEmail(novoCuidador.getEmail()) ||
-                !Validation.isValidPassword(novoCuidador.getSenha()) ||
-                !Validation.isValidUsername(novoCuidador.getNome())) {
-            return ResponseEntity.status(400).build();
-        }
-
-        if (emailExist(novoCuidador.getEmail())) {
+        novoCuidador.setIdUsuario(null);
+        if (usuarioRepository.existsByEmail(novoCuidador.getEmail())) {
             return ResponseEntity.status(409).build();
         }
 
-
-        novoCuidador.setId_usuario(++id_Usuario);
-        usuarios.add(novoCuidador);
-
-
-
-        // Retorna a resposta com o usuário genérico cadastrado
+        //mesma coisa do outro
+      usuarioRepository.save(novoCuidador);
+              // Retorna a resposta com o usuário genérico cadastrado
         return ResponseEntity.status(201).body(novoCuidador);
     }
 
-    @PostMapping("/{id_usuario}/enderecos")
-    public ResponseEntity<Endereco> adicionarEndereco(@PathVariable int id_usuario, @RequestBody Endereco novoEndereco) {
-        Usuario usuario = encontrarUsuarioPorId(id_usuario);
-        if (usuario == null) {
+    @PostMapping("/{idUsuario}/enderecos")
+    public ResponseEntity<Endereco> adicionarEndereco(@PathVariable UUID idUsuario, @RequestBody Endereco novoEndereco) {
+        Optional <Usuario> usuarioEncontrado = usuarioRepository.findById(idUsuario);
+        if (usuarioEncontrado.isEmpty()) {
             return ResponseEntity.status(404).build(); // Usuário não encontrado
         }
 
-        novoEndereco.setId_endereco(++id_Endereco);
         // Adicionando o novo endereço à lista de endereços do usuário
-        usuario.getEnderecos().add(novoEndereco);
+        usuarioEncontrado.get().getEnderecos().add(novoEndereco);
         return ResponseEntity.status(201).body(novoEndereco);
     }
 
-    @PostMapping("/{id_usuario}/linguas")
-    public ResponseEntity<Lingua> adicionarLingua(@PathVariable int id_usuario, @RequestBody Lingua novaLingua) {
-        Usuario usuario = encontrarUsuarioPorId(id_usuario);
-        if (usuario == null) {
+    @PostMapping("/{idUsuario}/linguas")
+    public ResponseEntity<Lingua> adicionarLingua(@PathVariable UUID idUsuario, @RequestBody Lingua novaLingua) {
+        Optional <Usuario> usuarioEncontrado = usuarioRepository.findById(idUsuario);
+        if (usuarioEncontrado.isEmpty()) {
             return ResponseEntity.status(404).build(); // Usuário não encontrado
         }
-        novaLingua.setId_lingua(++id_Lingua);
-        // Adicionando uma nova lingua para lista de linguas que está no usuário
-        usuario.getLinguas().add(novaLingua);
+
+        //Adicionando uma nova lingua para lista de linguas que está no usuario
+        usuarioEncontrado.get().getLinguas().add(novaLingua);
         return ResponseEntity.status(201).body(novaLingua);
     }
 
-    @PostMapping("/{id_usuario}/agendas")
-    public ResponseEntity<Agenda> adicionarAgenda(@PathVariable int id_usuario, @RequestBody Agenda novaAgenda) {
-        Usuario usuario = encontrarUsuarioPorId(id_usuario);
-        if (usuario == null) {
+    @PostMapping("/{idUsuario}/agendas")
+    public ResponseEntity<Agenda> adicionarAgenda(@PathVariable UUID idUsuario, @RequestBody Agenda novaAgenda) {
+        Optional <Usuario> usuarioEncontrado = usuarioRepository.findById(idUsuario);
+        if (usuarioEncontrado.isEmpty()) {
             return ResponseEntity.status(404).build(); // Usuário não encontrado
         }
 
-        novaAgenda.setId_Agenda(++id_Agenda);
         // Adicionando uma agenda à lista de agenda do usuário
-        usuario.getAgendas().add(novaAgenda);
+        usuarioEncontrado.get().getAgendas().add(novaAgenda);
         return ResponseEntity.status(201).body(novaAgenda);
     }
 
@@ -150,15 +134,18 @@ public class UsuarioController {
 
     @GetMapping
     public ResponseEntity<List<Usuario>> listar() {
-        if (usuarios.isEmpty()) {
-            return ResponseEntity.status(204).build();
-        }
+        List<Usuario> usuarios = usuarioRepository.findAll();
+
+    if (usuarios.isEmpty()){
+        return ResponseEntity.status(204).build();
+    }
         return ResponseEntity.status(200).body(usuarios);
     }
 
     @GetMapping("/cuidadores")
     public ResponseEntity<List<Cuidador>> getCuidadores() {
-        List<Cuidador> cuidadores = new ArrayList<>();
+
+        List<Cuidador> cuidadores = usuarioRepository.findAll
         for (Usuario usuario : usuarios) {
             if (usuario instanceof Cuidador) {
                 cuidadores.add((Cuidador) usuario);
@@ -289,7 +276,7 @@ public class UsuarioController {
 
     @DeleteMapping("/{id_usuario}/linguas/{id_lingua}")
     public ResponseEntity<Usuario> removerLingua(@PathVariable int id_usuario, @PathVariable int id_lingua) {
-        Usuario usuario = encontrarUsuarioPorId(id_usuario);
+        Usuario usuario = find(id_usuario);
         if (usuario == null) {
             return ResponseEntity.status(404).build(); // Usuário não encontrado
         }
@@ -304,7 +291,7 @@ public class UsuarioController {
 
     @DeleteMapping("/{id_usuario}/agendas/{id_agenda}")
     public ResponseEntity<Usuario> removerAgenda(@PathVariable int id_usuario, @PathVariable int id_agenda) {
-        Usuario usuario = encontrarUsuarioPorId(id_usuario);
+        Usuario usuario = findBy(id_usuario);
         if (usuario == null) {
             return ResponseEntity.status(404).build(); // Usuário não encontrado
         }
@@ -318,21 +305,6 @@ public class UsuarioController {
     }
 
 
-    private boolean emailExist(String email) {
-        return usuarios.stream().anyMatch(usuario -> usuario.getEmail().equals(email));
-    }
 
-    public Usuario encontrarUsuarioPorId(int id_usuario) {
-        for (Usuario usuario : usuarios) {
-            if (usuario.getId_usuario() == id_usuario) {
-                return usuario;
-            }
-        }
-        return null; // Usuário não encontrado
-    }
-
-    private boolean exstIndice(int indice, List<?> lista) {
-        return indice - 1 >= 0 && indice - 1 < lista.size();
-    }
 
 }
