@@ -20,7 +20,7 @@ public class UsuarioController {
 
     @PostMapping("/{idUsuario}/comentarios")
     public ResponseEntity<Comentario> adicionarComentario(@PathVariable UUID idUsuario, @RequestBody Comentario novoComentario) {
-Optional <Usuario> usuarioEncontrado = usuarioRepository.findById(idUsuario);
+    Optional <Usuario> usuarioEncontrado = usuarioRepository.findById(idUsuario);
     if (usuarioEncontrado.isEmpty()) {
             return ResponseEntity.status(404).build(); // Usuário não encontrado
         }
@@ -30,7 +30,7 @@ Optional <Usuario> usuarioEncontrado = usuarioRepository.findById(idUsuario);
         return ResponseEntity.status(201).body(novoComentario);
     }
 
-    @GetMapping("/{idUsuario}/comentarios")
+    @GetMapping
     public ResponseEntity<List<Comentario>> listarComentarios(@PathVariable UUID idUsuario) {
         Optional <Usuario> usuarioEncontrado = usuarioRepository.findById(idUsuario);
         if (usuarioEncontrado.isEmpty()) {
@@ -103,17 +103,7 @@ Optional <Usuario> usuarioEncontrado = usuarioRepository.findById(idUsuario);
         return ResponseEntity.status(201).body(novoEndereco);
     }
 
-    @PostMapping("/{idUsuario}/linguas")
-    public ResponseEntity<Lingua> adicionarLingua(@PathVariable UUID idUsuario, @RequestBody Lingua novaLingua) {
-        Optional <Usuario> usuarioEncontrado = usuarioRepository.findById(idUsuario);
-        if (usuarioEncontrado.isEmpty()) {
-            return ResponseEntity.status(404).build(); // Usuário não encontrado
-        }
 
-        //Adicionando uma nova lingua para lista de linguas que está no usuario
-        usuarioEncontrado.get().getLinguas().add(novaLingua);
-        return ResponseEntity.status(201).body(novaLingua);
-    }
 
     @PostMapping("/{idUsuario}/agendas")
     public ResponseEntity<Agenda> adicionarAgenda(@PathVariable UUID idUsuario, @RequestBody Agenda novaAgenda) {
@@ -142,145 +132,19 @@ Optional <Usuario> usuarioEncontrado = usuarioRepository.findById(idUsuario);
 
     // Função para retornar todos os responsáveis cadastrados
 
-    @GetMapping("/{id_usuario}/enderecos")
-    public ResponseEntity<List<Endereco>> listarEndereco(@PathVariable int id_usuario) {
-        Usuario usuario = encontrarUsuarioPorId(id_usuario);
-        if (usuario == null) {
-            return ResponseEntity.status(404).build(); // Usuário não encontrado
-        }
-        if (usuario.getEnderecos().isEmpty()) {
-            return ResponseEntity.status(204).build();
-        }
-        return ResponseEntity.status(200).body(usuario.getEnderecos());
-    }
 
-    @GetMapping("/{id_usuario}/linguas")
-    public ResponseEntity<List<Lingua>> listarlingua(@PathVariable int id_usuario) {
-        Usuario usuario = encontrarUsuarioPorId(id_usuario);
-        if (usuario == null) {
-            return ResponseEntity.status(404).build(); // Usuário não encontrado
-        }
-        if (usuario.getLinguas().isEmpty()) {
-            return ResponseEntity.status(204).build();
-        }
-        return ResponseEntity.status(200).body(usuario.getLinguas());
-    }
 
-    @GetMapping("/{id_usuario}/agendas")
-    public ResponseEntity<List<Agenda>> listarAgenda(@PathVariable int id_usuario) {
-        Usuario usuario = encontrarUsuarioPorId(id_usuario);
-        if (usuario == null) {
-            return ResponseEntity.status(404).build(); // Usuário não encontrado
-        }
-        if (usuario.getAgendas().isEmpty()) {
-            return ResponseEntity.status(204).build();
-        }
-        return ResponseEntity.status(200).body(usuario.getAgendas());
-    }
+
 
     //===============================Métodos UPDATE do usuario================================//
 
-    @PutMapping("/{id_usuario}/enderecos/{id_endereco}")
-    public ResponseEntity<Endereco> atualizarEndereco(@PathVariable int id_usuario, @RequestBody Endereco novoEndereco, @PathVariable int id_endereco) {
-
-        Usuario usuario = encontrarUsuarioPorId(id_usuario);
-
-        if (usuario == null || !exstIndice(id_endereco, usuarios.get(id_usuario - 1).getEnderecos())) {
-            return ResponseEntity.status(404).build(); // Usuário não encontrado ou endenreco não encontrado na lista de endereco
-        }
-        if (usuario.getEnderecos().isEmpty()) {
-            return ResponseEntity.status(204).build();
-        }
-
-        usuario.getEnderecos().set(id_endereco - 1, novoEndereco);
-
-        return ResponseEntity.status(200).body(novoEndereco);
-    }
-
-    @PutMapping("/{id_usuario}/linguas/{id_lingua}")
-    public ResponseEntity<Lingua> atualizarLingua(@PathVariable int id_usuario, @RequestBody Lingua novaLingua, @PathVariable int id_lingua) {
-
-        Usuario usuario = encontrarUsuarioPorId(id_usuario);
-
-        if (usuario == null || !exstIndice(id_lingua, usuarios.get(id_usuario - 1).getLinguas())) {
-            return ResponseEntity.status(404).build(); // Usuário não encontrado ou lingua não encontrado na lista de endereco
-        }
-        if (usuario.getLinguas().isEmpty()) {
-            return ResponseEntity.status(204).build();
-        }
-
-        usuario.getLinguas().set(id_lingua - 1, novaLingua);
-
-        return ResponseEntity.status(200).body(novaLingua);
-    }
 
 
-    @PutMapping("/{id_usuario}/agendas/{id_agenda}")
-    public ResponseEntity<Agenda> atualizarAgenda(@PathVariable int id_usuario, @RequestBody Agenda novaAgenda, @PathVariable int id_agenda) {
-
-        Usuario usuario = encontrarUsuarioPorId(id_usuario);
-
-        if (usuario == null || !exstIndice(id_agenda, usuarios.get(id_usuario - 1).getAgendas())) {
-            return ResponseEntity.status(404).build(); // Usuário não encontrado ou agenda não encontrado na lista de endereco
-        }
-        if (usuario.getAgendas().isEmpty()) {
-            return ResponseEntity.status(204).build();
-        }
-
-        usuario.getAgendas().set(id_agenda - 1, novaAgenda);
-
-        return ResponseEntity.status(200).body(novaAgenda);
-    }
 
     //===============================Métodos DELETE do usuario================================//
 
 
-    @DeleteMapping("/{id_usuario}/enderecos/{id_endereco}")
-    public ResponseEntity<Usuario> removerEndereco(@PathVariable int id_usuario, @PathVariable int id_endereco) {
-        Usuario usuario = encontrarUsuarioPorId(id_usuario);
-        if (usuario == null) {
-            return ResponseEntity.status(404).build(); // Usuário não encontrado
-        }
-        // Remover o endereço da lista de endereços do usuário
-        if (exstIndice(id_endereco, usuario.getEnderecos())) {
-            usuario.getEnderecos().remove(id_endereco);
-            return ResponseEntity.status(200).body(usuario);
-        } else {
-            return ResponseEntity.status(404).build(); // Endereço não encontrado
-        }
+
+
     }
 
-    @DeleteMapping("/{id_usuario}/linguas/{id_lingua}")
-    public ResponseEntity<Usuario> removerLingua(@PathVariable int id_usuario, @PathVariable int id_lingua) {
-        Usuario usuario = find(id_usuario);
-        if (usuario == null) {
-            return ResponseEntity.status(404).build(); // Usuário não encontrado
-        }
-        // Remover a língua da lista de línguas do usuário
-        if (exstIndice(id_lingua, usuario.getLinguas())) {
-            usuario.getLinguas().remove(id_lingua);
-            return ResponseEntity.status(200).body(usuario);
-        } else {
-            return ResponseEntity.status(404).build(); // Língua não encontrada
-        }
-    }
-
-    @DeleteMapping("/{id_usuario}/agendas/{id_agenda}")
-    public ResponseEntity<Usuario> removerAgenda(@PathVariable int id_usuario, @PathVariable int id_agenda) {
-        Usuario usuario = findBy(id_usuario);
-        if (usuario == null) {
-            return ResponseEntity.status(404).build(); // Usuário não encontrado
-        }
-        // Remover a agenda da lista de agendas do usuário
-        if (exstIndice(id_agenda, usuario.getAgendas())) {
-            usuario.getAgendas().remove(id_agenda);
-            return ResponseEntity.status(200).body(usuario);
-        } else {
-            return ResponseEntity.status(404).build(); // Agenda não encontrada
-        }
-    }
-
-
-
-
-}

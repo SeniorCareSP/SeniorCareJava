@@ -1,15 +1,24 @@
 package seniorcare.crudseniorcare.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+import java.util.UUID;
+@Entity
 public class Ajuda {
-    private int id_ajuda;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID idAjuda;
     private String nome;
 
-    public int getId_ajuda() {
-        return id_ajuda;
+    public UUID getIdAjuda() {
+        return idAjuda;
     }
 
-    public void setId_ajuda(int id_ajuda) {
-        this.id_ajuda = id_ajuda;
+    public void setIdAjuda(UUID idAjuda) {
+        this.idAjuda = idAjuda;
     }
 
     public String getNome() {
@@ -23,7 +32,7 @@ public class Ajuda {
     @Override
     public String toString() {
         return "Ajuda{" +
-                "id_ajuda=" + id_ajuda +
+                "idAjuda=" + idAjuda +
                 ", nome='" + nome + '\'' +
                 '}';
     }

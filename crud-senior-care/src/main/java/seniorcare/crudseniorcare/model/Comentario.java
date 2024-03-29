@@ -1,6 +1,14 @@
 package seniorcare.crudseniorcare.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Comentario{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String conteudo;
     private double avaliacao;

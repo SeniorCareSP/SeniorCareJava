@@ -1,18 +1,26 @@
 package seniorcare.crudseniorcare.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import java.util.UUID;
+@Entity
 public class Agenda {
-    private int id_Agenda;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID idAgenda;
     private String diaDaSemana;
     private boolean periodo_manha;
     private boolean periodo_tarde;
     private boolean periodo_noite;
 
-    public int getId_Agenda() {
-        return id_Agenda;
+    public UUID getIdAgenda() {
+        return idAgenda;
     }
 
-    public void setId_Agenda(int id_Agenda) {
-        this.id_Agenda = id_Agenda;
+    public void setIdAgenda(UUID idAgenda) {
+        this.idAgenda = idAgenda;
     }
 
     public String getDiaDaSemana() {

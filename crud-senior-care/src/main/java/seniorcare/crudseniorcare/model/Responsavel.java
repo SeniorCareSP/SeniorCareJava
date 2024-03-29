@@ -1,7 +1,9 @@
 package seniorcare.crudseniorcare.model;
 
-import java.util.List;
+import jakarta.persistence.Entity;
 
+import java.util.List;
+@Entity
 public class Responsavel extends Usuario{
 
     private double precoHora;

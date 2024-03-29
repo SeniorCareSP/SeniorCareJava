@@ -37,7 +37,7 @@ public abstract  class Usuario{
     @NotNull
     private LocalDate dtCadastro;
     private List<Agenda> agendas;
-    private List<Lingua> linguas;
+    private List<Idioma> idiomas;
     private List<Endereco> enderecos;
     private List<Comentario> comentarios;
 
@@ -57,13 +57,14 @@ public abstract  class Usuario{
         this.agendas = agendas;
     }
 
-    public List<Lingua> getLinguas() {
-        return linguas;
+    public List<Idioma> getIdiomas() {
+        return idiomas;
     }
 
-    public void setLinguas(List<Lingua> linguas) {
-        this.linguas = linguas;
+    public void setIdiomas(List<Idioma> idiomas) {
+        this.idiomas = idiomas;
     }
+
 
     public List<Endereco> getEnderecos() {
         return enderecos;
@@ -166,7 +167,7 @@ public abstract  class Usuario{
                 ", dtNascimento=" + dtNascimento +
                 ", apresentacao='" + apresentacao + '\'' +
                 ", agendas=" + agendas +
-                ", linguas=" + linguas +
+                ", idiomas=" + idiomas +
                 ", enderecos=" + enderecos +
                 ", comentarios=" + comentarios +
                 '}';

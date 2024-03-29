@@ -1,8 +1,11 @@
 package seniorcare.crudseniorcare.model;
 
-import java.util.List;
+import jakarta.persistence.Entity;
 
+import java.util.List;
+@Entity
 public class Cuidador extends Usuario{
+
 
     private String experiencia;
     private String faixaEtaria;

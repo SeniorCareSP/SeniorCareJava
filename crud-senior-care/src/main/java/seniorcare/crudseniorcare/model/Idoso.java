@@ -1,8 +1,15 @@
 package seniorcare.crudseniorcare.model;
 
-import java.util.UUID;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
+import java.util.UUID;
+@Entity
 public class Idoso {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID idoso;
     private String nome;
     private boolean mobilidade;

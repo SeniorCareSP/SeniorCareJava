@@ -1,18 +1,27 @@
 package seniorcare.crudseniorcare.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+import java.util.UUID;
+
+@Entity
 public class Caracteristica {
-    private int id_caracteristica;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID idCaracteristica;
     private String nome;
 
 
-    public int getId_caracteristica() {
-        return id_caracteristica;
+    public UUID getIdCaracteristica() {
+        return idCaracteristica;
     }
 
-    public void setId_caracteristica(int id_caracteristica) {
-        this.id_caracteristica = id_caracteristica;
+    public void setIdCaracteristica(UUID idCaracteristicas) {
+        this.idCaracteristica = idCaracteristicas;
     }
-
 
     public String getNome() {
         return nome;
@@ -25,7 +34,7 @@ public class Caracteristica {
     @Override
     public String toString() {
         return "Caracteristica{" +
-                "id_caracteristica=" + id_caracteristica +
+                "id_caracteristica=" + idCaracteristica +
                 ", nome='" + nome + '\'' +
                 '}';
     }

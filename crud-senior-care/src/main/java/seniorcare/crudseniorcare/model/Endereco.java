@@ -1,7 +1,16 @@
 package seniorcare.crudseniorcare.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+import java.util.UUID;
+@Entity
 public class Endereco {
-    private int id_endereco;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID idEndereco;
     private String rua;
     private String cep;
     private String logradouro;
@@ -10,12 +19,12 @@ public class Endereco {
     private String cidade;
     private String bairro;
 
-    public int getId_endereco() {
-        return id_endereco;
+    public UUID getIdEndereco() {
+        return idEndereco;
     }
 
-    public void setId_endereco(int id_endereco) {
-        this.id_endereco = id_endereco;
+    public void setIdEndereco(UUID idEndereco) {
+        this.idEndereco = idEndereco;
     }
 
     public String getRua() {
@@ -77,7 +86,7 @@ public class Endereco {
     @Override
     public String toString() {
         return "Endereco{" +
-                "id_endereco=" + id_endereco +
+                "id_endereco=" + idEndereco +
                 ", rua='" + rua + '\'' +
                 ", cep='" + cep + '\'' +
                 ", logradouro='" + logradouro + '\'' +
