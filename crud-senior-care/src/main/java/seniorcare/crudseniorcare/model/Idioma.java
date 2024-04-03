@@ -1,17 +1,20 @@
 package seniorcare.crudseniorcare.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.UUID;
+
 @Entity
-public class Idioma {
+@Table(name = "tb_idioma")
+public class Idioma implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID idIdioma;
     private String idioma;
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", referencedColumnName = "idUsuario")
+    private Usuario usuario;
 
     public UUID getIdIdioma() {
         return idIdioma;
@@ -27,6 +30,14 @@ public class Idioma {
 
     public void setIdioma(String idioma) {
         this.idioma = idioma;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override

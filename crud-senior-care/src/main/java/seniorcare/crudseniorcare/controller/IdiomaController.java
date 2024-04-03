@@ -1,8 +1,14 @@
 package seniorcare.crudseniorcare.controller;
 
+import jakarta.persistence.Id;
+import jakarta.validation.Valid;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import seniorcare.crudseniorcare.dto.AgendaRecordDTO;
+import seniorcare.crudseniorcare.dto.EnderecoRecordDTO;
+import seniorcare.crudseniorcare.dto.IdiomaRecordDTO;
 import seniorcare.crudseniorcare.model.*;
 import seniorcare.crudseniorcare.repository.IdiomaRepository;
 
@@ -16,7 +22,7 @@ public class IdiomaController {
 
     @Autowired
     IdiomaRepository idiomaRepository;
-    @DeleteMapping("/{id_usuario}/linguas/{id_lingua}")
+    @DeleteMapping("/{idIdioma}")
     public ResponseEntity<Idioma> removerLingua(@PathVariable UUID idLingua) {
         Optional<Idioma> idiomaEncontrado = idiomaRepository.findById(idLingua);
 
@@ -32,38 +38,22 @@ public class IdiomaController {
 
 
     @PutMapping("/{idIdioma}")
-    public ResponseEntity<Idioma> atualizarLingua(@RequestBody Idioma novoIdioma, @PathVariable UUID idIdioma) {
+    public ResponseEntity<Idioma> atualizarIdioma(@RequestBody @Valid IdiomaRecordDTO novoIdioma, @PathVariable UUID idIdioma) {
+        Idioma idioma = new Idioma();
+        BeanUtils.copyProperties(novoIdioma, idioma);
         Optional<Idioma> idiomaEncontrado = idiomaRepository.findById(idIdioma);
+
 
         if (idiomaEncontrado.isEmpty()) {
             return ResponseEntity.status(404).build();
         }
 
-
-        novoIdioma.setIdIdioma(null);
-        idiomaRepository.save(novoIdioma);
-
-        return ResponseEntity.status(200).body(novoIdioma);
+        return ResponseEntity.status(200).body(idiomaRepository.save(idioma));
     }
 
-    @PutMapping("/{idIdioma}")
-    public ResponseEntity<Idioma> atualizarIdioma(@PathVariable UUID idIdioma, @RequestBody Idioma novoIdioma) {
-
-        Optional<Idioma> idiomaEncontrado = idiomaRepository.findById(idIdioma);
-
-        if (idiomaEncontrado.isEmpty()) {
-            return ResponseEntity.status(404).build();
-        }
-
-
-        novoIdioma.setIdIdioma(null);
-        idiomaRepository.save(novoIdioma);
-
-        return ResponseEntity.status(200).body(novoIdioma);
-    }
 
     @GetMapping
-    public ResponseEntity<List<Idioma>> listarlingua(@PathVariable UUID idIdioma) {
+    public ResponseEntity<List<Idioma>> listarIdioma() {
         List<Idioma> idiomas = idiomaRepository.findAll();
         if (idiomas.isEmpty()){
             return ResponseEntity.status(204).build();
@@ -71,18 +61,12 @@ public class IdiomaController {
         return ResponseEntity.status(200).body(idiomas);
     }
 
-    @PostMapping("/cuidador")
-    public ResponseEntity<Idioma> cadastrarIdioma(@RequestBody Idioma novoidioma)
-    {
-        novoidioma.setIdIdioma(null);
-        if (idiomaRepository.existsById(novoidioma.getIdIdioma())) {
-            return ResponseEntity.status(409).build();
-        }
-
-        //mesma coisa do outro
-        idiomaRepository.save(novoidioma);
-        // Retorna a resposta com o idioma genérico cadastrado
-        return ResponseEntity.status(201).body(novoidioma);
+    @PostMapping
+    ResponseEntity<Idioma>cadastrar(@RequestBody @Valid IdiomaRecordDTO idiomaDTO){
+        Idioma idioma = new Idioma();
+        BeanUtils.copyProperties(idiomaDTO, idioma);
+        return ResponseEntity.status(201).body(idiomaRepository.save(idioma));
     }
-}
+    }
+
 

@@ -1,8 +1,14 @@
 package seniorcare.crudseniorcare.controller;
 
+import jakarta.validation.Valid;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import seniorcare.crudseniorcare.dto.AgendaRecordDTO;
+import seniorcare.crudseniorcare.dto.IdosoRecordDTO;
+import seniorcare.crudseniorcare.dto.ResponsavelRecordDTO;
+import seniorcare.crudseniorcare.model.Agenda;
 import seniorcare.crudseniorcare.model.Idoso;
 import seniorcare.crudseniorcare.model.Responsavel;
 import seniorcare.crudseniorcare.model.Usuario;
@@ -35,33 +41,36 @@ public class ResponsavelController {
 
 
 
-    @PostMapping("/{idUsuario}/idoso")
-    public ResponseEntity<Idoso> adicionarIdoso(@PathVariable UUID idUsuario, @RequestBody Idoso novoIdoso) {
-        // Encontrar o usuário com o ID fornecido
-        Optional<Responsavel> responsavelEncontrado = responsavelRepository.findById(idUsuario);
-
-        // Verificar se o usuário existe e é um Cuidador
-        if (responsavelEncontrado.isEmpty()) {
-            return ResponseEntity.status(404).build(); // Usuário não encontrado
-        }
-
-        // Adicionar a característica ao Cuidador
-        responsavelEncontrado.get().getIdosos().add(novoIdoso);
-
-        // Retornar uma resposta com o Idoso adicionado
-        return ResponseEntity.status(200).body(novoIdoso);
+    @PostMapping
+    ResponseEntity<Responsavel>cadastrar(@RequestBody @Valid ResponsavelRecordDTO responsavelDTO){
+        Responsavel responsavel = new Responsavel();
+        BeanUtils.copyProperties(responsavelDTO, responsavel);
+        return ResponseEntity.status(201).body(responsavelRepository.save(responsavel));
     }
 
-    @GetMapping("/{idUsuario}/idoso/{idIdoso}")
-    public ResponseEntity<List<Responsavel>> BuscarIdososPeloResponsavel(@PathVariable UUID idUsuario, @PathVariable int idIdoso) {
+    //@GetMapping("/{idUsuario}/idoso/{idIdoso}")
+    //public ResponseEntity<List<Responsavel>> BuscarIdososPeloResponsavel(@PathVariable UUID idUsuario, @PathVariable int idIdoso) {
 
-       List<Responsavel> idososEncontrados = responsavelRepository.findByIdByIdoso(idUsuario);
+      // List<Responsavel> idososEncontrados = responsavelRepository.findByIdByIdoso(idUsuario);
 
-        if (idososEncontrados.isEmpty()){
-            return ResponseEntity.status(204).build();
+        //if (idososEncontrados.isEmpty()){
+          //  return ResponseEntity.status(204).build();
+        //}
+
+       //return ResponseEntity.status(200).body(idososEncontrados);
+    //}
+
+    @PutMapping("/{idResponsavel}")
+    public ResponseEntity<Responsavel> atualizarResponsavel(@RequestBody @Valid ResponsavelRecordDTO novoResponsavel, @PathVariable UUID idResponsavel) {
+        Responsavel responsavel = new Responsavel();
+        BeanUtils.copyProperties(novoResponsavel, responsavel);
+        Optional<Responsavel> responsavelEncontrado = responsavelRepository.findById(idResponsavel);
+
+        if (responsavelEncontrado.isEmpty()) {
+            return ResponseEntity.status(404).build();
         }
-
-       return ResponseEntity.status(200).body(idososEncontrados);
+        responsavel.setIdResponsavel(null);
+        return ResponseEntity.status(200).body(responsavelRepository.save(responsavel));
     }
 
 }

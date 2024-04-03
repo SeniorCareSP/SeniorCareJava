@@ -1,29 +1,41 @@
 package seniorcare.crudseniorcare.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.UUID;
+
 @Entity
-public class Idoso {
+@Table(name = "tb_idoso")
+public class Idoso implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID idoso;
+    private UUID idIdoso;
     private String nome;
     private boolean mobilidade;
     private boolean lucido;
     private String doencasCronicas;
-
     private Boolean cuidadosMin;
+    @ManyToOne
+    @JoinColumn(name = "responsavel_id", referencedColumnName = "idResponsavel")
+    private Responsavel responsavel;
 
-    public UUID getIdoso() {
-        return idoso;
+
+    public UUID getIdIdoso() {
+        return idIdoso;
     }
 
-    public void setIdoso(UUID idoso) {
-        this.idoso = idoso;
+    public void setIdIdoso(UUID idIdoso) {
+        this.idIdoso = idIdoso;
+    }
+
+    public Responsavel getResponsavel() {
+        return responsavel;
+    }
+
+
+    public void setResponsavel(Responsavel responsavel) {
+        this.responsavel = responsavel;
     }
 
     public String getNome() {

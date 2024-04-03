@@ -1,26 +1,32 @@
 package seniorcare.crudseniorcare.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
-public class Comentario{
+@Table(name = "tb_comentarios")
+public class Comentario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private UUID idComentario;
     private String conteudo;
     private double avaliacao;
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", referencedColumnName = "idUsuario")
+    private Usuario usuario;
 
 
     // Getters e Setters
-    public int getId() {
-        return id;
+
+
+    public UUID getIdComentario() {
+        return idComentario;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdComentario(UUID idComentario) {
+        this.idComentario = idComentario;
     }
 
     public String getConteudo() {
@@ -39,10 +45,18 @@ public class Comentario{
         this.avaliacao = avaliacao;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
     @Override
     public String   toString() {
         return "Comentario{" +
-                "id=" + id +
+                "id=" + idComentario +
                 ", conteudo='" + conteudo + '\'' +
                 ", avaliacao=" + avaliacao +
                 '}';

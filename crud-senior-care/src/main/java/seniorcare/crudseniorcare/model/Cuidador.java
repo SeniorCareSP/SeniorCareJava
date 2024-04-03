@@ -1,20 +1,39 @@
 package seniorcare.crudseniorcare.model;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
+
 @Entity
-public class Cuidador extends Usuario{
+@DiscriminatorValue("CUIDADOR")
+public class Cuidador extends Usuario implements Serializable {
 
-
+    private UUID idCuidador;
     private String experiencia;
     private String faixaEtaria;
     private int qtdIdoso;
     private double precoHora;
+    @ManyToMany
+    @JoinTable(name = "cuidador_caracteristica", joinColumns = @JoinColumn (name = "cuidador_id"), inverseJoinColumns = @JoinColumn(name = "caracteristica_id"))
     private List<Caracteristica> caracteristicas;
-    private List<Ajuda> Ajudas;
+    @ManyToMany
+    @JoinTable(name = "cuidador_ajuda",
+            joinColumns = @JoinColumn(name = "cuidador_id"),
+            inverseJoinColumns = @JoinColumn(name = "ajuda_id"))
+            private List<Ajuda> ajudas;
 
 
+
+
+    public UUID getIdCuidador() {
+        return idCuidador;
+    }
+
+    public void setIdCuidador(UUID idCuidador) {
+        this.idCuidador = idCuidador;
+    }
 
     public List<Caracteristica> getCaracteristicas() {
         return caracteristicas;
@@ -25,11 +44,11 @@ public class Cuidador extends Usuario{
     }
 
     public List<Ajuda> getAjudas() {
-        return Ajudas;
+        return ajudas;
     }
 
     public void setAjudas(List<Ajuda> ajudas) {
-        Ajudas = ajudas;
+        this.ajudas = ajudas;
     }
 
     public String getExperiencia() {
@@ -64,6 +83,7 @@ public class Cuidador extends Usuario{
         this.precoHora = precoHora;
     }
 
+
     @Override
     public String toString() {
         return "Cuidador{" +
@@ -72,7 +92,7 @@ public class Cuidador extends Usuario{
                 ", qtdIdoso=" + qtdIdoso +
                 ", precoHora=" + precoHora +
                 ", caracteristicas=" + caracteristicas +
-                ", Ajudas=" + Ajudas +
+                ", Ajudas=" + ajudas +
                 "} " + super.toString();
     }
 }

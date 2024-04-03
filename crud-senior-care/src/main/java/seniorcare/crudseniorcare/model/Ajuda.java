@@ -1,17 +1,24 @@
 package seniorcare.crudseniorcare.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
+
 @Entity
-public class Ajuda {
+@Table(name = "tb_ajuda")
+public class Ajuda implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID idAjuda;
     private String nome;
+
+    @ManyToMany
+    @JoinTable(name = "ajuda_cuidadores",
+            joinColumns = @JoinColumn(name = "idAjuda"),
+            inverseJoinColumns = @JoinColumn(name = "idCuidador"))
+    private List<Cuidador> cuidadores;
 
     public UUID getIdAjuda() {
         return idAjuda;
@@ -27,6 +34,14 @@ public class Ajuda {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public List<Cuidador> getCuidadores() {
+        return cuidadores;
+    }
+
+    public void setCuidadores(List<Cuidador> cuidadores) {
+        this.cuidadores = cuidadores;
     }
 
     @Override

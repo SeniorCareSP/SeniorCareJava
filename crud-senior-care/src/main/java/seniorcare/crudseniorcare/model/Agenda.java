@@ -1,12 +1,13 @@
 package seniorcare.crudseniorcare.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.io.Serializable;
 import java.util.UUID;
+
 @Entity
-public class Agenda {
+@Table(name="tb_agenda")
+public class Agenda implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID idAgenda;
@@ -14,6 +15,9 @@ public class Agenda {
     private boolean periodo_manha;
     private boolean periodo_tarde;
     private boolean periodo_noite;
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", referencedColumnName = "idUsuario" )
+    private Usuario usuario;
 
     public UUID getIdAgenda() {
         return idAgenda;
@@ -43,6 +47,7 @@ public class Agenda {
         return periodo_tarde;
     }
 
+
     public void setPeriodo_tarde(boolean periodo_tarde) {
         this.periodo_tarde = periodo_tarde;
     }
@@ -55,13 +60,11 @@ public class Agenda {
         this.periodo_noite = periodo_noite;
     }
 
-    @Override
-    public String toString() {
-        return "Agenda{" +
-                "diaDaSemana='" + diaDaSemana + '\'' +
-                ", periodo_manha=" + periodo_manha +
-                ", periodo_tarde=" + periodo_tarde +
-                ", periodo_noite=" + periodo_noite +
-                '}';
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }

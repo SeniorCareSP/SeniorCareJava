@@ -1,13 +1,13 @@
 package seniorcare.crudseniorcare.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.UUID;
+
 @Entity
-public class Endereco {
+@Table(name = "tb_endereco")
+public class Endereco implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID idEndereco;
@@ -18,6 +18,9 @@ public class Endereco {
     private String numero;
     private String cidade;
     private String bairro;
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", referencedColumnName = "idUsuario")
+    private Usuario usuario;
 
     public UUID getIdEndereco() {
         return idEndereco;
@@ -81,6 +84,14 @@ public class Endereco {
 
     public void setBairro(String bairro) {
         this.bairro = bairro;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override
