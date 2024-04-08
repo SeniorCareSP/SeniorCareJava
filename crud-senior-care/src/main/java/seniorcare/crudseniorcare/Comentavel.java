@@ -1,4 +1,4 @@
-package seniorcare.crudseniorcare.repository;
+package seniorcare.crudseniorcare;
 
 import seniorcare.crudseniorcare.model.Comentario;
 import seniorcare.crudseniorcare.model.Cuidador;
