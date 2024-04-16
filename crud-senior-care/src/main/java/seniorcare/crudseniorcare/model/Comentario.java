@@ -1,10 +1,13 @@
 package seniorcare.crudseniorcare.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.UUID;
-
+@Getter
+@Setter
 @Entity
 @Table(name = "tb_comentarios")
 public class Comentario implements Serializable {
@@ -16,49 +19,4 @@ public class Comentario implements Serializable {
     @ManyToOne
     @JoinColumn(name = "usuario_id", referencedColumnName = "idUsuario")
     private Usuario usuario;
-
-
-    // Getters e Setters
-
-
-    public UUID getIdComentario() {
-        return idComentario;
-    }
-
-    public void setIdComentario(UUID idComentario) {
-        this.idComentario = idComentario;
-    }
-
-    public String getConteudo() {
-        return conteudo;
-    }
-
-    public void setConteudo(String conteudo) {
-        this.conteudo = conteudo;
-    }
-
-    public double getAvaliacao() {
-        return avaliacao;
-    }
-
-    public void setAvaliacao(double avaliacao) {
-        this.avaliacao = avaliacao;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    @Override
-    public String   toString() {
-        return "Comentario{" +
-                "id=" + idComentario +
-                ", conteudo='" + conteudo + '\'' +
-                ", avaliacao=" + avaliacao +
-                '}';
-    }
 }

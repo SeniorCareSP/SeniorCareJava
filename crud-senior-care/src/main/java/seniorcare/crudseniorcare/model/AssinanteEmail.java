@@ -1,11 +1,14 @@
 package seniorcare.crudseniorcare.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import seniorcare.crudseniorcare.Assinante;
 import seniorcare.crudseniorcare.service.EnviadorEmailService;
 
 import java.util.UUID;
-
+@Getter
+@Setter
 @Entity
 @Table(name = "tb_assinante_email")
 public class AssinanteEmail implements Assinante {
@@ -25,37 +28,5 @@ public class AssinanteEmail implements Assinante {
   @Override
   public void receberNewsletter(EnviadorEmailService enviadorEmailService, Newsletter newsletter) {
     enviadorEmailService.sendEmail(EMAIL_EMPRESA, this.email, newsletter.getTitulo(), newsletter.getConteudo());
-  }
-
-  public UUID getId() {
-    return id;
-  }
-
-  public String getNome() {
-    return nome;
-  }
-
-  public void setNome(String nome) {
-    this.nome = nome;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public Newsletter getNewsletter() {
-    return newsletter;
-  }
-
-  public void setNewsletter(Newsletter newsletter) {
-    this.newsletter = newsletter;
   }
 }

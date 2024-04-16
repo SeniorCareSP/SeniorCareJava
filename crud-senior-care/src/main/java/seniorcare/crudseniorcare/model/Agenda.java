@@ -1,10 +1,13 @@
 package seniorcare.crudseniorcare.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.UUID;
-
+@Getter @Setter
 @Entity
 @Table(name="tb_agenda")
 public class Agenda implements Serializable {
@@ -19,52 +22,4 @@ public class Agenda implements Serializable {
     @JoinColumn(name = "usuario_id", referencedColumnName = "idUsuario" )
     private Usuario usuario;
 
-    public UUID getIdAgenda() {
-        return idAgenda;
-    }
-
-    public void setIdAgenda(UUID idAgenda) {
-        this.idAgenda = idAgenda;
-    }
-
-    public String getDiaDaSemana() {
-        return diaDaSemana;
-    }
-
-    public void setDiaDaSemana(String diaDaSemana) {
-        this.diaDaSemana = diaDaSemana;
-    }
-
-    public boolean isPeriodo_manha() {
-        return periodo_manha;
-    }
-
-    public void setPeriodo_manha(boolean periodo_manha) {
-        this.periodo_manha = periodo_manha;
-    }
-
-    public boolean isPeriodo_tarde() {
-        return periodo_tarde;
-    }
-
-
-    public void setPeriodo_tarde(boolean periodo_tarde) {
-        this.periodo_tarde = periodo_tarde;
-    }
-
-    public boolean isPeriodo_noite() {
-        return periodo_noite;
-    }
-
-    public void setPeriodo_noite(boolean periodo_noite) {
-        this.periodo_noite = periodo_noite;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
 }

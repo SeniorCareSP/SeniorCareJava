@@ -1,12 +1,14 @@
 package seniorcare.crudseniorcare.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
-
+@Getter @Setter
 @Entity
 @DiscriminatorValue("RESPONSAVEL")
 public class Responsavel extends Usuario implements Serializable {
