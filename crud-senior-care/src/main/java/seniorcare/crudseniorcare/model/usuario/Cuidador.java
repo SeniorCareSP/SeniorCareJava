@@ -1,19 +1,21 @@
-package seniorcare.crudseniorcare.model;
+package seniorcare.crudseniorcare.model.usuario;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import seniorcare.crudseniorcare.model.Ajuda;
+import seniorcare.crudseniorcare.model.Caracteristica;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
+
 @Getter
 @Setter
 @Entity
 @DiscriminatorValue("CUIDADOR")
-public class Cuidador extends Usuario implements Serializable {
+public class Cuidador implements Serializable {
 
-    private UUID idCuidador;
     private String experiencia;
     private String faixaEtaria;
     private int qtdIdoso;

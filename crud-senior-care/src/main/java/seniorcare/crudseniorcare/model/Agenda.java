@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import seniorcare.crudseniorcare.model.usuario.Usuario;
 
 import java.io.Serializable;
 import java.util.UUID;

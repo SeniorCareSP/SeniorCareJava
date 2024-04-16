@@ -63,6 +63,11 @@
 			<version>1.18.32</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>1.4.2.Final</version>
+		</dependency>
 	</dependencies>
 
 	<build>

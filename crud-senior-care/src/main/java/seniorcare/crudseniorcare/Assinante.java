@@ -1,9 +1,8 @@
 package seniorcare.crudseniorcare;
 
 
-import jakarta.persistence.Embeddable;
 import seniorcare.crudseniorcare.model.Newsletter;
-import seniorcare.crudseniorcare.service.EnviadorEmailService;
+import seniorcare.crudseniorcare.service.newsletter.EnviadorEmailService;
 
 
 public interface Assinante{

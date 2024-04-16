@@ -3,6 +3,7 @@ package seniorcare.crudseniorcare.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import seniorcare.crudseniorcare.model.usuario.Cuidador;
 
 import java.io.Serializable;
 import java.util.List;

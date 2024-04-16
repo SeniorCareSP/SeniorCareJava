@@ -1,11 +1,14 @@
-package seniorcare.crudseniorcare.service;
+package seniorcare.crudseniorcare.service.newsletter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+
 import seniorcare.crudseniorcare.model.AssinanteEmail;
 import seniorcare.crudseniorcare.model.Newsletter;
 import seniorcare.crudseniorcare.repository.AssinanteEmailRepository;
 import seniorcare.crudseniorcare.repository.NewsletterRepository;
+
 
 import java.util.List;
 import java.util.UUID;
@@ -56,5 +59,29 @@ public class NewsletterService {
 
     private Newsletter buscarPorIndice(UUID id) {
         return this.newsletterRepository.findById(id).orElseThrow();
+    }
+
+    public EnviadorEmailService getEnviadorEmailService() {
+        return enviadorEmailService;
+    }
+
+    public void setEnviadorEmailService(EnviadorEmailService enviadorEmailService) {
+        this.enviadorEmailService = enviadorEmailService;
+    }
+
+    public NewsletterRepository getNewsletterRepository() {
+        return newsletterRepository;
+    }
+
+    public void setNewsletterRepository(NewsletterRepository newsletterRepository) {
+        this.newsletterRepository = newsletterRepository;
+    }
+
+    public AssinanteEmailRepository getAssinanteEmailRepository() {
+        return assinanteEmailRepository;
+    }
+
+    public void setAssinanteEmailRepository(AssinanteEmailRepository assinanteEmailRepository) {
+        this.assinanteEmailRepository = assinanteEmailRepository;
     }
 }

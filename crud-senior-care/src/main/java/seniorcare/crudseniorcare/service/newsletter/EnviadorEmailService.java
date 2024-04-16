@@ -1,4 +1,4 @@
-package seniorcare.crudseniorcare.service;
+package seniorcare.crudseniorcare.service.newsletter;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -50,4 +50,6 @@ public class EnviadorEmailService {
             log.debug(String.format("Email enviado corretamente para: %s", destinatario));
         }
     }
+
+
 }

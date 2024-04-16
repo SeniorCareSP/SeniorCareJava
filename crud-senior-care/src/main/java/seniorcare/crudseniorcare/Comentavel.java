@@ -1,7 +1,6 @@
 package seniorcare.crudseniorcare;
 
 import seniorcare.crudseniorcare.model.Comentario;
-import seniorcare.crudseniorcare.model.Cuidador;
 
 import java.util.List;
 

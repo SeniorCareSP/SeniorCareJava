@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.w3c.dom.stylesheets.LinkStyle;
+import seniorcare.crudseniorcare.model.usuario.Cuidador;
 
 import java.io.Serializable;
 import java.util.List;
