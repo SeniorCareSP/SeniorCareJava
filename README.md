@@ -33,9 +33,9 @@ O projeto é organizado da seguinte forma:
 ## Autores
 
 
-[<img src="https://image.flaticon.com/icons/png/512/25/25231.png" width="30">](https://github.com/MarianaNdO)
-[<img src="https://image.flaticon.com/icons/png/512/25/25231.png" width="30">](https://github.com/Gustavo-s-machado)
-[<img src="https://image.flaticon.com/icons/png/512/25/25231.png" width="30">](https://github.com/jordana983)
-[<img src="https://image.flaticon.com/icons/png/512/25/25231.png" width="30">](https://github.com/Rafaxx18)
-[<img src="https://image.flaticon.com/icons/png/512/25/25231.png" width="30">](https://github.com/igo-vie)
+[<img src="https://static-00.iconduck.com/assets.00/github-icon-2048x2048-4uclrgic.png" width="40">](https://github.com/MarianaNdO)
+[<img src="https://static-00.iconduck.com/assets.00/github-icon-2048x2048-4uclrgic.png" width="40">](https://github.com/Gustavo-s-machado)
+[<img src="https://static-00.iconduck.com/assets.00/github-icon-2048x2048-4uclrgic.png" width="40">](https://github.com/jordana983)
+[<img src="https://static-00.iconduck.com/assets.00/github-icon-2048x2048-4uclrgic.png" width="40">](https://github.com/Rafaxx18)
+[<img src="https://static-00.iconduck.com/assets.00/github-icon-2048x2048-4uclrgic.png" width="40">](https://github.com/igo-vie)
 
