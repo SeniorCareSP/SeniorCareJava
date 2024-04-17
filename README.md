@@ -1,4 +1,4 @@
-# Projeto de Gerenciamento de Cuidadores de Idosos <img align="right" src="[https://image.flaticon.com/icons/png/512/747/747376.png](https://img.lovepik.com/png/20231120/an-elderly-couple-icon-line-vector-line-icons-lineal-icon_645654_wh860.png)" alt="Ícone de Idoso" width="100">
+# Projeto de Gerenciamento de Cuidadores de Idosos <img align="right" src="https://img.lovepik.com/png/20231120/an-elderly-couple-icon-line-vector-line-icons-lineal-icon_645654_wh860.png" alt="Ícone de Idoso" width="100">
 
 Este é um projeto Java com Spring Boot para gerenciar cuidadores de idosos e responsaveis, suas agendas e preferencias, além de conter um chat para facilitar a comunicação e contratação de serviços.
 
