@@ -14,7 +14,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @DiscriminatorValue("CUIDADOR")
-public class Cuidador implements Serializable {
+public class Cuidador extends Usuario{
 
     private String experiencia;
     private String faixaEtaria;

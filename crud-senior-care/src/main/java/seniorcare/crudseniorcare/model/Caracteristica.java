@@ -15,13 +15,13 @@ import java.util.UUID;
 @Table(name = "tb_caracteristicas")
 public class Caracteristica implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID idCaracteristica;
     private String nome;
     @ManyToMany
     @JoinTable(name = "caracteristica_cuidadores",
             joinColumns = @JoinColumn(name = "idCaracteristica"),
-            inverseJoinColumns = @JoinColumn(name = "idCuidador"))
+            inverseJoinColumns = @JoinColumn(name = "idUsuario"))
     private List<Cuidador> cuidadores;
 
 }

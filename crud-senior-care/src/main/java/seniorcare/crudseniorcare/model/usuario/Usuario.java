@@ -15,12 +15,12 @@ import java.util.UUID;
 
 @Getter @Setter
 @Entity
-@Table(name = "tb_usuario", indexes = {@Index(name = "idx_id_responsavel", columnList = "id_responsavel")})
+@Table(name = "tb_usuario", indexes = {@Index(name = "idx_id_responsavel", columnList = "id_usuario")})
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo_usuario", discriminatorType = DiscriminatorType.STRING)
 public abstract class Usuario implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID idUsuario;
 
     private String nome;

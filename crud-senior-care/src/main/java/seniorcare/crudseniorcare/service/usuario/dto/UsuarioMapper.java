@@ -1,4 +1,4 @@
-package seniorcare.crudseniorcare.dto.usuario;
+package seniorcare.crudseniorcare.service.usuario.dto;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

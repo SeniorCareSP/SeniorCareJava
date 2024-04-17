@@ -14,7 +14,7 @@ import java.util.UUID;
 @Table(name = "tb_endereco")
 public class Endereco implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID idEndereco;
     private String rua;
     private String cep;

@@ -15,7 +15,7 @@ import java.util.UUID;
 @Getter @Setter
 @Entity
 @DiscriminatorValue("RESPONSAVEL")
-public class Responsavel implements Serializable {
+public class Responsavel extends Usuario {
     private double precoHora;
 
     @OneToMany(mappedBy = "responsavel")

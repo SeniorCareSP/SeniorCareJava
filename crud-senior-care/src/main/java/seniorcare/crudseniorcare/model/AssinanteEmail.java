@@ -14,7 +14,7 @@ import java.util.UUID;
 public class AssinanteEmail implements Assinante {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
   private String nome;
   private String email;

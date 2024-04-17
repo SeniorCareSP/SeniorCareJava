@@ -1,4 +1,4 @@
-package seniorcare.crudseniorcare.dto.usuario;
+package seniorcare.crudseniorcare.service.usuario.dto;
 
 import jakarta.persistence.OneToMany;
 import seniorcare.crudseniorcare.model.*;

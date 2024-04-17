@@ -13,7 +13,7 @@ import java.util.UUID;
 @Table(name = "tb_comentarios")
 public class Comentario implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID idComentario;
     private String conteudo;
     private double avaliacao;

@@ -1,21 +1,14 @@
-package seniorcare.crudseniorcare.model;
+package seniorcare.crudseniorcare.dto.ajuda;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 import seniorcare.crudseniorcare.model.usuario.Cuidador;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
-@Getter
-@Setter
-@Entity
-@Table(name = "tb_ajuda")
-public class Ajuda implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID idAjuda;
+
+public class AjudaCriacaoDto {
+
+
     private String nome;
 
     @ManyToMany
@@ -23,5 +16,7 @@ public class Ajuda implements Serializable {
             joinColumns = @JoinColumn(name = "idAjuda"),
             inverseJoinColumns = @JoinColumn(name = "idUsuario"))
     private List<Cuidador> cuidadores;
+
+
 
 }

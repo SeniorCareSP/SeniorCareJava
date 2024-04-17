@@ -1,4 +1,4 @@
-package seniorcare.crudseniorcare.dto.usuario;
+package seniorcare.crudseniorcare.service.usuario.dto;
 
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class UsuarioCriacaoCuidadorDto {
-    @Size(min = 3)
+    @Size(min = 3, max = 100)
     @NotBlank
     private String nome;
     @Email

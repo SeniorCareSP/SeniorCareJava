@@ -1,21 +1,19 @@
 package seniorcare.crudseniorcare.model;
 
+
 import jakarta.persistence.*;
-import org.hibernate.validator.constraints.UUID;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 public class Mensagem {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id_mensagem;
     private String mensagem;
     private LocalDateTime dt_envio;
-    @ManyToOne
-    @JoinColumn(name = "fk_chat", referencedColumnName = "idChat" )
-    private Chat chat;
 
     public UUID getId_mensagem() {
         return id_mensagem;
@@ -41,11 +39,4 @@ public class Mensagem {
         this.dt_envio = dt_envio;
     }
 
-    public Chat getChat() {
-        return chat;
-    }
-
-    public void setChat(Chat chat) {
-        this.chat = chat;
-    }
 }

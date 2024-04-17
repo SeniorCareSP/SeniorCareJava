@@ -9,7 +9,7 @@ import java.util.UUID;
 @Entity
 public class Chat {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID idChat;
 
     @ManyToOne
@@ -19,6 +19,11 @@ public class Chat {
     @ManyToOne
     @JoinColumn(name = "fk_cuidador", referencedColumnName = "idUsuario" )
     private Cuidador cuidador;
+
+
+    @ManyToOne
+    @JoinColumn(name = "fk_mensagem", referencedColumnName = "id_mensagem" )
+    private Mensagem mensagem;
 
     public UUID getIdUsuario() {
         return idChat;

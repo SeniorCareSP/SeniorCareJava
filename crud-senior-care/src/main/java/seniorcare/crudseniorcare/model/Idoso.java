@@ -14,7 +14,7 @@ import java.util.UUID;
 @Table(name = "tb_idoso")
 public class Idoso implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID idIdoso;
     private String nome;
     private boolean mobilidade;
@@ -22,7 +22,7 @@ public class Idoso implements Serializable {
     private String doencasCronicas;
     private Boolean cuidadosMin;
     @ManyToOne
-    @JoinColumn(name = "responsavel_id", referencedColumnName = "idResponsavel")
+    @JoinColumn(name = "responsavel_id", referencedColumnName = "idUsuario")
     private Responsavel responsavel;
 
 
