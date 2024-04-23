@@ -5,6 +5,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import seniorcare.crudseniorcare.model.usuario.Cuidador;
 import seniorcare.crudseniorcare.model.usuario.Responsavel;
+import seniorcare.crudseniorcare.model.usuario.Usuario;
+import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioTokenDto;
 
 import java.util.List;
 
@@ -30,5 +32,16 @@ public interface UsuarioMapper  {
 
     @Mapping(target = "senha", ignore = true)
     List<UsuarioListagemCuidadorDto> toDtoResponsavelList(Responsavel responsavel);
+
+    public static UsuarioTokenDto of(Usuario usuario, String token){
+        UsuarioTokenDto usuarioTokenDto = new UsuarioTokenDto();
+
+        usuarioTokenDto.setUserId(usuario.getIdUsuario());
+        usuarioTokenDto.setEmail(usuario.getEmail());
+        usuarioTokenDto.setNome(usuario.getNome());
+        usuarioTokenDto.setToken(token);
+
+        return usuarioTokenDto;
+    }
 
 }
