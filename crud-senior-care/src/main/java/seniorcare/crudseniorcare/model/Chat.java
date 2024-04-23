@@ -1,10 +1,13 @@
 package seniorcare.crudseniorcare.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import seniorcare.crudseniorcare.model.usuario.Cuidador;
 import seniorcare.crudseniorcare.model.usuario.Responsavel;
 
 import java.util.UUID;
+@Getter @Setter
 
 @Entity
 public class Chat {
@@ -24,28 +27,4 @@ public class Chat {
     @ManyToOne
     @JoinColumn(name = "fk_mensagem", referencedColumnName = "id_mensagem" )
     private Mensagem mensagem;
-
-    public UUID getIdUsuario() {
-        return idChat;
-    }
-
-    public void setIdUsuario(UUID idUsuario) {
-        this.idChat = idUsuario;
-    }
-
-    public Responsavel getResponsavel() {
-        return responsavel;
-    }
-
-    public void setResponsavel(Responsavel responsavel) {
-        this.responsavel = responsavel;
-    }
-
-    public Cuidador getCuidador() {
-        return cuidador;
-    }
-
-    public void setCuidador(Cuidador cuidador) {
-        this.cuidador = cuidador;
-    }
 }

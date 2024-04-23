@@ -44,7 +44,7 @@ public abstract class Usuario implements Serializable {
     @OneToMany(mappedBy = "usuario")
     private List<Comentario> comentarios;
 
-    public Long getIdUsuario() {
+    public UUID getIdUsuario() {
         return idUsuario;
     }
 

@@ -1,6 +1,7 @@
-package seniorcare.crudseniorcare.dto.ajuda;
+package seniorcare.crudseniorcare.dto.caracteristica;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import seniorcare.crudseniorcare.model.usuario.Cuidador;
@@ -10,17 +11,11 @@ import java.util.UUID;
 @Getter
 @Setter
 
-public class AjudaCriacaoDto {
+public class CaracteristicaCriacaoDto {
 
-
+    @NotBlank
     private String nome;
 
-    @ManyToMany
-    @JoinTable(name = "ajuda_cuidadores",
-            joinColumns = @JoinColumn(name = "idAjuda"),
-            inverseJoinColumns = @JoinColumn(name = "idUsuario"))
     private List<Cuidador> cuidadores;
-
-
 
 }

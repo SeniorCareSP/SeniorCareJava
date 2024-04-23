@@ -18,7 +18,7 @@ public class Caracteristica implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID idCaracteristica;
     private String nome;
-    @ManyToMany
+    @OneToMany
     @JoinTable(name = "caracteristica_cuidadores",
             joinColumns = @JoinColumn(name = "idCaracteristica"),
             inverseJoinColumns = @JoinColumn(name = "idUsuario"))
