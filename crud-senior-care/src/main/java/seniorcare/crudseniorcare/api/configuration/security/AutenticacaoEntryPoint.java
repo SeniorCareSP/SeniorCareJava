@@ -1,4 +1,5 @@
 package seniorcare.crudseniorcare.api.configuration.security;
+
 import org.springframework.security.core.AuthenticationException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,6 +23,10 @@ public class AutenticacaoEntryPoint implements AuthenticationEntryPoint {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
         }
     }
-    }
+}
+
+
+
+
 
 
