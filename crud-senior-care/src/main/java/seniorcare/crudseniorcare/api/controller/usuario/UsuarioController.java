@@ -10,7 +10,7 @@ import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioLoginDt
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioTokenDto;
 
 @RestController
-public class UsuarioController {
+public class    UsuarioController {
 
     private final UsuarioService usuarioService;
 

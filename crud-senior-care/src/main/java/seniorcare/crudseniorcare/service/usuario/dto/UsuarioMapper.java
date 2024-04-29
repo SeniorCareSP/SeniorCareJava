@@ -3,9 +3,9 @@ package seniorcare.crudseniorcare.service.usuario.dto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-import seniorcare.crudseniorcare.model.usuario.Cuidador;
-import seniorcare.crudseniorcare.model.usuario.Responsavel;
-import seniorcare.crudseniorcare.model.usuario.Usuario;
+import seniorcare.crudseniorcare.domain.usuario.Cuidador;
+import seniorcare.crudseniorcare.domain.usuario.Responsavel;
+import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioTokenDto;
 
 import java.util.List;

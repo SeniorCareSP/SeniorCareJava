@@ -4,9 +4,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.*;
-import org.hibernate.validator.constraints.br.CPF;
-import seniorcare.crudseniorcare.model.*;
+import seniorcare.crudseniorcare.domain.agenda.Agenda;
+import seniorcare.crudseniorcare.domain.ajuda.Ajuda;
+import seniorcare.crudseniorcare.domain.caracteristica.Caracteristica;
+import seniorcare.crudseniorcare.domain.endereco.Endereco;
+import seniorcare.crudseniorcare.domain.idioma.Idioma;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -30,8 +32,6 @@ public class UsuarioListagemCuidadorDto {
     private List<Idioma> idiomas;
     @OneToMany(mappedBy = "usuario")
     private List<Endereco> enderecos;
-    @OneToMany(mappedBy = "usuario")
-    private List<Comentario> comentarios;
     private String experiencia;
     private String faixaEtaria;
     private int qtdIdoso;

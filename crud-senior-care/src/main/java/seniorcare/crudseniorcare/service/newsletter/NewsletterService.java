@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import seniorcare.crudseniorcare.model.AssinanteEmail;
-import seniorcare.crudseniorcare.model.Newsletter;
-import seniorcare.crudseniorcare.repository.AssinanteEmailRepository;
-import seniorcare.crudseniorcare.repository.NewsletterRepository;
+import seniorcare.crudseniorcare.domain.assinante.AssinanteEmail;
+import seniorcare.crudseniorcare.domain.newsletter.Newsletter;
+import seniorcare.crudseniorcare.domain.assinante.repository.AssinanteEmailRepository;
+import seniorcare.crudseniorcare.domain.newsletter.repository.NewsletterRepository;
 
 
 import java.util.List;

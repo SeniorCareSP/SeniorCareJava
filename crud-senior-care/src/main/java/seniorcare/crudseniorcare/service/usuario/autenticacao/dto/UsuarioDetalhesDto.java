@@ -2,7 +2,7 @@ package seniorcare.crudseniorcare.service.usuario.autenticacao.dto;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import seniorcare.crudseniorcare.model.usuario.Usuario;
+import seniorcare.crudseniorcare.domain.usuario.Usuario;
 
 import java.util.Collection;
 

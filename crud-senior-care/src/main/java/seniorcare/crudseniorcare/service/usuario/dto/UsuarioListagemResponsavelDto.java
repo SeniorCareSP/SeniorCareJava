@@ -1,7 +1,10 @@
 package seniorcare.crudseniorcare.service.usuario.dto;
 
 import jakarta.persistence.OneToMany;
-import seniorcare.crudseniorcare.model.*;
+import seniorcare.crudseniorcare.domain.agenda.Agenda;
+import seniorcare.crudseniorcare.domain.endereco.Endereco;
+import seniorcare.crudseniorcare.domain.idioma.Idioma;
+import seniorcare.crudseniorcare.domain.idoso.Idoso;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,8 +31,6 @@ public class UsuarioListagemResponsavelDto {
     private List<Idioma> idiomas;
     @OneToMany(mappedBy = "usuario")
     private List<Endereco> enderecos;
-    @OneToMany(mappedBy = "usuario")
-    private List<Comentario> comentarios;
 
     private double precoHora;
 

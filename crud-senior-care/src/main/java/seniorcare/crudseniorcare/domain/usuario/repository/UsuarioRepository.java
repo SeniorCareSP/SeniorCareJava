@@ -1,7 +1,7 @@
 package seniorcare.crudseniorcare.domain.usuario.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import seniorcare.crudseniorcare.model.usuario.Usuario;
+import seniorcare.crudseniorcare.domain.usuario.Usuario;
 
 import java.time.LocalDate;
 import java.util.List;

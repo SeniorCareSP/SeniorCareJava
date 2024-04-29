@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
-import seniorcare.crudseniorcare.model.usuario.Usuario;
+import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioDetalhesDto;
 
 import java.util.Optional;

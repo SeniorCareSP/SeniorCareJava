@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 
 import seniorcare.crudseniorcare.api.configuration.security.jwt.GerenciadorTokenJwt;
 import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
-import seniorcare.crudseniorcare.model.usuario.Usuario;
+import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioLoginDto;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioTokenDto;
 import seniorcare.crudseniorcare.service.usuario.dto.UsuarioCriacaoCuidadorDto;

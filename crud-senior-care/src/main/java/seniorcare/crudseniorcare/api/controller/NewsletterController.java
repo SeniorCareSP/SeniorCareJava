@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import seniorcare.crudseniorcare.dto.newsletter.AssinanteEmailDTO;
-import seniorcare.crudseniorcare.dto.newsletter.NewsletterDTO;
-import seniorcare.crudseniorcare.model.AssinanteEmail;
-import seniorcare.crudseniorcare.model.Newsletter;
+import seniorcare.crudseniorcare.service.newsletter.AssinanteEmailDTO;
+import seniorcare.crudseniorcare.service.newsletter.NewsletterDTO;
+import seniorcare.crudseniorcare.domain.assinante.AssinanteEmail;
+import seniorcare.crudseniorcare.domain.newsletter.Newsletter;
 import seniorcare.crudseniorcare.service.newsletter.NewsletterService;
 
 

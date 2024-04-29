@@ -1,7 +1,7 @@
 package seniorcare.crudseniorcare;
 
 
-import seniorcare.crudseniorcare.model.Newsletter;
+import seniorcare.crudseniorcare.domain.newsletter.Newsletter;
 import seniorcare.crudseniorcare.service.newsletter.EnviadorEmailService;
 
 
