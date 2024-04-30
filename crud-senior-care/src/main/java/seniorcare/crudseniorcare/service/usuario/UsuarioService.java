@@ -17,7 +17,13 @@ import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioLoginDt
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioTokenDto;
 import seniorcare.crudseniorcare.service.usuario.dto.UsuarioCriacaoCuidadorDto;
 import seniorcare.crudseniorcare.service.usuario.dto.UsuarioCriacaoResponsavelDto;
+import seniorcare.crudseniorcare.service.usuario.dto.UsuarioListagemDto;
+
 import seniorcare.crudseniorcare.service.usuario.dto.UsuarioMapper;
+import seniorcare.crudseniorcare.utils.ListaObj;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
@@ -30,6 +36,16 @@ public class UsuarioService {
     private GerenciadorTokenJwt gerenciadorTokenJwt;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private UsuarioMapper usuarioMapper;
+
+    public List<UsuarioListagemDto> listarTodos() {
+        List<Usuario> usuarios = usuarioRepository.findAll();
+
+        return usuarios.stream()
+                .map(usuarioMapper::toDto)
+                .collect(Collectors.toList());
+    }
 
     public void criar(UsuarioCriacaoCuidadorDto usuarioCriacaoCuidadorDto){
         final Usuario novoUsuario = UsuarioMapper.INSTANCE.toEntityCuidador(usuarioCriacaoCuidadorDto);
@@ -62,4 +78,6 @@ public class UsuarioService {
 
         return UsuarioMapper.of(usuarioAutenticado, token);
     }
+
+
 }

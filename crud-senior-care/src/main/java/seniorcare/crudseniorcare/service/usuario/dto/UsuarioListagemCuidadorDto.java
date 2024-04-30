@@ -14,24 +14,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-public class UsuarioListagemCuidadorDto {
+public class UsuarioListagemCuidadorDto extends UsuarioListagemDto {
 
-
-    private UUID idUsuario;
-    private String nome;
-    private String email;
-    private String telefone;
-    private String cpf;
-    private String sexoBiologico;
-    private LocalDate dtNascimento;
-    private String apresentacao;
-    private LocalDate dtCadastro;
-    @OneToMany(mappedBy = "usuario")
-    private List<Agenda> agendas;
-    @OneToMany(mappedBy = "usuario")
-    private List<Idioma> idiomas;
-    @OneToMany(mappedBy = "usuario")
-    private List<Endereco> enderecos;
     private String experiencia;
     private String faixaEtaria;
     private int qtdIdoso;
