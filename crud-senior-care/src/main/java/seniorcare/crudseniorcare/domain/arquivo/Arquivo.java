@@ -1,4 +1,4 @@
-package seniorcare.crudseniorcare.domain;
+package seniorcare.crudseniorcare.domain.arquivo;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

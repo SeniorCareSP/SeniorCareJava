@@ -3,6 +3,8 @@ package seniorcare.crudseniorcare.service.usuario.dto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import seniorcare.crudseniorcare.domain.usuario.Cuidador;
 import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
@@ -16,6 +18,10 @@ public interface UsuarioMapper  {
     UsuarioMapper INSTANCE = Mappers.getMapper(UsuarioMapper.class);
 
     Cuidador toEntityCuidador(UsuarioCriacaoCuidadorDto dto);
+
+
+    @Mapping(target = "senha", ignore = true)
+    UsuarioListagemDto toDto(Usuario usuario);
 
     @Mapping(target = "senha", ignore = true)
     UsuarioListagemCuidadorDto toDtoCuidador(Cuidador cuidador);
