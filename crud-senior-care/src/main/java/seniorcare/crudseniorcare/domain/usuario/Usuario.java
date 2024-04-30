@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import seniorcare.crudseniorcare.domain.agenda.Agenda;
-import seniorcare.crudseniorcare.domain.comentario.Comentario;
+
 import seniorcare.crudseniorcare.domain.endereco.Endereco;
 import seniorcare.crudseniorcare.domain.idioma.Idioma;
 
@@ -42,7 +42,6 @@ public abstract class Usuario implements Serializable {
     @OneToMany(mappedBy = "usuario")
     private List<Endereco> enderecos;
     @OneToMany(mappedBy = "usuario")
-    private List<Comentario> comentarios;
 
     public UUID getIdUsuario() {
         return idUsuario;
@@ -148,11 +147,4 @@ public abstract class Usuario implements Serializable {
         this.enderecos = enderecos;
     }
 
-    public List<Comentario> getComentarios() {
-        return comentarios;
-    }
-
-    public void setComentarios(List<Comentario> comentarios) {
-        this.comentarios = comentarios;
-    }
 }
