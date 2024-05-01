@@ -16,12 +16,11 @@ public class Cuidador extends Usuario{
 
     private String experiencia;
     private String faixaEtaria;
-    private int qtdIdoso;
     private double precoHora;
-    @ManyToMany
+    @OneToMany
     @JoinTable(name = "cuidador_caracteristica", joinColumns = @JoinColumn(name = "cuidador_id"), inverseJoinColumns = @JoinColumn(name = "caracteristica_id"))
     private List<Caracteristica> caracteristicas;
-    @ManyToMany
+    @OneToMany
     @JoinTable(name = "cuidador_ajuda",
             joinColumns = @JoinColumn(name = "cuidador_id"),
             inverseJoinColumns = @JoinColumn(name = "ajuda_id"))

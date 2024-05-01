@@ -8,24 +8,24 @@ import seniorcare.crudseniorcare.domain.usuario.Cuidador;
 import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 
 import java.util.UUID;
-@Getter @Setter
 
+@Getter
+@Setter
 @Entity
 public class Chat {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID idChat;
 
     @ManyToOne
-    @JoinColumn(name = "fk_responsavel", referencedColumnName = "idUsuario" )
+    @JoinColumn(name = "fk_responsavel", referencedColumnName = "idUsuario")
     private Responsavel responsavel;
 
     @ManyToOne
-    @JoinColumn(name = "fk_cuidador", referencedColumnName = "idUsuario" )
+    @JoinColumn(name = "fk_cuidador", referencedColumnName = "idUsuario")
     private Cuidador cuidador;
 
-
-    @ManyToOne
-    @JoinColumn(name = "fk_mensagem", referencedColumnName = "id_mensagem" )
+    @OneToMany
+    @JoinColumn(name = "fk_mensagem", referencedColumnName = "id_mensagem")
     private Mensagem mensagem;
 }

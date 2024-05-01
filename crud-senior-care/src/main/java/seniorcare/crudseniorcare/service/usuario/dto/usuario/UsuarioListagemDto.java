@@ -1,16 +1,18 @@
-package seniorcare.crudseniorcare.service.usuario.dto;
+package seniorcare.crudseniorcare.service.usuario.dto.usuario;
 
 import jakarta.persistence.OneToMany;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import seniorcare.crudseniorcare.domain.agenda.Agenda;
 import seniorcare.crudseniorcare.domain.endereco.Endereco;
 import seniorcare.crudseniorcare.domain.idioma.Idioma;
-import seniorcare.crudseniorcare.domain.idoso.Idoso;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
-
-public class UsuarioListagemResponsavelDto {
+@Data
+public class UsuarioListagemDto {
     private UUID idUsuario;
 
     private String nome;
@@ -25,16 +27,7 @@ public class UsuarioListagemResponsavelDto {
     private LocalDate dtNascimento;
     private String apresentacao;
     private LocalDate dtCadastro;
-    @OneToMany(mappedBy = "usuario")
     private List<Agenda> agendas;
-    @OneToMany(mappedBy = "usuario")
     private List<Idioma> idiomas;
-    @OneToMany(mappedBy = "usuario")
     private List<Endereco> enderecos;
-
-    private double precoHora;
-
-    @OneToMany(mappedBy = "responsavel")
-    private List<Idoso> idosos;
-
 }

@@ -1,6 +1,6 @@
 package seniorcare.crudseniorcare.service.usuario.autenticacao.dto;
 
-public class UsuarioTokenDto {
+public class    UsuarioTokenDto {
 
     private Long userId;
     private String nome;

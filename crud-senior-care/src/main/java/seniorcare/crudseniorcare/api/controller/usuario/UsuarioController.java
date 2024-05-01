@@ -18,10 +18,11 @@ public class    UsuarioController {
     public UsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
-    @PostMapping("/login")
-    public ResponseEntity<UsuarioTokenDto> login(@RequestBody UsuarioLoginDto usuarioLoginDto){
-        UsuarioTokenDto usuarioToken = this.usuarioService.autenticar(usuarioLoginDto);
-        return ResponseEntity.status(200).body(usuarioToken);
-    }
+
+//    @PostMapping("/login")
+//    public ResponseEntity<UsuarioTokenDto> login(@RequestBody UsuarioLoginDto usuarioLoginDto){
+//        UsuarioTokenDto usuarioToken = this.usuarioService.autenticar(usuarioLoginDto);
+//        return ResponseEntity.status(200).body(usuarioToken);
+//    }
 }
 

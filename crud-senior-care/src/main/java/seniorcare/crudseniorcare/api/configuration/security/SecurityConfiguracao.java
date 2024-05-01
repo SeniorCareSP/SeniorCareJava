@@ -55,7 +55,8 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/newsletter/**", "POST"),
             new AntPathRequestMatcher("/newsletter/**", "GET"),
             new AntPathRequestMatcher("/h2-console/**"),
-            new AntPathRequestMatcher("/error/**")
+            new AntPathRequestMatcher("/error/**"),
+            new AntPathRequestMatcher("/arquivos/**")
     };
 
     @Bean

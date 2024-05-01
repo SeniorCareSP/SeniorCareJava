@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import seniorcare.crudseniorcare.service.newsletter.AssinanteEmailDTO;
-import seniorcare.crudseniorcare.service.newsletter.NewsletterDTO;
+import seniorcare.crudseniorcare.service.newsletter.AssinanteEmailDto;
+import seniorcare.crudseniorcare.service.newsletter.NewsletterDto;
 import seniorcare.crudseniorcare.domain.assinante.AssinanteEmail;
 import seniorcare.crudseniorcare.domain.newsletter.Newsletter;
 import seniorcare.crudseniorcare.service.newsletter.NewsletterService;
@@ -27,19 +27,19 @@ public class NewsletterController {
 
 
     @GetMapping
-    public ResponseEntity<List<NewsletterDTO>> listar() {
+    public ResponseEntity<List<NewsletterDto>> listar() {
         List<Newsletter> conteudos = this.newsletterService.listar();
 
-        List<NewsletterDTO> newsletterDTOS = conteudos.stream().map(conteudo -> {
-            List<AssinanteEmailDTO> assinanteEmails = this.newsletterService.listarAssinantesPeloId(conteudo.getId()).stream().map(AssinanteEmailDTO::new).toList();
-            return new NewsletterDTO(conteudo, assinanteEmails);
+        List<NewsletterDto> newsletterDtos = conteudos.stream().map(conteudo -> {
+            List<AssinanteEmailDto> assinanteEmails = this.newsletterService.listarAssinantesPeloId(conteudo.getId()).stream().map(AssinanteEmailDto::new).toList();
+            return new NewsletterDto(conteudo, assinanteEmails);
         }).toList();
 
         if (conteudos.isEmpty()) {
             return ResponseEntity.status(204).build();
         }
 
-        return ResponseEntity.status(200).body(newsletterDTOS);
+        return ResponseEntity.status(200).body(newsletterDtos);
     }
 
     @GetMapping("/{idNewsletter}")
