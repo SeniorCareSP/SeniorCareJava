@@ -1,8 +1,7 @@
-package seniorcare.crudseniorcare.repository.arquivo;
+package seniorcare.crudseniorcare.domain.arquivo.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.expression.spel.support.ReflectivePropertyAccessor;
-import seniorcare.crudseniorcare.domain.Arquivo;
+import seniorcare.crudseniorcare.domain.arquivo.Arquivo;
 
 import java.util.Optional;
 

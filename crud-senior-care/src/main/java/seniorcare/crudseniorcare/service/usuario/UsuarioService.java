@@ -15,10 +15,15 @@ import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioLoginDto;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioTokenDto;
-import seniorcare.crudseniorcare.service.usuario.dto.ResponsavelMapper;
 import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioCriacaoCuidadorDto;
 import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioCriacaoResponsavelDto;
-import seniorcare.crudseniorcare.service.usuario.dto.CuidadorMapper;
+import seniorcare.crudseniorcare.service.usuario.dto.UsuarioListagemDto;
+
+import seniorcare.crudseniorcare.service.usuario.dto.UsuarioMapper;
+import seniorcare.crudseniorcare.utils.ListaObj;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
@@ -31,9 +36,19 @@ public class UsuarioService {
     private GerenciadorTokenJwt gerenciadorTokenJwt;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private UsuarioMapper usuarioMapper;
+
+    public List<UsuarioListagemDto> listarTodos() {
+        List<Usuario> usuarios = usuarioRepository.findAll();
+
+        return usuarios.stream()
+                .map(usuarioMapper::toDto)
+                .collect(Collectors.toList());
+    }
 
     public void criar(UsuarioCriacaoCuidadorDto usuarioCriacaoCuidadorDto){
-        final Usuario novoUsuario = CuidadorMapper.toCuidador(usuarioCriacaoCuidadorDto);
+        final Usuario novoUsuario = UsuarioMapper.INSTANCE.toEntityCuidador(usuarioCriacaoCuidadorDto);
 
         String senhaCriptografada = passwordEncoder.encode(novoUsuario.getSenha());
         novoUsuario.setSenha(senhaCriptografada);
@@ -42,25 +57,27 @@ public class UsuarioService {
     }
 
     public void criar(UsuarioCriacaoResponsavelDto usuarioCriacaoResponsavelDto){
-        final Usuario novoUsuario = ResponsavelMapper.toResponsavel(usuarioCriacaoResponsavelDto);
+        final Usuario novoUsuario = UsuarioMapper.INSTANCE.toEntityResponsavel(usuarioCriacaoResponsavelDto);
         this.usuarioRepository.save(novoUsuario);
     }
 
-//    public UsuarioTokenDto autenticar(UsuarioLoginDto usuarioLoginDto){
-//        final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
-//                usuarioLoginDto.getEmail(), usuarioLoginDto.getSenha());
-//
-//        final Authentication authentication = this.authenticationManager.authenticate(credentials);
-//
-//        Usuario usuarioAutenticado =
-//                usuarioRepository.findByEmail(usuarioLoginDto.getEmail())
-//                        .orElseThrow(
-//                                () -> new ResponseStatusException(404, "Email do usuário não cadastrado", null)
-//                        );
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//
-//        final String token = gerenciadorTokenJwt.generateToken(authentication);
-//
-//        return ResponsavelMapper.of(usuarioAutenticado, token);
-//    }
+    public UsuarioTokenDto autenticar(UsuarioLoginDto usuarioLoginDto){
+        final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
+                usuarioLoginDto.getEmail(), usuarioLoginDto.getSenha());
+
+        final Authentication authentication = this.authenticationManager.authenticate(credentials);
+
+        Usuario usuarioAutenticado =
+                usuarioRepository.findByEmail(usuarioLoginDto.getEmail())
+                        .orElseThrow(
+                                () -> new ResponseStatusException(404, "Email do usuário não cadastrado", null)
+                        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        final String token = gerenciadorTokenJwt.generateToken(authentication);
+
+        return UsuarioMapper.of(usuarioAutenticado, token);
+    }
+
+
 }
