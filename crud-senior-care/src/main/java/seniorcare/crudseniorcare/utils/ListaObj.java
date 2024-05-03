@@ -1,7 +1,5 @@
 package seniorcare.crudseniorcare.utils;
 
-import seniorcare.crudseniorcare.service.usuario.dto.UsuarioListagemDto;
-
 public class ListaObj <T> {
     private T[] vetor;
 

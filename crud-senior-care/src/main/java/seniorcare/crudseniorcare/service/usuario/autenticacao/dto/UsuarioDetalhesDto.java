@@ -14,6 +14,8 @@ public class UsuarioDetalhesDto implements UserDetails {
 
     private final String senha;
 
+
+
     public UsuarioDetalhesDto(Usuario usuario) {
         this.nome = usuario.getNome();
         this.email = usuario.getEmail();

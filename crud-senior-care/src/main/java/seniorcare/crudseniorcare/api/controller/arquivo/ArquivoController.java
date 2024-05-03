@@ -6,12 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import seniorcare.crudseniorcare.domain.arquivo.Arquivo;
-import seniorcare.crudseniorcare.domain.usuario.Cuidador;
-import seniorcare.crudseniorcare.domain.usuario.Usuario;
-import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
 import seniorcare.crudseniorcare.domain.arquivo.repository.ArquivoRepository;
 import seniorcare.crudseniorcare.service.usuario.UsuarioService;
-import seniorcare.crudseniorcare.service.usuario.dto.UsuarioListagemDto;
+import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioListagemDto;
 import seniorcare.crudseniorcare.utils.GravaArquivoCsv;
 import seniorcare.crudseniorcare.utils.ListaObj;
 

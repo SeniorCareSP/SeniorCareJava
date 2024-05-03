@@ -11,35 +11,31 @@ import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioTokenDto;
 import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioCriacaoCuidadorDto;
 import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioCriacaoResponsavelDto;
+import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioCriacaoDto;
+import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioListagemDto;
 
 import java.util.List;
+@Component
+public class UsuarioMapper  {
 
-@Mapper
-public interface UsuarioMapper  {
+    public UsuarioListagemDto toUsuarioListagemDto(Usuario usuario) {
+        UsuarioListagemDto dto = new UsuarioListagemDto();
+        dto.setIdUsuario(usuario.getIdUsuario());
+        dto.setNome(usuario.getNome());
+        dto.setEmail(usuario.getEmail());
+        dto.setTelefone(usuario.getTelefone());
+        dto.setCpf(usuario.getCpf());
+        dto.setSexoBiologico(usuario.getSexoBiologico());
+        dto.setDtNascimento(usuario.getDtNascimento());
+        dto.setApresentacao(usuario.getApresentacao());
+        dto.setDtCadastro(usuario.getDtCadastro());
+        dto.setAgendas(usuario.getAgendas());
+        dto.setIdiomas(usuario.getIdiomas());
+        dto.setEnderecos(usuario.getEnderecos());
+        return dto;
+    }
 
-    UsuarioMapper INSTANCE = Mappers.getMapper(UsuarioMapper.class);
 
-    Cuidador toEntityCuidador(UsuarioCriacaoCuidadorDto dto);
-
-
-    @Mapping(target = "senha", ignore = true)
-    UsuarioListagemDto toDto(Usuario usuario);
-
-    @Mapping(target = "senha", ignore = true)
-    UsuarioListagemCuidadorDto toDtoCuidador(Cuidador cuidador);
-
-
-    @Mapping(target = "senha", ignore = true)
-    List<UsuarioListagemCuidadorDto> toDtoCuidadorList(List<Cuidador> cuidadores);
-
-
-    Responsavel toEntityResponsavel(UsuarioCriacaoResponsavelDto dto);
-
-    @Mapping(target = "senha", ignore = true)
-    UsuarioListagemCuidadorDto toDtoResponsavel(Responsavel responsavel);
-
-    @Mapping(target = "senha", ignore = true)
-    List<UsuarioListagemCuidadorDto> toDtoResponsavelList(Responsavel responsavel);
 
     public static UsuarioTokenDto of(Usuario usuario, String token){
         UsuarioTokenDto usuarioTokenDto = new UsuarioTokenDto();

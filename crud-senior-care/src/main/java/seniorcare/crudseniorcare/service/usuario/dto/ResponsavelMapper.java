@@ -3,12 +3,12 @@ import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioCriacaoResponsavelDto;
 import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioListagemResponsavelDto;
 
+import java.time.LocalDate;
 import java.util.List;
 
-public interface ResponsavelMapper {
+public class ResponsavelMapper {
     public static Responsavel toResponsavel(UsuarioCriacaoResponsavelDto dto) {
         Responsavel responsavel = new Responsavel();
-        // Mapear propriedades comuns a todas as subclasses de Usuario
         responsavel.setNome(dto.getNome());
         responsavel.setEmail(dto.getEmail());
         responsavel.setSenha(dto.getSenha());
@@ -17,8 +17,7 @@ public interface ResponsavelMapper {
         responsavel.setSexoBiologico(dto.getSexoBiologico());
         responsavel.setDtNascimento(dto.getDtNascimento());
         responsavel.setApresentacao(dto.getApresentacao());
-        responsavel.setDtCadastro(dto.getDtCadastro());
-        // Mapear propriedades específicas de Responsavel
+        responsavel.setDtCadastro(LocalDate.now());
         responsavel.setPrecoHora(dto.getPrecoHora());
         responsavel.setIdosos(dto.getIdosos());
         return responsavel;
@@ -26,13 +25,20 @@ public interface ResponsavelMapper {
 
     public static UsuarioListagemResponsavelDto toUsuarioListagemResponsavelDto(Responsavel responsavel) {
         UsuarioListagemResponsavelDto dto = new UsuarioListagemResponsavelDto();
-        // Mapear propriedades comuns a todas as subclasses de Usuario
+
         dto.setIdUsuario(responsavel.getIdUsuario());
         dto.setNome(responsavel.getNome());
         dto.setEmail(responsavel.getEmail());
-        // Mapear propriedades específicas de Responsavel
+        dto.setTelefone(responsavel.getTelefone());
+        dto.setCpf(responsavel.getCpf());
+        dto.setSexoBiologico(responsavel.getSexoBiologico());
+        dto.setDtNascimento(responsavel.getDtNascimento());
+        dto.setApresentacao(responsavel.getApresentacao());
+        dto.setDtCadastro(responsavel.getDtCadastro());
+        dto.setAgendas(responsavel.getAgendas());
+        dto.setIdiomas(responsavel.getIdiomas());
         dto.setPrecoHora(responsavel.getPrecoHora());
-        dto.setIdosos(responsavel.getIdosos());
+
         return dto;
     }
 

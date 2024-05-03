@@ -1,7 +1,6 @@
 package seniorcare.crudseniorcare.utils;
 
-import seniorcare.crudseniorcare.domain.usuario.Usuario;
-import seniorcare.crudseniorcare.service.usuario.dto.UsuarioListagemDto;
+import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioListagemDto;
 
 import java.io.*;
 import java.nio.file.Files;
