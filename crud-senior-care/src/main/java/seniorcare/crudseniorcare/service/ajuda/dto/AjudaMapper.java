@@ -1,8 +1,11 @@
 package seniorcare.crudseniorcare.service.ajuda.dto;
 
 import seniorcare.crudseniorcare.domain.ajuda.Ajuda;
+import seniorcare.crudseniorcare.domain.endereco.Endereco;
 import seniorcare.crudseniorcare.service.ajuda.dto.AjudaCriacaoDto;
 import seniorcare.crudseniorcare.service.ajuda.dto.AjudaListagemDto;
+import seniorcare.crudseniorcare.service.endereco.dto.EnderecoListagemDto;
+import seniorcare.crudseniorcare.service.endereco.dto.EnderecoMapper;
 
 import java.util.List;
 import java.util.stream.Collectors;

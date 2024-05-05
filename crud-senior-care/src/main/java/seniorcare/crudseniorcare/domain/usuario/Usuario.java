@@ -31,121 +31,18 @@ public abstract class Usuario implements Serializable {
     private String telefone;
     private String cpf;
     private String sexoBiologico;
-
+    @Enumerated(EnumType.STRING)
+    private TipoUsuario tipoDeUsuario;
     private LocalDate dtNascimento;
     private String apresentacao;
     private LocalDate dtCadastro;
-    @OneToMany(mappedBy = "usuario")
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Agenda> agendas;
-    @OneToMany(mappedBy = "usuario")
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Idioma> idiomas;
-    @OneToMany(mappedBy = "usuario")
-    private List<Endereco> enderecos;
 
-    @OneToMany(mappedBy = "usuario")
-
-    public UUID getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(UUID idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getSexoBiologico() {
-        return sexoBiologico;
-    }
-
-    public void setSexoBiologico(String sexoBiologico) {
-        this.sexoBiologico = sexoBiologico;
-    }
-
-    public LocalDate getDtNascimento() {
-        return dtNascimento;
-    }
-
-    public void setDtNascimento(LocalDate dtNascimento) {
-        this.dtNascimento = dtNascimento;
-    }
-
-    public String getApresentacao() {
-        return apresentacao;
-    }
-
-    public void setApresentacao(String apresentacao) {
-        this.apresentacao = apresentacao;
-    }
-
-    public LocalDate getDtCadastro() {
-        return dtCadastro;
-    }
-
-    public void setDtCadastro(LocalDate dtCadastro) {
-        this.dtCadastro = dtCadastro;
-    }
-
-    public List<Agenda> getAgendas() {
-        return agendas;
-    }
-
-    public void setAgendas(List<Agenda> agendas) {
-        this.agendas = agendas;
-    }
-
-    public List<Idioma> getIdiomas() {
-        return idiomas;
-    }
-
-    public void setIdiomas(List<Idioma> idiomas) {
-        this.idiomas = idiomas;
-    }
-
-    public List<Endereco> getEnderecos() {
-        return enderecos;
-    }
-
-    public void setEnderecos(List<Endereco> enderecos) {
-        this.enderecos = enderecos;
-    }
-
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private Endereco endereco;
 }

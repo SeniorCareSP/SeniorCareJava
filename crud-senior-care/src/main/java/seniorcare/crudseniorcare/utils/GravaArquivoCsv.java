@@ -40,7 +40,7 @@ public class GravaArquivoCsv {
                         user.getDtCadastro(),
                         user.getAgendas(),
                         user.getIdiomas(),
-                        user.getEnderecos());
+                        user.getEndereco());
             }
         } catch (FormatterClosedException erro) {
             System.out.println("Erro ao gravar o arquivo");

@@ -16,15 +16,14 @@ public class Endereco implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID idEndereco;
-    private String rua;
     private String cep;
     private String logradouro;
     private String complemento;
     private String numero;
     private String cidade;
     private String bairro;
-    @ManyToOne
+
+    @OneToOne
     @JoinColumn(name = "usuario_id", referencedColumnName = "idUsuario")
     private Usuario usuario;
-
 }

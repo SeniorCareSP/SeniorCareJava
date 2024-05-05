@@ -18,12 +18,5 @@ public class Responsavel extends Usuario {
     @OneToMany(mappedBy = "responsavel")
     private List<Idoso> idosos;
 
-    public Responsavel(double precoHora, List<Idoso> idosos) {
-        this.precoHora = precoHora;
-        this.idosos = idosos;
-    }
 
-    public Responsavel() {
-
-    }
 }
