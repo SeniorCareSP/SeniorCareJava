@@ -16,6 +16,7 @@ public class UsuarioListagemDto {
     private String email;
     private String telefone;
     private String cpf;
+    private String senha;
     private String sexoBiologico;
     private LocalDate dtNascimento;
     private String apresentacao;

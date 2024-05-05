@@ -10,12 +10,15 @@ import seniorcare.crudseniorcare.domain.usuario.Cuidador;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
 import seniorcare.crudseniorcare.domain.arquivo.repository.ArquivoRepository;
+import seniorcare.crudseniorcare.service.arquivo.ArquivoService;
+import seniorcare.crudseniorcare.service.arquivo.dto.ArquivoDto;
 import seniorcare.crudseniorcare.service.usuario.UsuarioService;
 import seniorcare.crudseniorcare.service.usuario.dto.UsuarioListagemDto;
 import seniorcare.crudseniorcare.utils.GravaArquivoCsv;
 import seniorcare.crudseniorcare.utils.ListaObj;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -23,9 +26,10 @@ import java.util.*;
 @RequestMapping("/arquivos")
 @Data
 public class ArquivoController {
+
     final ArquivoRepository arquivoRepository;
     final UsuarioService usuarioService;
-
+    final ArquivoService arquivoService;
 
     //  private Path diretorioBase = Path.of(System.getProperty("user.dir") + "/arquivos"); // projeto
     private Path diretorioBase = Path.of(System.getProperty("java.io.tmpdir") + "/arquivos"); // temporario
@@ -34,7 +38,12 @@ public class ArquivoController {
      public ResponseEntity<byte[]> gravarArquivo() throws Exception{
          try{
              List<UsuarioListagemDto> usuarios = usuarioService.listarTodos();
-             return ResponseEntity.status(HttpStatus.OK).body(GravaArquivoCsv.gravarArquivo(usuarios, "usuarios"));
+             File arquivo = GravaArquivoCsv.gravarArquivo(usuarios, "usuarios");
+
+             this.arquivoService.salvarArquivo(arquivo);
+
+             byte[] conteudo = Files.readAllBytes(new File(arquivo.getName()).toPath());
+             return ResponseEntity.status(HttpStatus.OK).body(conteudo);
          }catch (Exception e){
              System.out.println(e);
              throw new Exception(e);
@@ -43,21 +52,18 @@ public class ArquivoController {
 
     @GetMapping("/download/{id}")
     public ResponseEntity<byte[]> download(@PathVariable Integer id){
-        Optional<Arquivo> arquivoOptional = arquivoRepository.findById(id);
+        ArquivoDto arquivo = this.arquivoService.buscarArquivo(id);
 
-        if (arquivoOptional.isEmpty()) {
-            return ResponseEntity.status(404).build();
+        if (arquivo == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        Arquivo arquivoBanco = arquivoOptional.get();
-
-        File file = this.diretorioBase.resolve(arquivoBanco.getNomeArquivoSalvo()).toFile();
         try {
-            InputStream fileInputStream = new FileInputStream(file);
+            InputStream fileInputStream = new FileInputStream(arquivo.getArquivo());
 
             return ResponseEntity.status(200)
                     .header("Content-Disposition",
-                            "attachment; filename=" + arquivoBanco.getNomeArquivoOriginal())
+                            "attachment; filename=" + arquivo.getNomeArquivoOriginal())
                     .body(fileInputStream.readAllBytes());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -68,15 +74,15 @@ public class ArquivoController {
         }
     }
 
+
+    private String formatarNomeArquivo(String nomeOriginal) {
+        return String.format("%s_%s", UUID.randomUUID(), nomeOriginal);
+    }
+
     @GetMapping("/ler-arquivo")
     public void lerArquivo(ListaObj listaObj){
         GravaArquivoCsv.leArquivoCsv("usuarios");
     }
 
-
-
-    private String formatarNomeArquivo(String nomeOriginal) {
-        return String.format("%s_%s", UUID.randomUUID(), nomeOriginal);
-    }
 
 }

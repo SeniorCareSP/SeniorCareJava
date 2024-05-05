@@ -18,31 +18,21 @@ public interface UsuarioMapper  {
     UsuarioMapper INSTANCE = Mappers.getMapper(UsuarioMapper.class);
 
     Cuidador toEntityCuidador(UsuarioCriacaoCuidadorDto dto);
-
-
     @Mapping(target = "senha", ignore = true)
     UsuarioListagemDto toDto(Usuario usuario);
-
     @Mapping(target = "senha", ignore = true)
     UsuarioListagemCuidadorDto toDtoCuidador(Cuidador cuidador);
-
-
     @Mapping(target = "senha", ignore = true)
     List<UsuarioListagemCuidadorDto> toDtoCuidadorList(List<Cuidador> cuidadores);
-
-
     Responsavel toEntityResponsavel(UsuarioCriacaoResponsavelDto dto);
-
     @Mapping(target = "senha", ignore = true)
     UsuarioListagemCuidadorDto toDtoResponsavel(Responsavel responsavel);
-
-    @Mapping(target = "senha", ignore = true)
-    List<UsuarioListagemCuidadorDto> toDtoResponsavelList(Responsavel responsavel);
-
-    public static UsuarioTokenDto of(Usuario usuario, String token){
+//    @Mapping(target = "senha", ignore = true)
+//    List<UsuarioListagemCuidadorDto> toDtoResponsavelList(Responsavel responsavel);
+    static UsuarioTokenDto of(Usuario usuario, String token){
         UsuarioTokenDto usuarioTokenDto = new UsuarioTokenDto();
 
-        //usuarioTokenDto.setUserId(usuario.getIdUsuario());
+//        usuarioTokenDto.setUserId(usuario.getIdUsuario());
         usuarioTokenDto.setEmail(usuario.getEmail());
         usuarioTokenDto.setNome(usuario.getNome());
         usuarioTokenDto.setToken(token);

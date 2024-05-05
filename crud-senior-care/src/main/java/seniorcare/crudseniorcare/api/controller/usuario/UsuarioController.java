@@ -1,16 +1,21 @@
 package seniorcare.crudseniorcare.api.controller.usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.service.usuario.UsuarioService;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioLoginDto;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioTokenDto;
+import seniorcare.crudseniorcare.service.usuario.dto.UsuarioCriacaoCuidadorDto;
 
 @RestController
-public class    UsuarioController {
+@RequestMapping("/usuarios")
+public class UsuarioController {
 
     private final UsuarioService usuarioService;
 
@@ -22,6 +27,12 @@ public class    UsuarioController {
     public ResponseEntity<UsuarioTokenDto> login(@RequestBody UsuarioLoginDto usuarioLoginDto){
         UsuarioTokenDto usuarioToken = this.usuarioService.autenticar(usuarioLoginDto);
         return ResponseEntity.status(200).body(usuarioToken);
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<Usuario> salvarUsuario(@RequestBody UsuarioCriacaoCuidadorDto usuario) {
+        this.usuarioService.criar(usuario);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
 

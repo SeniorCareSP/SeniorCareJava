@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.security.core.Authentication;
 
 import seniorcare.crudseniorcare.api.configuration.security.jwt.GerenciadorTokenJwt;
+import seniorcare.crudseniorcare.domain.usuario.Cuidador;
 import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioLoginDto;
@@ -22,6 +23,7 @@ import seniorcare.crudseniorcare.service.usuario.dto.UsuarioListagemDto;
 import seniorcare.crudseniorcare.service.usuario.dto.UsuarioMapper;
 import seniorcare.crudseniorcare.utils.ListaObj;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,14 +38,12 @@ public class UsuarioService {
     private GerenciadorTokenJwt gerenciadorTokenJwt;
     @Autowired
     private AuthenticationManager authenticationManager;
-    @Autowired
-    private UsuarioMapper usuarioMapper;
 
     public List<UsuarioListagemDto> listarTodos() {
         List<Usuario> usuarios = usuarioRepository.findAll();
 
         return usuarios.stream()
-                .map(usuarioMapper::toDto)
+                .map(UsuarioMapper.INSTANCE::toDto)
                 .collect(Collectors.toList());
     }
 
@@ -78,6 +78,4 @@ public class UsuarioService {
 
         return UsuarioMapper.of(usuarioAutenticado, token);
     }
-
-
 }

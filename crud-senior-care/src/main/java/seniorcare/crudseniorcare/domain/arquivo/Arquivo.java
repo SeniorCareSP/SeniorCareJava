@@ -20,4 +20,12 @@ public class Arquivo {
     private String nomeArquivoOriginal;
     private String nomeArquivoSalvo;
     private LocalDate dataUpload;
+
+    public Arquivo(String nomeArquivoOriginal, String nomeArquivoSalvo, LocalDate dataUpload) {
+        this.nomeArquivoOriginal = nomeArquivoOriginal;
+        this.nomeArquivoSalvo = nomeArquivoSalvo;
+        this.dataUpload = dataUpload;
+    }
+
+    public Arquivo() {}
 }
