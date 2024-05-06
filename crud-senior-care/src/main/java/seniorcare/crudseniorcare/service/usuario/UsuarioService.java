@@ -93,5 +93,7 @@ public class UsuarioService {
         return UsuarioMapper.of(usuarioAutenticado, token);
     }
 
-
+    public void logout() {
+        SecurityContextHolder.clearContext();
+    }
 }

@@ -11,6 +11,7 @@ import seniorcare.crudseniorcare.service.usuario.ResponsavelService;
 import seniorcare.crudseniorcare.service.usuario.UsuarioService;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioLoginDto;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioTokenDto;
+import seniorcare.crudseniorcare.service.usuario.dto.UsuarioMapper;
 import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioCriacaoCuidadorDto;
 import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioListagemCuidadorDto;
 import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioCriacaoResponsavelDto;
@@ -18,6 +19,7 @@ import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioListagem
 import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioListagemDto;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -34,6 +36,15 @@ public class UsuarioController {
         UsuarioTokenDto usuarioToken = this.usuarioService.autenticar(usuarioLoginDto);
         return ResponseEntity.status(200).body(usuarioToken);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(){
+        usuarioService.logout();
+        return ResponseEntity.status(200).build();
+    }
+
+
+    @DeleteMapping("/{id}")
 
     @GetMapping
     public ResponseEntity<List<UsuarioListagemDto>> listarUsuario(){
@@ -70,6 +81,9 @@ public class UsuarioController {
         }
         return ResponseEntity.status(201).body(responsavelService.criar(usuarioCriacaoResponsavelDtoDto));
     }
+
+
+
 
 
 }

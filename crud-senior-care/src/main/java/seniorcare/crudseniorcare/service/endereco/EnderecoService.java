@@ -24,4 +24,6 @@ public class EnderecoService {
         endereco.setUsuario(usuario);
         enderecoRepository.save(endereco);
     }
+
+
 }
