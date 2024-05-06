@@ -24,17 +24,15 @@ public class CuidadorService {
     private final CuidadorMapper cuidadorMapper;
     private final EnderecoService enderecoService;
 
-    public ResponseEntity<UsuarioListagemCuidadorDto> criar(UsuarioCriacaoCuidadorDto usuarioCriacaoCuidadorDto) {
+    public UsuarioListagemCuidadorDto criar(UsuarioCriacaoCuidadorDto usuarioCriacaoCuidadorDto) {
         Cuidador novoUsuario = CuidadorMapper.toCuidador(usuarioCriacaoCuidadorDto);
-
-        //
-        Cuidador cuidadorSalvo = cuidadorRepository.save(novoUsuario);
-
 
         String senhaCriptografada = passwordEncoder.encode(novoUsuario.getSenha());
         novoUsuario.setSenha(senhaCriptografada);
 
-        return ResponseEntity.status(201).body(CuidadorMapper.toUsuarioListagemCuidadorDto(novoUsuario));
+        Cuidador cuidadorSalvo = cuidadorRepository.save(novoUsuario);
+
+        return CuidadorMapper.toUsuarioListagemCuidadorDto(cuidadorSalvo);
     }
 
     public List<UsuarioListagemCuidadorDto> listarTodos() {
