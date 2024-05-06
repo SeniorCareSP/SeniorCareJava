@@ -1,7 +1,9 @@
 package seniorcare.crudseniorcare.domain.usuario;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import seniorcare.crudseniorcare.domain.agenda.Agenda;
 
@@ -15,6 +17,8 @@ import java.util.UUID;
 
 @Getter @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "tb_usuario", indexes = {@Index(name = "idx_id_responsavel", columnList = "id_usuario")})
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo_usuario", discriminatorType = DiscriminatorType.STRING)
