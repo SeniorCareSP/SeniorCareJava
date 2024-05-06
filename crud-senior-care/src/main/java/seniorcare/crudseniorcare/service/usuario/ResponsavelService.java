@@ -14,6 +14,7 @@ import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioListagemCui
 import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioCriacaoResponsavelDto;
 import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioListagemResponsavelDto;
 
+import java.util.ArrayList;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
@@ -29,6 +30,17 @@ public class ResponsavelService {
         novoUsuario.setSenha(senhaCriptografada);
 
         return ResponsavelMapper.toUsuarioListagemResponsavelDto( this.responsavelRepository.save(novoUsuario));
+    }
+
+    public List<UsuarioListagemResponsavelDto> listarTodos() {
+        List<Responsavel> responsaveis = responsavelRepository.findAll();
+        List<UsuarioListagemResponsavelDto> listagemResponsavelDtos = new ArrayList<>();
+
+        for (Responsavel responsavel : responsaveis) {
+            listagemResponsavelDtos.add(ResponsavelMapper.toUsuarioListagemResponsavelDto(responsavel));
+        }
+
+        return listagemResponsavelDtos;
     }
 
 }

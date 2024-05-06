@@ -29,8 +29,6 @@ public class UsuarioController {
     private final CuidadorService cuidadorService;
     private final ResponsavelService responsavelService;
 
-
-
     @PostMapping("/login")
     public ResponseEntity<UsuarioTokenDto> login(@RequestBody UsuarioLoginDto usuarioLoginDto){
         UsuarioTokenDto usuarioToken = this.usuarioService.autenticar(usuarioLoginDto);
