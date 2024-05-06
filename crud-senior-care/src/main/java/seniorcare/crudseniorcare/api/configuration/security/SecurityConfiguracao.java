@@ -46,8 +46,6 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/usuarios/criar-cuidador"),
             new AntPathRequestMatcher("/usuarios/criar-responsavel"),
             new AntPathRequestMatcher("/usuarios/login"),
-            new AntPathRequestMatcher("/usuarios/responsaveis"),
-            new AntPathRequestMatcher("/usuarios/cuidadores"),
             new AntPathRequestMatcher("/*"),
             new AntPathRequestMatcher("/swagger-resources/**"),
             new AntPathRequestMatcher("/configuration/ui"),
@@ -62,7 +60,8 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/newsletter/**", "GET"),
             new AntPathRequestMatcher("/h2-console/**"),
             new AntPathRequestMatcher("/error/**"),
-            new AntPathRequestMatcher("/arquivos/**")
+            new AntPathRequestMatcher("/arquivos/**"),
+            new AntPathRequestMatcher("/usuarios/signup", "POST"),
     };
 
     @Bean
@@ -92,7 +91,7 @@ public class SecurityConfiguracao {
                 http.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.authenticationProvider(new
                 AutenticacaoProvider(autenticacaoService, passwordEncoder()));
-                        return authenticationManagerBuilder.build();
+        return authenticationManagerBuilder.build();
     }
 
     @Bean
@@ -140,4 +139,3 @@ public class SecurityConfiguracao {
     }
 
 }
-

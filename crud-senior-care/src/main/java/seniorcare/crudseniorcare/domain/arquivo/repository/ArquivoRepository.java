@@ -6,5 +6,4 @@ import seniorcare.crudseniorcare.domain.arquivo.Arquivo;
 import java.util.Optional;
 
 public interface ArquivoRepository extends JpaRepository<Arquivo, Integer> {
-    Optional<Arquivo> findByNomeArquivoOriginal(String nome);
 }

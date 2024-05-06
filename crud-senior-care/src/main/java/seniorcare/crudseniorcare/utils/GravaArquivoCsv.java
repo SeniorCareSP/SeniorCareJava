@@ -7,7 +7,7 @@ import java.nio.file.Files;
 import java.util.*;
 
 public class GravaArquivoCsv {
-    public static byte[] gravarArquivo(List <UsuarioListagemDto> lista , String nomeArq) throws IOException {
+    public static File gravarArquivo(List <UsuarioListagemDto> lista , String nomeArq) throws IOException {
 
         FileWriter arq = null;
         Formatter saida = null;
@@ -28,8 +28,8 @@ public class GravaArquivoCsv {
         try{
             for (int i = 0; i < lista.size(); i++) {
                 UsuarioListagemDto user = lista.get(i);
-                saida.format("%s;%s;%s;%.2f;%s;%s;%s;%s;%s;%s;%s;%s;%s\n",
-                        user.getIdUsuario().toString(),
+                saida.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s\n",
+                        user.getIdUsuario() != null ? user.getIdUsuario().toString() : user.getIdUsuario(),
                         user.getNome(),
                         user.getEmail(),
                         user.getTelefone(),
@@ -58,7 +58,7 @@ public class GravaArquivoCsv {
             }
         }
 
-        return Files.readAllBytes(new File("Arquivo dos colaboradores.csv").toPath());
+        return new File(nomeArq);
     }
 
 

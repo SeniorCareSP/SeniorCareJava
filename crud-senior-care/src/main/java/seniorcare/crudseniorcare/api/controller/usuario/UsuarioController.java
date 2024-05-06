@@ -48,35 +48,18 @@ public class UsuarioController {
         return ResponseEntity.status(200).body(listarCuidadores);
     }
 
-        @GetMapping("/responsaveis")
-    public ResponseEntity<List<UsuarioListagemResponsavelDto>> listarReponsaveis(){
-        List<UsuarioListagemResponsavelDto> listarResponsaveis = responsavelService.listarTodos();
-        return ResponseEntity.status(200).body(listarResponsaveis);
-
-    }
 
     @PostMapping("/criar-cuidador")
     public ResponseEntity<UsuarioListagemCuidadorDto> criarCuidador(@RequestBody UsuarioCriacaoCuidadorDto usuarioCriacaoCuidadorDto){
-        if (usuarioService.emailJaExiste(usuarioCriacaoCuidadorDto.getEmail())){
-            return ResponseEntity.status(409).build();
-        }
-        if(usuarioCriacaoCuidadorDto == null){
-            return ResponseEntity.status(204).build();
-        }
-        return ResponseEntity.status(201).body(cuidadorService.criar(usuarioCriacaoCuidadorDto));
+
+        return cuidadorService.criar(usuarioCriacaoCuidadorDto);
 
     }
     @PostMapping("/criar-responsavel")
     public ResponseEntity<UsuarioListagemResponsavelDto> criarResponsavel(@RequestBody UsuarioCriacaoResponsavelDto usuarioCriacaoResponsavelDtoDto){
-        if (usuarioService.emailJaExiste(usuarioCriacaoResponsavelDtoDto.getEmail())){
-            return ResponseEntity.status(409).build();
-        }
-        if(usuarioCriacaoResponsavelDtoDto == null){
-            return ResponseEntity.status(204).build();
-        }
+
         return ResponseEntity.status(201).body(responsavelService.criar(usuarioCriacaoResponsavelDtoDto));
     }
 
 
 }
-
