@@ -6,14 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import seniorcare.crudseniorcare.domain.arquivo.Arquivo;
-import seniorcare.crudseniorcare.domain.usuario.Cuidador;
-import seniorcare.crudseniorcare.domain.usuario.Usuario;
-import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
 import seniorcare.crudseniorcare.domain.arquivo.repository.ArquivoRepository;
 import seniorcare.crudseniorcare.service.arquivo.ArquivoService;
 import seniorcare.crudseniorcare.service.arquivo.dto.ArquivoDto;
 import seniorcare.crudseniorcare.service.usuario.UsuarioService;
-import seniorcare.crudseniorcare.service.usuario.dto.UsuarioListagemDto;
+import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioListagemDto;
 import seniorcare.crudseniorcare.utils.GravaArquivoCsv;
 import seniorcare.crudseniorcare.utils.ListaObj;
 
@@ -35,8 +32,8 @@ public class ArquivoController {
     private Path diretorioBase = Path.of(System.getProperty("java.io.tmpdir") + "/arquivos"); // temporario
 
      @GetMapping(value = "/gravar-arquivo", produces = "text/csv")
-     public ResponseEntity<byte[]> gravarArquivo() throws Exception{
-         try{
+     public ResponseEntity<byte[]> gravarArquivo() throws Exception {
+         try {
              List<UsuarioListagemDto> usuarios = usuarioService.listarTodos();
              File arquivo = GravaArquivoCsv.gravarArquivo(usuarios, "usuarios");
 
@@ -44,10 +41,11 @@ public class ArquivoController {
 
              byte[] conteudo = Files.readAllBytes(new File(arquivo.getName()).toPath());
              return ResponseEntity.status(HttpStatus.OK).body(conteudo);
-         }catch (Exception e){
+         } catch (Exception e) {
              System.out.println(e);
              throw new Exception(e);
-        }
+
+         }
      }
 
     @GetMapping("/download/{id}")
@@ -84,5 +82,5 @@ public class ArquivoController {
         GravaArquivoCsv.leArquivoCsv("usuarios");
     }
 
-
 }
+

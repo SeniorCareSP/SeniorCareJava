@@ -1,6 +1,6 @@
 package seniorcare.crudseniorcare.utils;
 
-import seniorcare.crudseniorcare.service.usuario.dto.UsuarioListagemDto;
+import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioListagemDto;
 
 public class Ordenacao {
     static public void quickSort(ListaObj<UsuarioListagemDto> v, int indInicio, int indFim){

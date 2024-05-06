@@ -15,7 +15,7 @@ public class AjudaCriacaoDto {
 
     private String nome;
 
-    @ManyToMany
+    @OneToMany
     @JoinTable(name = "ajuda_cuidadores",
             joinColumns = @JoinColumn(name = "idAjuda"),
             inverseJoinColumns = @JoinColumn(name = "idUsuario"))

@@ -5,8 +5,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
-import seniorcare.crudseniorcare.domain.usuario.Usuario;
+import seniorcare.crudseniorcare.domain.usuario.Cuidador;
+import seniorcare.crudseniorcare.domain.usuario.Responsavel;
+import seniorcare.crudseniorcare.domain.usuario.repository.CuidadorRepository;
+import seniorcare.crudseniorcare.domain.usuario.repository.ResponsavelRepository;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioDetalhesDto;
 
 import java.util.Optional;
@@ -15,16 +17,25 @@ import java.util.Optional;
 public class AutenticacaoService implements UserDetailsService {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private CuidadorRepository cuidadorRepository;
+
+    @Autowired
+    private ResponsavelRepository responsavelRepository;
 
     //Método da interface implementada
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
-        Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(username);
-        if (usuarioOpt.isEmpty()){
-            throw new UsernameNotFoundException(String.format("Usuário: %s não encontrado", username));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException{
+        Optional<Cuidador> cuidador = cuidadorRepository.findByEmail(email);
+        if (cuidador.isPresent()) {
+            return new UsuarioDetalhesDto(cuidador.get());
         }
-        return new UsuarioDetalhesDto(usuarioOpt.get());
+
+        Optional<Responsavel> responsavel = responsavelRepository.findByEmail(email);
+        if (responsavel.isPresent()) {
+            return new UsuarioDetalhesDto(responsavel.get());
+        }
+
+        throw new UsernameNotFoundException("Usuário não encontrado");
     }
 
 }
