@@ -1,7 +1,9 @@
 package seniorcare.crudseniorcare.domain.endereco;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
 
@@ -12,6 +14,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @Table(name = "tb_endereco")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Endereco implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -23,7 +27,9 @@ public class Endereco implements Serializable {
     private String cidade;
     private String bairro;
 
+
     @OneToOne
     @JoinColumn(name = "usuario_id", referencedColumnName = "idUsuario")
     private Usuario usuario;
+
 }

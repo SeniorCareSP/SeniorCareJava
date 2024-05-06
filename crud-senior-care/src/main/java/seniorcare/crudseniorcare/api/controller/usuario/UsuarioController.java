@@ -11,6 +11,7 @@ import seniorcare.crudseniorcare.service.usuario.ResponsavelService;
 import seniorcare.crudseniorcare.service.usuario.UsuarioService;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioLoginDto;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioTokenDto;
+import seniorcare.crudseniorcare.service.usuario.dto.UsuarioMapper;
 import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioCriacaoCuidadorDto;
 import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioListagemCuidadorDto;
 import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioCriacaoResponsavelDto;
@@ -18,6 +19,7 @@ import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioListagem
 import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioListagemDto;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -35,6 +37,15 @@ public class UsuarioController {
         return ResponseEntity.status(200).body(usuarioToken);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(){
+        usuarioService.logout();
+        return ResponseEntity.status(200).build();
+    }
+
+
+    @DeleteMapping("/{id}")
+
     @GetMapping
     public ResponseEntity<List<UsuarioListagemDto>> listarUsuario(){
         List<UsuarioListagemDto> listaUsuario = usuarioService.listarTodos();
@@ -51,16 +62,28 @@ public class UsuarioController {
 
     @PostMapping("/criar-cuidador")
     public ResponseEntity<UsuarioListagemCuidadorDto> criarCuidador(@RequestBody UsuarioCriacaoCuidadorDto usuarioCriacaoCuidadorDto){
-
-        return cuidadorService.criar(usuarioCriacaoCuidadorDto);
+        if (usuarioService.emailJaExiste(usuarioCriacaoCuidadorDto.getEmail())){
+            return ResponseEntity.status(409).build();
+        }
+        if(usuarioCriacaoCuidadorDto == null){
+            return ResponseEntity.status(204).build();
+        }
+        return ResponseEntity.status(201).body(cuidadorService.criar(usuarioCriacaoCuidadorDto));
 
     }
     @PostMapping("/criar-responsavel")
     public ResponseEntity<UsuarioListagemResponsavelDto> criarResponsavel(@RequestBody UsuarioCriacaoResponsavelDto usuarioCriacaoResponsavelDtoDto){
-
+        if (usuarioService.emailJaExiste(usuarioCriacaoResponsavelDtoDto.getEmail())){
+            return ResponseEntity.status(409).build();
+        }
+        if(usuarioCriacaoResponsavelDtoDto == null){
+            return ResponseEntity.status(204).build();
+        }
         return ResponseEntity.status(201).body(responsavelService.criar(usuarioCriacaoResponsavelDtoDto));
     }
 
 
-}
 
+
+
+}

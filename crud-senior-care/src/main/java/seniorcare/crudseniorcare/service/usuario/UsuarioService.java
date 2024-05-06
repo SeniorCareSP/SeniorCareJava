@@ -55,6 +55,13 @@ public class UsuarioService {
                 .collect(Collectors.toList());
     }
 
+    public boolean emailJaExiste(String email) {
+        Optional<Responsavel> responsavelOptional = responsavelRepository.findByEmail(email);
+        Optional<Cuidador> cuidadorOptional = cuidadorRepository.findByEmail(email);
+
+        return responsavelOptional.isPresent() || cuidadorOptional.isPresent();
+    }
+
 
     public List<UsuarioListagemDto> listarCuidadores() {
         List<Usuario> usuarios = new ArrayList<>();
@@ -86,5 +93,7 @@ public class UsuarioService {
         return UsuarioMapper.of(usuarioAutenticado, token);
     }
 
-
+    public void logout() {
+        SecurityContextHolder.clearContext();
+    }
 }

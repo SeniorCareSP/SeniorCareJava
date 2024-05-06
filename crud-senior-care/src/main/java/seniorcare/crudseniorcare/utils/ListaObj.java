@@ -1,8 +1,10 @@
 package seniorcare.crudseniorcare.utils;
 
-public class ListaObj <T> {
-    private T[] vetor;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
+public class ListaObj<T> {
+    private T[] vetor;
     private int nroElem;
 
     public ListaObj(int tamanho) {
@@ -11,41 +13,20 @@ public class ListaObj <T> {
     }
 
     public void adiciona(T elemento) {
-        if (nroElem >= vetor.length){
-            throw  new IllegalStateException();
+        if (nroElem >= vetor.length) {
+            throw new IllegalStateException("Capacidade máxima excedida");
         } else {
             vetor[nroElem++] = elemento;
         }
     }
 
-    public int busca(T elementoBuscado) {
-        for (int i = 0; i < nroElem; i++) {
-            if (vetor[i] == elementoBuscado){
-                return i;
-            }
-        }
-        return  - 1;
+
+    public void limpa() {
+        Arrays.fill(vetor, null);
+        nroElem = 0;
     }
 
-    public boolean removePeloIndice(int indice) {
-        if (indice > nroElem  || indice < 0){
-            return false;
-        }
-        else {
-            for (int i = indice; i < nroElem - 1; i++) {
-                vetor[i] = vetor [i + 1];
-            }
-            nroElem--;
-        }
-        return true;
-    }
-
-    public boolean removeElemento(T elementoARemover) {
-        return removePeloIndice(busca(elementoARemover));
-    }
-
-    public int getNroElem() {
-
+    public int tamanho() {
         return nroElem;
     }
 
@@ -59,16 +40,6 @@ public class ListaObj <T> {
             }
         }
         return null;
-    }
-
-    public void limpa() {
-        vetor =  (T[]) new Object[vetor.length];
-    }
-
-    public void exibe() {
-        for (int i = 0; i < nroElem ; i++) {
-            System.out.println(vetor[i]);
-        }
     }
 
     public void setPeloIndice(int indice, T valor) {
@@ -106,9 +77,29 @@ public class ListaObj <T> {
     }
 
 
-    public T[] getVetor() {
-        return vetor;
+    public T obtem(int indice) {
+        if (indice < 0 || indice >= nroElem) {
+            throw new IndexOutOfBoundsException("Índice fora dos limites");
+        }
+        return vetor[indice];
     }
 
-
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        for (int i = 0; i < nroElem; i++) {
+            sb.append(vetor[i]);
+            if (i < nroElem - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
 }
+
+
+
+
+
