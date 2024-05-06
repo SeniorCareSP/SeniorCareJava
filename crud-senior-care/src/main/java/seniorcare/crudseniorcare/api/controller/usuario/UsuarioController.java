@@ -52,7 +52,7 @@ public class UsuarioController {
     @PostMapping("/criar-cuidador")
     public ResponseEntity<UsuarioListagemCuidadorDto> criarCuidador(@RequestBody UsuarioCriacaoCuidadorDto usuarioCriacaoCuidadorDto){
 
-       return cuidadorService.criar(usuarioCriacaoCuidadorDto);
+        return cuidadorService.criar(usuarioCriacaoCuidadorDto);
 
     }
     @PostMapping("/criar-responsavel")

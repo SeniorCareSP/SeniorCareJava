@@ -34,7 +34,7 @@ public class CuidadorService {
         String senhaCriptografada = passwordEncoder.encode(novoUsuario.getSenha());
         novoUsuario.setSenha(senhaCriptografada);
 
-        return ResponseEntity.status(201).body(CuidadorMapper.toUsuarioListagemCuidadorDto(cuidadorSalvo));
+        return ResponseEntity.status(201).body(CuidadorMapper.toUsuarioListagemCuidadorDto(novoUsuario));
     }
 
     public List<UsuarioListagemCuidadorDto> listarTodos() {
