@@ -1,4 +1,4 @@
-package seniorcare.crudseniorcare.api.controller.usuario;
+package seniorcare.crudseniorcare.controller.usuario;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +22,7 @@ import java.util.UUID;
 public class CuidadorController {
     private final CuidadorService cuidadorService;
 
-    @PostMapping
-    public ResponseEntity<UsuarioListagemCuidadorDto> criar(){
-        return null;
-    }
+
 
     @GetMapping
     public ResponseEntity<List<UsuarioListagemCuidadorDto>> listarUsuario(){

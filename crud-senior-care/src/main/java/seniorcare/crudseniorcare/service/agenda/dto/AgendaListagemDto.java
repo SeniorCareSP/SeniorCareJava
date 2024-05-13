@@ -11,7 +11,7 @@ import java.util.UUID;
 @Data
 public class AgendaListagemDto {
 
-        @GeneratedValue(strategy = GenerationType.UUID)
+        @GeneratedValue(strategy = GenerationType.AUTO)
         private UUID idAgenda;
         private String diaDaSemana;
         private boolean periodo_manha;

@@ -1,6 +1,5 @@
-package seniorcare.crudseniorcare.api.configuration.security;
+package seniorcare.crudseniorcare.configuration.security;
 
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +21,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import seniorcare.crudseniorcare.api.configuration.security.jwt.GerenciadorTokenJwt;
+import seniorcare.crudseniorcare.configuration.security.jwt.GerenciadorTokenJwt;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.AutenticacaoService;
 
 
@@ -48,7 +47,8 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/usuarios/criar-responsavel"),
             new AntPathRequestMatcher("/usuarios/login"),
             new AntPathRequestMatcher("/usuarios/responsaveis"),
-            new AntPathRequestMatcher("/usuarios/cuidadores"),
+            new AntPathRequestMatcher("/cuidador/*"),
+            new AntPathRequestMatcher("/responsavel/*"),
             new AntPathRequestMatcher("/*"),
             new AntPathRequestMatcher("/swagger-resources/**"),
             new AntPathRequestMatcher("/configuration/ui"),

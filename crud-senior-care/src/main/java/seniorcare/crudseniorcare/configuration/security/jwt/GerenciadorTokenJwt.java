@@ -1,4 +1,4 @@
-package seniorcare.crudseniorcare.api.configuration.security.jwt;
+package seniorcare.crudseniorcare.configuration.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

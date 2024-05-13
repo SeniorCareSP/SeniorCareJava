@@ -1,4 +1,4 @@
-package seniorcare.crudseniorcare.api.controller.newsletter;
+package seniorcare.crudseniorcare.controller.newsletter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

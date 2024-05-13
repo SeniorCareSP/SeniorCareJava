@@ -1,4 +1,4 @@
-package seniorcare.crudseniorcare.api.configuration.security;
+package seniorcare.crudseniorcare.configuration.security;
 
 import org.springframework.security.core.AuthenticationException;
 import jakarta.servlet.http.HttpServletRequest;

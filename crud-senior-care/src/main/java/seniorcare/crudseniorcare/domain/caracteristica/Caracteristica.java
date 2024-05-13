@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "tb_caracteristicas")
+@Table(name = "tb_caracteristica")
 public class Caracteristica implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

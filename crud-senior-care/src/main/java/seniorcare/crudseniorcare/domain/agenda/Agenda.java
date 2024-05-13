@@ -12,7 +12,7 @@ import java.util.UUID;
 @Table(name="tb_agenda")
 public class Agenda implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID idAgenda;
     private String diaDaSemana;
     private boolean periodo_manha;

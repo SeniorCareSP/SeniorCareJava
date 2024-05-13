@@ -1,4 +1,4 @@
-package seniorcare.crudseniorcare.api.controller.usuario;
+package seniorcare.crudseniorcare.controller.usuario;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +43,7 @@ public class UsuarioController {
         return ResponseEntity.status(200).build();
     }
 
+
     @GetMapping
     public ResponseEntity<List<UsuarioListagemDto>> listarUsuario(){
         List<UsuarioListagemDto> listaUsuario = usuarioService.listarTodos();
@@ -52,8 +53,8 @@ public class UsuarioController {
 
     @GetMapping("/cuidadores")
     public ResponseEntity<List<UsuarioListagemCuidadorDto>> listarCuidadores(){
-        List<UsuarioListagemCuidadorDto> listarCuidadores = cuidadorService.listarTodos();
-        return ResponseEntity.status(200).body(listarCuidadores);
+        List<UsuarioListagemCuidadorDto> listarCuidadores    = cuidadorService .listarTodos();
+                return ResponseEntity.status(200).body(listarCuidadores);
     }
 
 

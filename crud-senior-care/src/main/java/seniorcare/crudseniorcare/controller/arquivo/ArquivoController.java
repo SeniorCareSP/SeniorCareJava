@@ -1,4 +1,4 @@
-package seniorcare.crudseniorcare.api.controller.arquivo;
+package seniorcare.crudseniorcare.controller.arquivo;
 
 import lombok.Data;
 import org.springframework.http.HttpStatus;
@@ -31,7 +31,7 @@ public class ArquivoController {
     //  private Path diretorioBase = Path.of(System.getProperty("user.dir") + "/arquivos"); // projeto
     private Path diretorioBase = Path.of(System.getProperty("java.io.tmpdir") + "/arquivos"); // temporario
 
-     @GetMapping(value = "/gravar-arquivo", produces = "text/csv")
+     @GetMapping(value = "/gravararquivo", produces = "text/csv")
      public ResponseEntity<byte[]> gravarArquivo() throws Exception {
          try {
              List<UsuarioListagemDto> usuarios = usuarioService.listarTodos();
@@ -77,7 +77,7 @@ public class ArquivoController {
         return String.format("%s_%s", UUID.randomUUID(), nomeOriginal);
     }
 
-    @GetMapping("/ler-arquivo")
+    @GetMapping("/lerarquivo")
     public void lerArquivo(ListaObj listaObj){
         GravaArquivoCsv.leArquivoCsv("usuarios");
     }

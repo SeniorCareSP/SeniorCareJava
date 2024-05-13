@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.security.core.Authentication;
 
-import seniorcare.crudseniorcare.api.configuration.security.jwt.GerenciadorTokenJwt;
+import seniorcare.crudseniorcare.configuration.security.jwt.GerenciadorTokenJwt;
 import seniorcare.crudseniorcare.domain.usuario.Cuidador;
 import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
@@ -18,14 +18,8 @@ import seniorcare.crudseniorcare.domain.usuario.repository.CuidadorRepository;
 import seniorcare.crudseniorcare.domain.usuario.repository.ResponsavelRepository;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioLoginDto;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioTokenDto;
-import seniorcare.crudseniorcare.service.usuario.dto.CuidadorMapper;
-import seniorcare.crudseniorcare.service.usuario.dto.ResponsavelMapper;
-import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioCriacaoCuidadorDto;
-import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioListagemCuidadorDto;
-import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioCriacaoResponsavelDto;
 
 import seniorcare.crudseniorcare.service.usuario.dto.UsuarioMapper;
-import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioListagemResponsavelDto;
 import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioListagemDto;
 
 import java.util.ArrayList;
