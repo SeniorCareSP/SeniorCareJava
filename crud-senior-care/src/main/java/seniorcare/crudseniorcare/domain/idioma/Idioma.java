@@ -14,7 +14,7 @@ import java.util.UUID;
 @Table(name = "tb_idioma")
 public class Idioma implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID idIdioma;
     private String idioma;
     @ManyToOne

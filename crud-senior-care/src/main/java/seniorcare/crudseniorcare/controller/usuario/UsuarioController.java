@@ -44,7 +44,6 @@ public class UsuarioController {
     }
 
 
-
     @GetMapping
     public ResponseEntity<List<UsuarioListagemDto>> listarUsuario(){
         List<UsuarioListagemDto> listaUsuario = usuarioService.listarTodos();
@@ -55,7 +54,7 @@ public class UsuarioController {
     @GetMapping("/cuidadores")
     public ResponseEntity<List<UsuarioListagemCuidadorDto>> listarCuidadores(){
         List<UsuarioListagemCuidadorDto> listarCuidadores    = cuidadorService .listarTodos();
-        return ResponseEntity.status(200).body(listarCuidadores);
+                return ResponseEntity.status(200).body(listarCuidadores);
     }
 
 
