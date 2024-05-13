@@ -1,4 +1,4 @@
-package seniorcare.crudseniorcare.api.controller.usuario;
+package seniorcare.crudseniorcare.controller.usuario;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

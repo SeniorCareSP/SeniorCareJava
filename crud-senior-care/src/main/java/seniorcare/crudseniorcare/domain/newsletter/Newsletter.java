@@ -9,7 +9,7 @@ import java.util.UUID;
 @Table(name = "tb_newsletter")
 public class Newsletter {
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private UUID id;
   private String titulo;
   private String conteudo;

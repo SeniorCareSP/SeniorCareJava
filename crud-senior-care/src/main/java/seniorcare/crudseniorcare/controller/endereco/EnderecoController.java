@@ -1,4 +1,4 @@
-package seniorcare.crudseniorcare.api.controller.endereco;
+package seniorcare.crudseniorcare.controller.endereco;
 
 import lombok.Data;
 import org.springframework.http.ResponseEntity;

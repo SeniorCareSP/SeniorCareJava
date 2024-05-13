@@ -1,4 +1,4 @@
-package seniorcare.crudseniorcare.api.configuration.security;
+package seniorcare.crudseniorcare.configuration.security;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;

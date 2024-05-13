@@ -1,22 +1,19 @@
 package seniorcare.crudseniorcare.domain.arquivo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-
-
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import java.util.UUID;
 
 @Entity
 @Getter @Setter
+@Table(name="tb_arquivo")
 public class Arquivo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
     private String nomeArquivoOriginal;
     private String nomeArquivoSalvo;
     private LocalDate dataUpload;

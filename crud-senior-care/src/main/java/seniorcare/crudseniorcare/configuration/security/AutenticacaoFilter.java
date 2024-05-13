@@ -1,4 +1,4 @@
-package seniorcare.crudseniorcare.api.configuration.security;
+package seniorcare.crudseniorcare.configuration.security;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -12,7 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
-import seniorcare.crudseniorcare.api.configuration.security.jwt.GerenciadorTokenJwt;
+import seniorcare.crudseniorcare.configuration.security.jwt.GerenciadorTokenJwt;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.AutenticacaoService;
 
 import java.io.IOException;
