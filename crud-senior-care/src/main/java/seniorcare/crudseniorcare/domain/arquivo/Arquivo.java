@@ -15,7 +15,7 @@ import jakarta.persistence.GenerationType;
 @Getter @Setter
 public class Arquivo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String nomeArquivoOriginal;
     private String nomeArquivoSalvo;
