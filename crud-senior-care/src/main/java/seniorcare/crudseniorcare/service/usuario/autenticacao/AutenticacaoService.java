@@ -1,5 +1,6 @@
 package seniorcare.crudseniorcare.service.usuario.autenticacao;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,13 +15,11 @@ import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioDetalhe
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AutenticacaoService implements UserDetailsService {
 
-    @Autowired
-    private CuidadorRepository cuidadorRepository;
-
-    @Autowired
-    private ResponsavelRepository responsavelRepository;
+    private final CuidadorRepository cuidadorRepository;
+    private final ResponsavelRepository responsavelRepository;
 
     //Método da interface implementada
     @Override

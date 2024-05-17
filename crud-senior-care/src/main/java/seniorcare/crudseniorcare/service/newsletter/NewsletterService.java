@@ -1,5 +1,8 @@
 package seniorcare.crudseniorcare.service.newsletter;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,16 +17,14 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
+@Getter @Setter
 public class NewsletterService {
 
-    @Autowired
-    private EnviadorEmailService enviadorEmailService;
 
-    @Autowired
-    private NewsletterRepository newsletterRepository;
-
-    @Autowired
-    private AssinanteEmailRepository assinanteEmailRepository;
+    private final EnviadorEmailService enviadorEmailService;
+    private final NewsletterRepository newsletterRepository;
+    private final AssinanteEmailRepository assinanteEmailRepository;
 
     public void publicarNewsletter(UUID id) {
         this.assinanteEmailRepository.findAssinantesByNewsletterId(id)
@@ -61,27 +62,5 @@ public class NewsletterService {
         return this.newsletterRepository.findById(id).orElseThrow();
     }
 
-    public EnviadorEmailService getEnviadorEmailService() {
-        return enviadorEmailService;
-    }
 
-    public void setEnviadorEmailService(EnviadorEmailService enviadorEmailService) {
-        this.enviadorEmailService = enviadorEmailService;
-    }
-
-    public NewsletterRepository getNewsletterRepository() {
-        return newsletterRepository;
-    }
-
-    public void setNewsletterRepository(NewsletterRepository newsletterRepository) {
-        this.newsletterRepository = newsletterRepository;
-    }
-
-    public AssinanteEmailRepository getAssinanteEmailRepository() {
-        return assinanteEmailRepository;
-    }
-
-    public void setAssinanteEmailRepository(AssinanteEmailRepository assinanteEmailRepository) {
-        this.assinanteEmailRepository = assinanteEmailRepository;
-    }
 }

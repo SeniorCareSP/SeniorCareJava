@@ -26,11 +26,8 @@ public abstract class Usuario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID idUsuario;
-
     private String nome;
-
     private String email;
-
     private String senha;
     private String telefone;
     private String cpf;

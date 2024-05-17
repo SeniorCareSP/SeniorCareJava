@@ -16,54 +16,30 @@ import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.domain.usuario.repository.CuidadorRepository;
 import seniorcare.crudseniorcare.domain.usuario.repository.ResponsavelRepository;
+import seniorcare.crudseniorcare.exception.NaoEncontradoException;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioLoginDto;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioTokenDto;
 
 import seniorcare.crudseniorcare.service.usuario.dto.UsuarioMapper;
+import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
 import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioListagemDto;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UsuarioService {
-
+    private final CuidadorRepository cuidadorRepository;
+    private final ResponsavelRepository responsavelRepository;
+    private final UsuarioRepository usuarioRepository;
 
     public final PasswordEncoder passwordEncoder;
-    private final ResponsavelRepository responsavelRepository;
-    private final CuidadorRepository cuidadorRepository;
-
     private final GerenciadorTokenJwt gerenciadorTokenJwt;
     private final AuthenticationManager authenticationManager;
-    private final UsuarioMapper usuarioMapper;
-
-    public List<UsuarioListagemDto> listarTodos() {
-        List<Usuario> usuarios = new ArrayList<>();
-        usuarios.addAll(responsavelRepository.findAll());
-        usuarios.addAll(cuidadorRepository.findAll());
-        return usuarios.stream()
-                .map(usuarioMapper::toUsuarioListagemDto)
-                .collect(Collectors.toList());
-    }
-
-    public boolean emailJaExiste(String email) {
-        Optional<Responsavel> responsavelOptional = responsavelRepository.findByEmail(email);
-        Optional<Cuidador> cuidadorOptional = cuidadorRepository.findByEmail(email);
-
-        return responsavelOptional.isPresent() || cuidadorOptional.isPresent();
-    }
-
-
-    public List<UsuarioListagemDto> listarCuidadores() {
-        List<Usuario> usuarios = new ArrayList<>();
-        usuarios.addAll(responsavelRepository.findAll());
-        return usuarios.stream()
-                .map(usuarioMapper::toUsuarioListagemDto)
-                .collect(Collectors.toList());
-    }
 
     public UsuarioTokenDto autenticar(UsuarioLoginDto usuarioLoginDto){
         final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
@@ -90,4 +66,34 @@ public class UsuarioService {
     public void logout() {
         SecurityContextHolder.clearContext();
     }
+
+
+    public List<Usuario> list(){
+           return usuarioRepository.findAll();
+    }
+
+    public Usuario byId(UUID id){
+        return usuarioRepository.findById(id).orElseThrow(
+                () -> new NaoEncontradoException("Usuario")
+        );
+    }
+
+    public List<UsuarioListagemDto> listarTodos() {
+        List<Usuario> usuarios = new ArrayList<>();
+        usuarios.addAll(responsavelRepository.findAll());
+        usuarios.addAll(cuidadorRepository.findAll());
+        return usuarios.stream()
+                .map(UsuarioMapper::toUsuarioListagemDto)
+                .collect(Collectors.toList());
+    }
+
+    public void delete(UUID id){
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
+        if (usuario.isEmpty()){
+            throw new NaoEncontradoException("Usuario");
+        }
+        usuarioRepository.delete(usuario.get());
+    }
+
 }
+

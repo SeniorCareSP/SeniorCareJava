@@ -14,7 +14,7 @@ import java.util.List;
 
 @Component
 public class UsuarioMapper {
-        public UsuarioListagemDto toUsuarioListagemDto (Usuario usuario){
+        public static UsuarioListagemDto toUsuarioListagemDto (Usuario usuario){
             UsuarioListagemDto dto = new UsuarioListagemDto();
             dto.setIdUsuario(usuario.getIdUsuario());
             dto.setNome(usuario.getNome());
@@ -29,6 +29,7 @@ public class UsuarioMapper {
             dto.setAgendas(usuario.getAgendas());
             dto.setIdiomas(usuario.getIdiomas());
             dto.setEndereco(usuario.getEndereco());
+
             return dto;
         }
 

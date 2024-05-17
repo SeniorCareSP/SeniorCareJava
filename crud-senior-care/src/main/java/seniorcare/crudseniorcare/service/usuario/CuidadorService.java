@@ -8,7 +8,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import seniorcare.crudseniorcare.domain.usuario.Cuidador;
+import seniorcare.crudseniorcare.domain.usuario.Responsavel;
+import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.domain.usuario.repository.CuidadorRepository;
+import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
+import seniorcare.crudseniorcare.exception.ConflitoException;
+import seniorcare.crudseniorcare.exception.NaoEncontradoException;
 import seniorcare.crudseniorcare.service.endereco.EnderecoService;
 import seniorcare.crudseniorcare.service.usuario.dto.CuidadorMapper;
 import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioCriacaoCuidadorDto;
@@ -24,59 +29,88 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CuidadorService {
     private final PasswordEncoder passwordEncoder;
-    private final CuidadorRepository cuidadorRepository;
-    private final CuidadorMapper cuidadorMapper;
-    private final EnderecoService enderecoService;
+    private final CuidadorRepository repository;
+    private final UsuarioRepository usuarioRepository;
 
-    public UsuarioListagemCuidadorDto criar(UsuarioCriacaoCuidadorDto usuarioCriacaoCuidadorDto) {
-        Cuidador novoUsuario = CuidadorMapper.toCuidador(usuarioCriacaoCuidadorDto);
+    public Cuidador criar(Cuidador novoCuidador) {
 
-        String senhaCriptografada = passwordEncoder.encode(novoUsuario.getSenha());
-        novoUsuario.setSenha(senhaCriptografada);
+        String senhaCriptografada = passwordEncoder.encode(novoCuidador.getSenha());
+        novoCuidador.setSenha(senhaCriptografada);
 
-        Cuidador cuidadorSalvo = cuidadorRepository.save(novoUsuario);
+        if (emailJaExiste(novoCuidador.getEmail())){
+            throw new ConflitoException("Email Responsavel");
+        }
 
-        return CuidadorMapper.toUsuarioListagemCuidadorDto(cuidadorSalvo);
+        return repository.save(novoCuidador);
     }
 
 
-
-    public List<UsuarioListagemCuidadorDto> listarTodos() {
-        List<Cuidador> cuidadores = cuidadorRepository.findAll();
-        List<UsuarioListagemCuidadorDto> listaCuidadoresDto = new ArrayList<>();
-
-        for (Cuidador cuidador : cuidadores) {
-            listaCuidadoresDto.add(CuidadorMapper.toUsuarioListagemCuidadorDto(cuidador));
-        }
-
-        return listaCuidadoresDto;
+    public boolean emailJaExiste(String email) {
+        Optional<Usuario> emailUsuario = usuarioRepository.findByEmail(email);
+        return emailUsuario.isPresent();
     }
 
-    public void deleteCuidadorById(UUID cuidadorId) {
-        Optional<Cuidador> cuidadorOptional = cuidadorRepository.findById(cuidadorId);
-        if (cuidadorOptional.isPresent()) {
-            Cuidador cuidador = cuidadorOptional.get();
-            cuidadorRepository.delete(cuidador);
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cuidador não encontrado com o ID: " + cuidadorId);
-        }
+    public List<Cuidador> list(){ return repository.findAll();}
+
+    public Cuidador byId(UUID id){
+        return repository.findById(id).orElseThrow(
+                () -> new NaoEncontradoException("Cuidador")
+        );
     }
 
 
-    public UsuarioListagemCuidadorDto updateCuidador(UUID cuidadorId, UsuarioCriacaoCuidadorDto usuarioAtualizado) {
-        Optional<Cuidador> cuidadorOptional = cuidadorRepository.findById(cuidadorId);
-        if (cuidadorOptional.isPresent()) {
-            Cuidador cuidador = cuidadorOptional.get();
-            // Atualiza os dados do cuidador com os novos dados
-            cuidador.setNome(usuarioAtualizado.getNome());
-            cuidador.setEmail(usuarioAtualizado.getEmail());
-            cuidador.setSenha(passwordEncoder.encode(usuarioAtualizado.getSenha()));
-            // Outros campos que podem precisar de atualização
-
-            // Salva e retorna o cuidador atualizado
-            return CuidadorMapper.toUsuarioListagemCuidadorDto(cuidadorRepository.save(cuidador));
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cuidador não encontrado com o ID: " + cuidadorId);
+    public void delete(UUID id){
+        Optional<Cuidador> cuidador = repository.findById(id);
+        if (cuidador.isEmpty()){
+            throw new NaoEncontradoException("Cuidador");
         }
+        repository.delete(cuidador.get());
+    }
+
+    public Cuidador update(UUID id, Cuidador cuidador){
+        Optional<Cuidador> cuidadadorOpt = repository.findById(id);
+
+        if (cuidadadorOpt.isEmpty()) {
+            throw new NaoEncontradoException("Cuidador");
+        }
+        Cuidador cuidadorUpd = cuidadadorOpt.get();
+
+        cuidadorUpd.setCpf(cuidador.getCpf());
+        cuidadorUpd.setEmail(cuidador.getEmail());
+        cuidadorUpd.setApresentacao(cuidador.getApresentacao());
+        cuidadorUpd.setPrecoHora(cuidador.getPrecoHora());
+        cuidadorUpd.setNome(cuidador.getNome());
+        cuidadorUpd.setSenha(passwordEncoder.encode(cuidador.getSenha()));
+        cuidadorUpd.setTelefone(cuidador.getTelefone());
+        cuidadorUpd.setSexoBiologico(cuidador.getSexoBiologico());
+        cuidadorUpd.setDtNascimento(cuidador.getDtNascimento());
+        cuidadorUpd.setExperiencia(cuidadorUpd.getExperiencia());
+        cuidadorUpd.setFaixaEtaria(cuidador.getFaixaEtaria());
+
+        return cuidadorUpd;
+    }
+
+    public UsuarioListagemCuidadorDto updateCuidador(UUID cuidadorId, UsuarioCriacaoCuidadorDto cuidador) {
+        Optional<Cuidador> cuidadorOptional = repository.findById(cuidadorId);
+        if (cuidadorOptional.isEmpty()){
+            throw new NaoEncontradoException("Cuidador");
+        }
+
+            Cuidador cuidadorUpd = cuidadorOptional.get();
+
+            cuidadorUpd.setCpf(cuidador.getCpf());
+            cuidadorUpd.setEmail(cuidador.getEmail());
+            cuidadorUpd.setApresentacao(cuidador.getApresentacao());
+            cuidadorUpd.setPrecoHora(cuidador.getPrecoHora());
+            cuidadorUpd.setNome(cuidador.getNome());
+            cuidadorUpd.setSenha(passwordEncoder.encode(cuidador.getSenha()));
+            cuidadorUpd.setTelefone(cuidador.getTelefone());
+            cuidadorUpd.setSexoBiologico(cuidador.getSexoBiologico());
+            cuidadorUpd.setDtNascimento(cuidador.getDtNascimento());
+            cuidadorUpd.setExperiencia(cuidadorUpd.getExperiencia());
+            cuidadorUpd.setFaixaEtaria(cuidador.getFaixaEtaria());
+
+            UsuarioListagemCuidadorDto dto = CuidadorMapper.toUsuarioListagemCuidadorDto(cuidadorUpd);
+            return dto;
     }
 }

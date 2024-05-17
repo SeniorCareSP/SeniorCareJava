@@ -18,6 +18,6 @@ public class AgendaListagemDto {
         private boolean periodo_tarde;
         private boolean periodo_noite;
         @ManyToOne
-        @JoinColumn(name = "usuario_id", referencedColumnName = "idUsuario" )
+        @JoinColumn(name = "usuario_id", referencedColumnName = "idUsuario")
         private Usuario usuario;
 }
