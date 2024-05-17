@@ -12,6 +12,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name="tb_cuidador")
+
 @DiscriminatorValue("CUIDADOR")
 public class Cuidador extends Usuario{
 
