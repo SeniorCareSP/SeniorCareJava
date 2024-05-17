@@ -22,10 +22,13 @@ import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioTokenDt
 
 import seniorcare.crudseniorcare.service.usuario.dto.UsuarioMapper;
 import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
+import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioListagemDto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -75,7 +78,22 @@ public class UsuarioService {
         );
     }
 
+    public List<UsuarioListagemDto> listarTodos() {
+        List<Usuario> usuarios = new ArrayList<>();
+        usuarios.addAll(responsavelRepository.findAll());
+        usuarios.addAll(cuidadorRepository.findAll());
+        return usuarios.stream()
+                .map(UsuarioMapper::toUsuarioListagemDto)
+                .collect(Collectors.toList());
+    }
 
+    public void delete(UUID id){
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
+        if (usuario.isEmpty()){
+            throw new NaoEncontradoException("Usuario");
+        }
+        usuarioRepository.delete(usuario.get());
+    }
 
 }
 

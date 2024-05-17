@@ -14,6 +14,7 @@ import seniorcare.crudseniorcare.domain.usuario.TipoUsuario;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.domain.usuario.repository.ResponsavelRepository;
 import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
+import seniorcare.crudseniorcare.exception.ConflitoException;
 import seniorcare.crudseniorcare.exception.NaoEncontradoException;
 import seniorcare.crudseniorcare.service.usuario.dto.CuidadorMapper;
 import seniorcare.crudseniorcare.service.usuario.dto.ResponsavelMapper;
@@ -33,15 +34,16 @@ public class ResponsavelService {
     private final ResponsavelRepository repository;
     public final PasswordEncoder passwordEncoder;
 
-    public UsuarioListagemResponsavelDto criar(UsuarioCriacaoResponsavelDto usuarioCriacaoResponsavelDto){
-        final Responsavel novoUsuario = ResponsavelMapper.toResponsavel(usuarioCriacaoResponsavelDto);
-        String senhaCriptografada = passwordEncoder.encode(novoUsuario.getSenha());
-        novoUsuario.setSenha(senhaCriptografada);
-        if (emailJaExiste(usuarioCriacaoResponsavelDto.getEmail())){
-            throw new ConcurrentModificationException("Usuario");
+    public Responsavel criar(Responsavel novoResponsavel) {
+
+        String senhaCriptografada = passwordEncoder.encode(novoResponsavel.getSenha());
+        novoResponsavel.setSenha(senhaCriptografada);
+        if (emailJaExiste(novoResponsavel.getEmail())){
+            throw new ConflitoException("Email Responsavel");
         }
-        return ResponsavelMapper.toUsuarioListagemResponsavelDto( this.repository.save(novoUsuario));
+        return repository.save(novoResponsavel);
     }
+
 
     public boolean emailJaExiste(String email) {
         Optional<Usuario> emailUsuario = usuarioRepository.findByEmail(email);
@@ -85,7 +87,5 @@ public class ResponsavelService {
 
         return responsavelUpd;
     }
-
-
 
 }

@@ -1,5 +1,6 @@
 package seniorcare.crudseniorcare.controller.newsletter;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,11 +21,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/newsletter")
+@RequiredArgsConstructor
 public class NewsletterController {
 
-    @Autowired
-    private NewsletterService newsletterService;
-
+    private final NewsletterService newsletterService;
 
     @GetMapping
     public ResponseEntity<List<NewsletterDTO>> listar() {

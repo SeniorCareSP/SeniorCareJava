@@ -12,6 +12,7 @@ import seniorcare.crudseniorcare.service.agenda.dto.AgendaCriacaoDto;
 import seniorcare.crudseniorcare.service.agenda.dto.AgendaListagemDto;
 import seniorcare.crudseniorcare.service.agenda.dto.AgendaMapper;
 import seniorcare.crudseniorcare.service.endereco.EnderecoService;
+import seniorcare.crudseniorcare.service.endereco.dto.EnderecoCriacaoDto;
 import seniorcare.crudseniorcare.service.endereco.dto.EnderecoListagemDto;
 import seniorcare.crudseniorcare.service.endereco.dto.EnderecoMapper;
 import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioListagemCuidadorDto;
@@ -40,22 +41,34 @@ public class EnderecoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<EnderecoListagemDto> porId(@PathVariable UUID id){
-        Agenda agenda = service.porId(id);
-        AgendaListagemDto dto = AgendaMapper.toListagemDto(agenda);
+        Endereco endereco = service.byId(id);
+        EnderecoListagemDto dto = EnderecoMapper.toEnderecoListagemDto(endereco);
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping
-    public ResponseEntity<AgendaListagemDto> criar (
-            @RequestBody AgendaCriacaoDto agendaDto){
+    public ResponseEntity<EnderecoListagemDto> criar (
+            @RequestBody EnderecoCriacaoDto enderecoDto){
 
-        Agenda salvoEntity = AgendaMapper.toEntity(agendaDto);
+        Endereco salvoEntity = EnderecoMapper.toEndereco(enderecoDto);
 
-        Agenda salvo = service.create(salvoEntity);
-        AgendaListagemDto dto = AgendaMapper.toListagemDto(salvo);
-        URI uri = URI.create("/agendas" + salvo.getIdAgenda());
+        Endereco salvo = service.create(salvoEntity);
+        EnderecoListagemDto dto = EnderecoMapper.toEnderecoListagemDto(salvo);
+        URI uri = URI.create("/enderecos/" + salvo.getIdEndereco());
 
         return ResponseEntity.created(uri).body(dto);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id){
+        service.delete(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EnderecoListagemDto> update(@PathVariable UUID id, @RequestBody Endereco endereco){
+        Endereco uptEndereco = service.update(id, endereco);
+        EnderecoListagemDto dto = EnderecoMapper.toEnderecoListagemDto(uptEndereco);
+        return ResponseEntity.ok(dto);
     }
 }

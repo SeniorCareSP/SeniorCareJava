@@ -12,6 +12,7 @@ import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.domain.usuario.repository.CuidadorRepository;
 import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
+import seniorcare.crudseniorcare.exception.ConflitoException;
 import seniorcare.crudseniorcare.exception.NaoEncontradoException;
 import seniorcare.crudseniorcare.service.endereco.EnderecoService;
 import seniorcare.crudseniorcare.service.usuario.dto.CuidadorMapper;
@@ -31,12 +32,16 @@ public class CuidadorService {
     private final CuidadorRepository repository;
     private final UsuarioRepository usuarioRepository;
 
-    public UsuarioListagemCuidadorDto criar(UsuarioCriacaoCuidadorDto usuarioCriacaoCuidadorDto) {
-        Cuidador novoUsuario = CuidadorMapper.toCuidador(usuarioCriacaoCuidadorDto);
-        String senhaCriptografada = passwordEncoder.encode(novoUsuario.getSenha());
-        novoUsuario.setSenha(senhaCriptografada);
-        Cuidador cuidadorSalvo = repository.save(novoUsuario);
-        return CuidadorMapper.toUsuarioListagemCuidadorDto(cuidadorSalvo);
+    public Cuidador criar(Cuidador novoCuidador) {
+
+        String senhaCriptografada = passwordEncoder.encode(novoCuidador.getSenha());
+        novoCuidador.setSenha(senhaCriptografada);
+
+        if (emailJaExiste(novoCuidador.getEmail())){
+            throw new ConflitoException("Email Responsavel");
+        }
+
+        return repository.save(novoCuidador);
     }
 
 

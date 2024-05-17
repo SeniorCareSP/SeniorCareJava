@@ -49,8 +49,20 @@ public class AgendaController {
 
         Agenda salvo = service.create(salvoEntity);
         AgendaListagemDto dto = AgendaMapper.toListagemDto(salvo);
-        URI uri = URI.create("/agendas" + salvo.getIdAgenda());
+        URI uri = URI.create("/agendas/" + salvo.getIdAgenda());
 
         return ResponseEntity.created(uri).body(dto);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id){
+        service.delete(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AgendaListagemDto> update(@PathVariable UUID id, @RequestBody Agenda agenda){
+        Agenda uptAgenda = service.update(id, agenda);
+        AgendaListagemDto dto = AgendaMapper.toListagemDto(uptAgenda);
+        return ResponseEntity.ok(dto);
     }
 }
