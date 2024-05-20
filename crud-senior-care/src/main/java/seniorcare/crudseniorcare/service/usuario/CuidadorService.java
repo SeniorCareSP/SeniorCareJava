@@ -34,7 +34,6 @@ public class CuidadorService {
 
     }
 
-
     public boolean emailJaExiste(String email) {
         Optional<Usuario> emailUsuario = usuarioRepository.findByEmail(email);
         return emailUsuario.isPresent();
@@ -47,7 +46,6 @@ public class CuidadorService {
                 () -> new NaoEncontradoException("Cuidador")
         );
     }
-
 
     public void delete(UUID id){
         Optional<Cuidador> cuidador = repository.findById(id);
@@ -79,5 +77,4 @@ public class CuidadorService {
 
         return cuidadorUpd;
     }
-
 }
