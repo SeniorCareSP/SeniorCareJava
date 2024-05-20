@@ -30,6 +30,8 @@ public class CuidadorService {
         }
 
         return repository.save(novoCuidador);
+
+
     }
 
 
