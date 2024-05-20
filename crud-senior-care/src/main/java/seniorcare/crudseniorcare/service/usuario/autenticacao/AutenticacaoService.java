@@ -8,8 +8,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import seniorcare.crudseniorcare.domain.usuario.Cuidador;
 import seniorcare.crudseniorcare.domain.usuario.Responsavel;
+import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.domain.usuario.repository.CuidadorRepository;
 import seniorcare.crudseniorcare.domain.usuario.repository.ResponsavelRepository;
+import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioDetalhesDto;
 
 import java.util.Optional;
@@ -21,20 +23,15 @@ public class AutenticacaoService implements UserDetailsService {
     private final CuidadorRepository cuidadorRepository;
     private final ResponsavelRepository responsavelRepository;
 
+    private final UsuarioRepository usuarioRepository;
+
     //Método da interface implementada
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException{
-        Optional<Cuidador> cuidador = cuidadorRepository.findByEmail(email);
-        if (cuidador.isPresent()) {
-            return new UsuarioDetalhesDto(cuidador.get());
-        }
+        Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
+        if (usuario.isEmpty()) throw new UsernameNotFoundException("Usuário não encontrado");
+        return new UsuarioDetalhesDto(usuario.get());
 
-        Optional<Responsavel> responsavel = responsavelRepository.findByEmail(email);
-        if (responsavel.isPresent()) {
-            return new UsuarioDetalhesDto(responsavel.get());
-        }
-
-        throw new UsernameNotFoundException("Usuário não encontrado");
     }
 
 }

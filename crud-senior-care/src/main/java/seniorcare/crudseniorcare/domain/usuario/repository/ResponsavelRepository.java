@@ -8,5 +8,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ResponsavelRepository extends JpaRepository<Responsavel, UUID> {
-    Optional<Responsavel> findByEmail (String email);
+
 }

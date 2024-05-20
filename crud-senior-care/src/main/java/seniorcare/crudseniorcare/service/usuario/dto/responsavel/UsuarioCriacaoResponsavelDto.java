@@ -9,10 +9,7 @@ import java.util.List;
 @Data
 public class UsuarioCriacaoResponsavelDto extends UsuarioCriacaoDto {
 
-
     private double precoHora;
-    @OneToMany(mappedBy = "responsavel")
     private List<Idoso> idosos;
-
 
 }

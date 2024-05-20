@@ -1,29 +1,17 @@
 package seniorcare.crudseniorcare.service.usuario;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import seniorcare.crudseniorcare.domain.usuario.Cuidador;
-import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.domain.usuario.repository.CuidadorRepository;
 import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
 import seniorcare.crudseniorcare.exception.ConflitoException;
 import seniorcare.crudseniorcare.exception.NaoEncontradoException;
-import seniorcare.crudseniorcare.service.endereco.EnderecoService;
-import seniorcare.crudseniorcare.service.usuario.dto.CuidadorMapper;
-import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioCriacaoCuidadorDto;
-import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioListagemCuidadorDto;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -90,27 +78,4 @@ public class CuidadorService {
         return cuidadorUpd;
     }
 
-    public UsuarioListagemCuidadorDto updateCuidador(UUID cuidadorId, UsuarioCriacaoCuidadorDto cuidador) {
-        Optional<Cuidador> cuidadorOptional = repository.findById(cuidadorId);
-        if (cuidadorOptional.isEmpty()){
-            throw new NaoEncontradoException("Cuidador");
-        }
-
-            Cuidador cuidadorUpd = cuidadorOptional.get();
-
-            cuidadorUpd.setCpf(cuidador.getCpf());
-            cuidadorUpd.setEmail(cuidador.getEmail());
-            cuidadorUpd.setApresentacao(cuidador.getApresentacao());
-            cuidadorUpd.setPrecoHora(cuidador.getPrecoHora());
-            cuidadorUpd.setNome(cuidador.getNome());
-            cuidadorUpd.setSenha(passwordEncoder.encode(cuidador.getSenha()));
-            cuidadorUpd.setTelefone(cuidador.getTelefone());
-            cuidadorUpd.setSexoBiologico(cuidador.getSexoBiologico());
-            cuidadorUpd.setDtNascimento(cuidador.getDtNascimento());
-            cuidadorUpd.setExperiencia(cuidadorUpd.getExperiencia());
-            cuidadorUpd.setFaixaEtaria(cuidador.getFaixaEtaria());
-
-            UsuarioListagemCuidadorDto dto = CuidadorMapper.toUsuarioListagemCuidadorDto(cuidadorUpd);
-            return dto;
-    }
 }

@@ -8,5 +8,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface CuidadorRepository extends JpaRepository<Cuidador, UUID> {
-    Optional<Cuidador> findByEmail (String email);
+
 }

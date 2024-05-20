@@ -9,9 +9,6 @@ import java.util.List;
 @Data
 
 public class UsuarioListagemResponsavelDto extends UsuarioListagemDto {
-
-
     private double precoHora;
     private List<Idoso> idosos;
-
 }

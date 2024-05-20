@@ -15,7 +15,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
-@Controller
+@RestController
 @Data
 @RequestMapping("/agendas")
 public class AgendaController {

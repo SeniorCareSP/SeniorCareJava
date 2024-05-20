@@ -7,13 +7,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.security.core.Authentication;
 
 import seniorcare.crudseniorcare.configuration.security.jwt.GerenciadorTokenJwt;
-import seniorcare.crudseniorcare.domain.usuario.Cuidador;
-import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
+import seniorcare.crudseniorcare.domain.usuario.repository.AdministradorRepository;
 import seniorcare.crudseniorcare.domain.usuario.repository.CuidadorRepository;
 import seniorcare.crudseniorcare.domain.usuario.repository.ResponsavelRepository;
 import seniorcare.crudseniorcare.exception.NaoEncontradoException;
@@ -35,6 +33,7 @@ import java.util.stream.Collectors;
 public class UsuarioService {
     private final CuidadorRepository cuidadorRepository;
     private final ResponsavelRepository responsavelRepository;
+    private final AdministradorRepository administradorRepository;
     private final UsuarioRepository usuarioRepository;
 
     public final PasswordEncoder passwordEncoder;
@@ -47,14 +46,14 @@ public class UsuarioService {
 
         final Authentication authentication = this.authenticationManager.authenticate(credentials);
 
-        Optional<Cuidador> cuidadorOptional = cuidadorRepository.findByEmail(usuarioLoginDto.getEmail());
-        Optional<Responsavel> responsavelOptional = responsavelRepository.findByEmail(usuarioLoginDto.getEmail());
+        Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(usuarioLoginDto.getEmail());
 
-        Usuario usuarioAutenticado = cuidadorOptional
-                .map(cuidador -> (Usuario) cuidador)
-                .orElseGet(() -> responsavelOptional
-                        .map(responsavel -> (Usuario) responsavel)
-                        .orElseThrow(() -> new ResponseStatusException(404, "Email do usuário não cadastrado", null)));
+
+        if (usuarioOptional.isEmpty()){
+            throw new NaoEncontradoException("Usuario email AUTENTICAR");
+        }
+
+        Usuario usuarioAutenticado = usuarioOptional.get();
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -73,7 +72,7 @@ public class UsuarioService {
     }
 
     public Usuario byId(UUID id){
-        return usuarioRepository.findById(id).orElseThrow(
+        return usuarioRepository.findByIdUsuario(id).orElseThrow(
                 () -> new NaoEncontradoException("Usuario")
         );
     }
@@ -88,7 +87,7 @@ public class UsuarioService {
     }
 
     public void delete(UUID id){
-        Optional<Usuario> usuario = usuarioRepository.findById(id);
+        Optional<Usuario> usuario = usuarioRepository.findByIdUsuario(id);
         if (usuario.isEmpty()){
             throw new NaoEncontradoException("Usuario");
         }
