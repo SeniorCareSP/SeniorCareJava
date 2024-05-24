@@ -17,6 +17,7 @@ public class Agenda implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID idAgenda;
     private boolean[][] disponibilidade = new boolean[7][3];
+    @ManyToOne
     private Usuario usuario;
 
-}
+}   

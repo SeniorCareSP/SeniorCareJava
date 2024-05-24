@@ -1,5 +1,6 @@
 package seniorcare.crudseniorcare.service.arquivo;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,11 +14,11 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
-
 @Service
+@RequiredArgsConstructor
 public class ArquivoService {
-    @Autowired
-    private ArquivoRepository arquivoRepository;
+
+    private final ArquivoRepository arquivoRepository;
     private final Path diretorioBase = Path.of(Paths.get("").toAbsolutePath().toString());
 
     public ArquivoDto buscarArquivo(Integer id){
@@ -26,11 +27,8 @@ public class ArquivoService {
         if (arq.isEmpty()) {
             return null;
         }
-
         Arquivo arquivoBanco = arq.get();
-
         File file = this.diretorioBase.resolve(arquivoBanco.getNomeArquivoSalvo()).toFile();
-
         return new ArquivoDto(arquivoBanco.getNomeArquivoOriginal(), arquivoBanco.getNomeArquivoSalvo(), file);
     }
 
