@@ -30,8 +30,9 @@ public class CuidadorService {
         }
 
         return repository.save(novoCuidador);
-    }
 
+
+    }
 
     public boolean emailJaExiste(String email) {
         Optional<Usuario> emailUsuario = usuarioRepository.findByEmail(email);
@@ -45,7 +46,6 @@ public class CuidadorService {
                 () -> new NaoEncontradoException("Cuidador")
         );
     }
-
 
     public void delete(UUID id){
         Optional<Cuidador> cuidador = repository.findById(id);
@@ -77,5 +77,4 @@ public class CuidadorService {
 
         return cuidadorUpd;
     }
-
 }
