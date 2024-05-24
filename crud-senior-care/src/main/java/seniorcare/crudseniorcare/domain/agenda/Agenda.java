@@ -20,4 +20,4 @@ public class Agenda implements Serializable {
     @ManyToOne
     private Usuario usuario;
 
-}
+}   
