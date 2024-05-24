@@ -2,6 +2,9 @@ package seniorcare.crudseniorcare.utils;
 
 import seniorcare.crudseniorcare.exception.FilaCheiaException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FilaCircularObj<T> {
     int tamanho, inicio, fim;
     T[] fila;
@@ -9,7 +12,7 @@ public class FilaCircularObj<T> {
     // Construtor - Recebe a capacidade da fila (tamanho total do vetor)
     public FilaCircularObj(int capacidade) {
         // Cria o vetor para armazenar a fila e inicializa o tamanho
-        this.fila = (T[]) new Object[tamanho];
+        this.fila = (T[]) new Object[capacidade];
         tamanho = 0;
         inicio = 0;
         fim = 0;
@@ -98,6 +101,14 @@ public class FilaCircularObj<T> {
         }
 
         return vetor;
+    }
+
+    public List<T> toList() {
+        List<T> list = new ArrayList<>();
+        for (int i = 0; i < tamanho; i++) {
+            list.add(fila[(inicio + i) % fila.length]);
+        }
+        return list;
     }
 }
 

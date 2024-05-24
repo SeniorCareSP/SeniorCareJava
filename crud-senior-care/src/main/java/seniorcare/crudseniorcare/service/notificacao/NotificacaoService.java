@@ -1,30 +1,77 @@
 package seniorcare.crudseniorcare.service.notificacao;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import seniorcare.crudseniorcare.domain.notificacao.Notificacao;
-import seniorcare.crudseniorcare.exception.FilaCheiaException;
+import seniorcare.crudseniorcare.domain.notificacao.repository.NotificacaoRepository;
+import seniorcare.crudseniorcare.domain.usuario.Usuario;
+import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
+import seniorcare.crudseniorcare.exception.NaoEncontradoException;
+import seniorcare.crudseniorcare.service.notificacao.dto.NotificacaoCriacaoDto;
+import seniorcare.crudseniorcare.service.notificacao.dto.NotificacaoMapper;
 import seniorcare.crudseniorcare.utils.FilaCircularObj;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+
 @Service
+@RequiredArgsConstructor
 public class NotificacaoService {
+    private final NotificacaoRepository repository;
+    private final UsuarioRepository usuarioRepository;
+    private final FilaCircularObj<Notificacao> filaNotificacoes = new FilaCircularObj<>(10);
 
-    private FilaCircularObj<Notificacao> filaNotificacoes;
-
-    public NotificacaoService() {
-        this.filaNotificacoes = new FilaCircularObj<>(10); // Tamanho da fila ajustável
+    public List<Notificacao> list() {
+        return repository.findAll();
     }
 
-    public void adicionarNotificacao(String mensagem, String destinatario) {
-        Notificacao notificacao = new Notificacao(mensagem, destinatario);
-        filaNotificacoes.insert(notificacao);
+    public Notificacao byId(UUID id) {
+        return repository.findById(id).orElseThrow(
+                () -> new NaoEncontradoException("Notificação")
+        );
+    }
+
+    @Transactional
+    public Notificacao criar(NotificacaoCriacaoDto dto) {
+        Usuario usuario = usuarioRepository.findByEmail(dto.getUsuarioEmail()).orElseThrow(
+                () -> new NaoEncontradoException("Usuário não encontrado com o e-mail: " + dto.getUsuarioEmail())
+        );
+
+        Notificacao notificacao = NotificacaoMapper.toNotificacao(dto);
+        notificacao.setUsuarioId(usuario.getIdUsuario());
+
+        Notificacao salva = repository.save(notificacao);
+        filaNotificacoes.insert(salva);  // Adiciona a notificação à fila
+        return salva;
+    }
+
+    public void delete(UUID id) {
+        Notificacao notificacao = repository.findById(id).orElseThrow(
+                () -> new NaoEncontradoException("Notificação")
+        );
+        repository.delete(notificacao);
+    }
+
+    public Notificacao update(UUID id, Notificacao notificacao) {
+        Notificacao existente = repository.findById(id).orElseThrow(
+                () -> new NaoEncontradoException("Notificação")
+        );
+        existente.setTitulo(notificacao.getTitulo());
+        existente.setMensagem(notificacao.getMensagem());
+        existente.setDataCriacao(notificacao.getDataCriacao());
+        existente.setUsuarioId(notificacao.getUsuarioId());
+
+        return repository.save(existente);
     }
 
     public Notificacao processarNotificacao() {
         return filaNotificacoes.poll();
     }
 
-    public void exibirFila() {
-        filaNotificacoes.exibe();
+    public List<Notificacao> exibirFila() {
+        return filaNotificacoes.toList();
     }
 
     public boolean isFilaVazia() {

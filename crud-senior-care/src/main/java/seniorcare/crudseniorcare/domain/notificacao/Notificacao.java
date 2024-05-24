@@ -1,19 +1,29 @@
 package seniorcare.crudseniorcare.domain.notificacao;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.UUID;
 
 @Getter
 @Setter
+@Entity
 @AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "tb_notificacao")
 public class Notificacao {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
     private String mensagem;
-    private String destinatario; // Pode ser um e-mail, telefone, etc.
+    private String titulo;
+    private LocalDateTime dataCriacao;
+    private UUID usuarioId;
 
-    @Override
-    public String toString() {
-        return "Notificacao{mensagem='" + mensagem + "', destinatario='" + destinatario + "'}";
-    }
 }
-
