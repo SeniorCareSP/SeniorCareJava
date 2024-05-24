@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.core.Authentication;
 
 import seniorcare.crudseniorcare.configuration.security.jwt.GerenciadorTokenJwt;
+import seniorcare.crudseniorcare.domain.usuario.Administrador;
+import seniorcare.crudseniorcare.domain.usuario.Cuidador;
+import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.domain.usuario.repository.AdministradorRepository;
 import seniorcare.crudseniorcare.domain.usuario.repository.CuidadorRepository;
@@ -21,6 +24,7 @@ import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioTokenDt
 import seniorcare.crudseniorcare.service.usuario.dto.UsuarioMapper;
 import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
 import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioListagemDto;
+import seniorcare.crudseniorcare.utils.PilhaObj;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +43,11 @@ public class UsuarioService {
     public final PasswordEncoder passwordEncoder;
     private final GerenciadorTokenJwt gerenciadorTokenJwt;
     private final AuthenticationManager authenticationManager;
+
+
+    private PilhaObj<Cuidador> pilhaCuidador = new PilhaObj<>(10);
+    private PilhaObj<Responsavel> pilhaResponsavel = new PilhaObj<>(10);
+    private PilhaObj<Administrador> pilhaAdministrador = new PilhaObj<>(10);
 
     public UsuarioTokenDto autenticar(UsuarioLoginDto usuarioLoginDto){
         final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
@@ -86,12 +95,50 @@ public class UsuarioService {
                 .collect(Collectors.toList());
     }
 
+
     public void delete(UUID id){
-        Optional<Usuario> usuario = usuarioRepository.findByIdUsuario(id);
-        if (usuario.isEmpty()){
-            throw new NaoEncontradoException("Usuario");
+        Usuario usuario = usuarioRepository.findByIdUsuario(id)
+                .orElseThrow(() -> new NaoEncontradoException("Usuario"));
+
+        if (usuario instanceof Cuidador) {
+            pilhaCuidador.push((Cuidador) usuario);
+            cuidadorRepository.delete((Cuidador) usuario);
+        } else if (usuario instanceof Responsavel) {
+            pilhaResponsavel.push((Responsavel) usuario);
+            responsavelRepository.delete((Responsavel) usuario);
+        } else if (usuario instanceof Administrador) {
+            pilhaAdministrador.push((Administrador) usuario);
+            administradorRepository.delete((Administrador) usuario);
+        } else {
+            usuarioRepository.delete(usuario);
         }
-        usuarioRepository.delete(usuario.get());
+    }
+
+    public void desfazerExclusaoCuidador() {
+        if (!pilhaCuidador.isEmpty()) {
+            Cuidador cuidador = pilhaCuidador.pop();
+            cuidadorRepository.save(cuidador);
+        } else {
+            throw new IllegalStateException("Não há cuidadores excluídos para desfazer.");
+        }
+    }
+
+    public void desfazerExclusaoResponsavel() {
+        if (!pilhaResponsavel.isEmpty()) {
+            Responsavel responsavel = pilhaResponsavel.pop();
+            responsavelRepository.save(responsavel);
+        } else {
+            throw new IllegalStateException("Não há responsáveis excluídos para desfazer.");
+        }
+    }
+
+    public void desfazerExclusaoAdministrador() {
+        if (!pilhaAdministrador.isEmpty()) {
+            Administrador administrador = pilhaAdministrador.pop();
+            administradorRepository.save(administrador);
+        } else {
+            throw new IllegalStateException("Não há administradores excluídos para desfazer.");
+        }
     }
 
 }

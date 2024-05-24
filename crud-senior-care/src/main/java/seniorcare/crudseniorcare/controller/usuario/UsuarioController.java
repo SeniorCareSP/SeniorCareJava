@@ -63,4 +63,23 @@ public class UsuarioController {
         return ResponseEntity.ok().build();
     }
 
+
+    @PostMapping("/desfazer-exclusao/cuidador")
+    public ResponseEntity<Void> desfazerExclusaoCuidador() {
+        usuarioService.desfazerExclusaoCuidador();
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/desfazer-exclusao/responsavel")
+    public ResponseEntity<Void> desfazerExclusaoResponsavel() {
+        usuarioService.desfazerExclusaoResponsavel();
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/desfazer-exclusao/administrador")
+    public ResponseEntity<Void> desfazerExclusaoAdministrador() {
+        usuarioService.desfazerExclusaoAdministrador();
+        return ResponseEntity.ok().build();
+    }
 }
+
