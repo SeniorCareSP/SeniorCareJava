@@ -26,6 +26,9 @@ public class IdiomaService {
     }
 
     public Idioma create(Idioma novaIdioma){
+
+        if (novaIdioma == null) return null;
+
         return repository.save(novaIdioma);
     }
 

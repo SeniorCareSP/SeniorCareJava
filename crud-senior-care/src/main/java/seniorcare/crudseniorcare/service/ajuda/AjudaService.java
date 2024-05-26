@@ -46,7 +46,7 @@ public class AjudaService {
         Ajuda uptAjuda = ajudaOpt.get();
 
         uptAjuda.setNome(ajuda.getNome());
-        uptAjuda.setCuidadores(ajuda.getCuidadores());
+        uptAjuda.setCuidador(ajuda.getCuidador());
 
         return uptAjuda;
     }

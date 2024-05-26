@@ -32,7 +32,7 @@ public class AdministradorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AdministradorListagemDto> porId(@PathVariable UUID id){
+    public ResponseEntity<AdministradorListagemDto> porId(@PathVariable Integer id){
         Administrador administrador = service.byId(id);
         AdministradorListagemDto dto = AdministradorMapper.toAdministradorDto(administrador);
         return ResponseEntity.ok(dto);
@@ -51,13 +51,13 @@ public class AdministradorController {
         return ResponseEntity.created(uri).body(dto);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id){
+    public ResponseEntity<Void> delete(@PathVariable Integer id){
         service.delete(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AdministradorListagemDto> update(@PathVariable UUID id, @RequestBody Administrador administrador){
+    public ResponseEntity<AdministradorListagemDto> update(@PathVariable Integer id, @RequestBody Administrador administrador){
         Administrador uptAdministrador = service.update(id, administrador);
         AdministradorListagemDto dto = AdministradorMapper.toAdministradorDto(uptAdministrador);
         return ResponseEntity.ok(dto);

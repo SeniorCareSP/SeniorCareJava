@@ -15,7 +15,6 @@ import java.util.List;
 @Table(name="tb_responsavel")
 @DiscriminatorValue("RESPONSAVEL")
 public class Responsavel extends Usuario {
-    private double precoHora;
 
     @OneToMany(mappedBy = "responsavel")
     private List<Idoso> idosos;

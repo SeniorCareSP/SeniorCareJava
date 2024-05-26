@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 public class EnderecoMapper {
 
     public static Endereco toEndereco(EnderecoCriacaoDto dto) {
+        if (dto == null) return null;
         Endereco endereco = new Endereco();
         endereco.setCep(dto.getCep());
         endereco.setLogradouro(dto.getLogradouro());
@@ -20,6 +21,7 @@ public class EnderecoMapper {
     }
 
     public static EnderecoListagemDto toEnderecoListagemDto(Endereco endereco) {
+        if (endereco == null) return null;
         EnderecoListagemDto dto = new EnderecoListagemDto();
         dto.setIdEndereco(endereco.getIdEndereco());
         dto.setCep(endereco.getCep());
@@ -28,7 +30,6 @@ public class EnderecoMapper {
         dto.setNumero(endereco.getNumero());
         dto.setCidade(endereco.getCidade());
         dto.setBairro(endereco.getBairro());
-        dto.setUsuario(endereco.getUsuario());
         return dto;
     }
 

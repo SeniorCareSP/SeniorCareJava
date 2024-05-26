@@ -7,6 +7,6 @@ import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface CuidadorRepository extends JpaRepository<Cuidador, UUID> {
+public interface CuidadorRepository extends JpaRepository<Cuidador, Integer> {
 
 }

@@ -26,6 +26,7 @@ public class AgendaService {
     }
 
     public Agenda create(Agenda novaAgenda){
+        if (novaAgenda == null) return null;
         return repository.save(novaAgenda);
     }
 

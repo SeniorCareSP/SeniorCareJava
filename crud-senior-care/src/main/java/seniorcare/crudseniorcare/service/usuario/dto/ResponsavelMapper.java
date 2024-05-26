@@ -2,7 +2,11 @@ package seniorcare.crudseniorcare.service.usuario.dto;
 import org.springframework.stereotype.Component;
 import seniorcare.crudseniorcare.domain.endereco.Endereco;
 import seniorcare.crudseniorcare.domain.usuario.Responsavel;
+import seniorcare.crudseniorcare.service.agenda.AgendaService;
+import seniorcare.crudseniorcare.service.agenda.dto.AgendaMapper;
 import seniorcare.crudseniorcare.service.endereco.dto.EnderecoMapper;
+import seniorcare.crudseniorcare.service.idioma.dto.IdiomaMapper;
+import seniorcare.crudseniorcare.service.idoso.dto.IdosoMapper;
 import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioCriacaoResponsavelDto;
 import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioListagemResponsavelDto;
 
@@ -21,11 +25,12 @@ public class ResponsavelMapper {
         responsavel.setTipoDeUsuario(dto.getTipoDeUsuario());
         responsavel.setSexoBiologico(dto.getSexoBiologico());
         responsavel.setDtNascimento(dto.getDtNascimento());
+        responsavel.setIdiomas(IdiomaMapper.toListagemIdioma(dto.getIdiomas()));
         responsavel.setApresentacao(dto.getApresentacao());
+        responsavel.setAgenda(AgendaMapper.toEntity(dto.getAgendas()));
         responsavel.setDtCadastro(LocalDate.now());
-        responsavel.setPrecoHora(dto.getPrecoHora());
-        responsavel.setIdosos(dto.getIdosos());
-        responsavel.setEndereco(dto.getEndereco());
+        responsavel.setIdosos(IdosoMapper.toIdosoList(dto.getIdosos()));
+        responsavel.setEndereco(EnderecoMapper.toEndereco(dto.getEndereco()));
         return responsavel;
     }
 
@@ -42,11 +47,10 @@ public class ResponsavelMapper {
         dto.setTipoDeUsuario(responsavel.getTipoDeUsuario());
         dto.setApresentacao(responsavel.getApresentacao());
         dto.setDtCadastro(responsavel.getDtCadastro());
-        dto.setAgendas(responsavel.getAgendas());
-        dto.setIdiomas(responsavel.getIdiomas());
-        dto.setPrecoHora(responsavel.getPrecoHora());
-        dto.setEndereco(responsavel.getEndereco());
-
+        dto.setAgenda(AgendaMapper.toListagemDto(responsavel.getAgenda()));
+        dto.setIdiomas(IdiomaMapper.toListagemDtoList(responsavel.getIdiomas()));
+        dto.setEndereco(EnderecoMapper.toEnderecoListagemDto(responsavel.getEndereco()));
+        dto.setIdosos(IdosoMapper.toListagemDtoList(responsavel.getIdosos()));
 
 
         return dto;

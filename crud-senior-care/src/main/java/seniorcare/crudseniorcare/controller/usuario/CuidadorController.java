@@ -37,7 +37,7 @@ public class CuidadorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UsuarioListagemCuidadorDto> porId(@PathVariable UUID id){
+    public ResponseEntity<UsuarioListagemCuidadorDto> porId(@PathVariable Integer id){
         Cuidador cuidador = service.byId(id);
         UsuarioListagemCuidadorDto dto = CuidadorMapper.toUsuarioListagemCuidadorDto(cuidador);
         return ResponseEntity.ok(dto);
@@ -56,13 +56,13 @@ public class CuidadorController {
         return ResponseEntity.created(uri).body(dto);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id){
+    public ResponseEntity<Void> delete(@PathVariable Integer id){
         service.delete(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioListagemCuidadorDto> update(@PathVariable UUID id, @RequestBody Cuidador cuidador){
+    public ResponseEntity<UsuarioListagemCuidadorDto> update(@PathVariable Integer id, @RequestBody Cuidador cuidador){
         Cuidador uptCuidador = service.update(id, cuidador);
         UsuarioListagemCuidadorDto dto = CuidadorMapper.toUsuarioListagemCuidadorDto(uptCuidador);
         return ResponseEntity.ok(dto);

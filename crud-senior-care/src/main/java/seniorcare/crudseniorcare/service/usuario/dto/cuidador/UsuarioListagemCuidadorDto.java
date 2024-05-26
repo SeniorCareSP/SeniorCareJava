@@ -4,6 +4,8 @@ import lombok.Data;
 import seniorcare.crudseniorcare.domain.agenda.Agenda;
 import seniorcare.crudseniorcare.domain.ajuda.Ajuda;
 import seniorcare.crudseniorcare.domain.caracteristica.Caracteristica;
+import seniorcare.crudseniorcare.service.ajuda.dto.AjudaListagemDto;
+import seniorcare.crudseniorcare.service.caracteristica.dto.CaracteristicaListagemDto;
 import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioListagemDto;
 
 import java.util.List;
@@ -12,8 +14,6 @@ import java.util.List;
 public class UsuarioListagemCuidadorDto extends UsuarioListagemDto {
     private String experiencia;
     private String faixaEtaria;
-    private double precoHora;
-    private List<Agenda> agendas;
-    private List<Caracteristica> caracteristicas;
-    private List<Ajuda> ajudas;
+    private List<CaracteristicaListagemDto> caracteristicas;
+    private List<AjudaListagemDto> ajudas;
 }

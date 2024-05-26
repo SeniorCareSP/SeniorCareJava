@@ -9,5 +9,5 @@ import java.util.UUID;
 public class IdiomaCriacaoDto {
 
     private String idioma;
-    private UUID usuarioId;
+
 }
