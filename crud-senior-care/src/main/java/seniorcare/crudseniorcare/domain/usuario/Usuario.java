@@ -9,6 +9,7 @@ import seniorcare.crudseniorcare.domain.agenda.Agenda;
 
 import seniorcare.crudseniorcare.domain.endereco.Endereco;
 import seniorcare.crudseniorcare.domain.idioma.Idioma;
+import seniorcare.crudseniorcare.service.idioma.dto.IdiomaListagemDto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -24,8 +25,8 @@ import java.util.UUID;
 @DiscriminatorColumn(name = "tipo_usuario", discriminatorType = DiscriminatorType.STRING)
 public abstract class Usuario implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID idUsuario;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idUsuario;
     private String nome;
     private String email;
     private String senha;
@@ -38,12 +39,10 @@ public abstract class Usuario implements Serializable {
     private String apresentacao;
     private LocalDate dtCadastro;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    private List<Agenda> agendas;
-
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private Agenda agenda;
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Idioma> idiomas;
-
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private Endereco endereco;
 }

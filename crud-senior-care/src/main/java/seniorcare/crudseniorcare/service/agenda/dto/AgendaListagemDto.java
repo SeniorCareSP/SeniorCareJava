@@ -12,5 +12,4 @@ import java.util.UUID;
 public class AgendaListagemDto {
         private UUID idAgenda;
         private boolean[][] disponibilidade;
-        private Usuario usuario;
 }

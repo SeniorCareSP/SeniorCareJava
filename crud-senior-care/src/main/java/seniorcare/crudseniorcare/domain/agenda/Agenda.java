@@ -16,8 +16,9 @@ public class Agenda implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID idAgenda;
+
     private boolean[][] disponibilidade = new boolean[7][3];
     @ManyToOne
+    @JoinColumn(name = "usuario_id", referencedColumnName = "idUsuario")
     private Usuario usuario;
-
-}   
+}

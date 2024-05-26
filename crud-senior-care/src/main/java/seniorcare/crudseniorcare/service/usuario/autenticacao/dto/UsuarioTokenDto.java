@@ -8,7 +8,7 @@ import java.util.UUID;
 @Getter @Setter
 public class   UsuarioTokenDto {
 
-    private UUID userId;
+    private Integer userId;
     private String nome;
     private String email;
     private TipoUsuario tipoUsuario;

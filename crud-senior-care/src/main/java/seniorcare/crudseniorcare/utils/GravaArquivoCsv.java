@@ -38,7 +38,7 @@ public class GravaArquivoCsv {
                         user.getDtNascimento(),
                         user.getApresentacao(),
                         user.getDtCadastro(),
-                        user.getAgendas(),
+                        user.getAgenda(),
                         user.getIdiomas(),
                         user.getEndereco());
             }

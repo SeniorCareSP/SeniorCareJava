@@ -15,6 +15,7 @@ import seniorcare.crudseniorcare.domain.usuario.repository.AdministradorReposito
 import seniorcare.crudseniorcare.domain.usuario.repository.CuidadorRepository;
 import seniorcare.crudseniorcare.domain.usuario.repository.ResponsavelRepository;
 import seniorcare.crudseniorcare.exception.NaoEncontradoException;
+import seniorcare.crudseniorcare.service.endereco.EnderecoService;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioLoginDto;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioTokenDto;
 
@@ -36,9 +37,11 @@ public class UsuarioService {
     private final AdministradorRepository administradorRepository;
     private final UsuarioRepository usuarioRepository;
 
+
     public final PasswordEncoder passwordEncoder;
     private final GerenciadorTokenJwt gerenciadorTokenJwt;
     private final AuthenticationManager authenticationManager;
+
 
     public UsuarioTokenDto autenticar(UsuarioLoginDto usuarioLoginDto){
         final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
@@ -47,7 +50,6 @@ public class UsuarioService {
         final Authentication authentication = this.authenticationManager.authenticate(credentials);
 
         Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(usuarioLoginDto.getEmail());
-
 
         if (usuarioOptional.isEmpty()){
             throw new NaoEncontradoException("Usuario email AUTENTICAR");
@@ -71,7 +73,7 @@ public class UsuarioService {
            return usuarioRepository.findAll();
     }
 
-    public Usuario byId(UUID id){
+    public Usuario byId(Integer id){
         return usuarioRepository.findByIdUsuario(id).orElseThrow(
                 () -> new NaoEncontradoException("Usuario")
         );
@@ -80,13 +82,14 @@ public class UsuarioService {
     public List<UsuarioListagemDto> listarTodos() {
         List<Usuario> usuarios = new ArrayList<>();
         usuarios.addAll(responsavelRepository.findAll());
+        usuarios.addAll(administradorRepository.findAll());
         usuarios.addAll(cuidadorRepository.findAll());
         return usuarios.stream()
                 .map(UsuarioMapper::toUsuarioListagemDto)
                 .collect(Collectors.toList());
     }
 
-    public void delete(UUID id){
+    public void delete(Integer id){
         Optional<Usuario> usuario = usuarioRepository.findByIdUsuario(id);
         if (usuario.isEmpty()){
             throw new NaoEncontradoException("Usuario");

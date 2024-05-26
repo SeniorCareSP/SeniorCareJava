@@ -6,6 +6,8 @@ import seniorcare.crudseniorcare.domain.agenda.Agenda;
 import seniorcare.crudseniorcare.domain.ajuda.Ajuda;
 import seniorcare.crudseniorcare.domain.caracteristica.Caracteristica;
 import seniorcare.crudseniorcare.domain.endereco.Endereco;
+import seniorcare.crudseniorcare.service.ajuda.dto.AjudaCriacaoDto;
+import seniorcare.crudseniorcare.service.caracteristica.dto.CaracteristicaCriacaoDto;
 import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioCriacaoDto;
 
 import java.util.List;
@@ -14,9 +16,8 @@ public class UsuarioCriacaoCuidadorDto extends UsuarioCriacaoDto {
     private String experiencia;
     private String faixaEtaria;
     private double precoHora;
-    private List<Agenda> agendas;
-    private List<Caracteristica> caracteristicas;
-    private List<Ajuda> ajudas;
+    private List<CaracteristicaCriacaoDto> caracteristicas;
+    private List<AjudaCriacaoDto> ajuda;
 
 
 }

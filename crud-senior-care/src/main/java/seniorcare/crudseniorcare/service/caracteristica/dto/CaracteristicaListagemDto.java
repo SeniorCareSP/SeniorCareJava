@@ -13,7 +13,6 @@ public class CaracteristicaListagemDto {
 
         private UUID idCaracteristica;
         private String nome;
-        private List<Cuidador> cuidadores;
 
 
 

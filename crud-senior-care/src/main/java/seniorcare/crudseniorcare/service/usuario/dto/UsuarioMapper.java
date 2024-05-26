@@ -1,9 +1,13 @@
 package seniorcare.crudseniorcare.service.usuario.dto;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
+import seniorcare.crudseniorcare.domain.agenda.Agenda;
 import seniorcare.crudseniorcare.domain.usuario.Cuidador;
 import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
+import seniorcare.crudseniorcare.service.agenda.dto.AgendaMapper;
+import seniorcare.crudseniorcare.service.endereco.dto.EnderecoMapper;
+import seniorcare.crudseniorcare.service.idioma.dto.IdiomaMapper;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioTokenDto;
 import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioCriacaoCuidadorDto;
 import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioListagemCuidadorDto;
@@ -15,6 +19,7 @@ import java.util.List;
 @Component
 public class UsuarioMapper {
         public static UsuarioListagemDto toUsuarioListagemDto (Usuario usuario){
+            if (usuario == null ) return null;
             UsuarioListagemDto dto = new UsuarioListagemDto();
             dto.setIdUsuario(usuario.getIdUsuario());
             dto.setNome(usuario.getNome());
@@ -26,15 +31,16 @@ public class UsuarioMapper {
             dto.setDtNascimento(usuario.getDtNascimento());
             dto.setApresentacao(usuario.getApresentacao());
             dto.setDtCadastro(usuario.getDtCadastro());
-            dto.setAgendas(usuario.getAgendas());
-            dto.setIdiomas(usuario.getIdiomas());
-            dto.setEndereco(usuario.getEndereco());
+            dto.setAgenda(AgendaMapper.toListagemDto(usuario.getAgenda()));
+            dto.setEndereco(EnderecoMapper.toEnderecoListagemDto(usuario.getEndereco()));
 
             return dto;
         }
 
 
         public static UsuarioTokenDto of(Usuario usuario, String token){
+            if (usuario == null ) return null;
+
             UsuarioTokenDto usuarioTokenDto = new UsuarioTokenDto();
 
             usuarioTokenDto.setUserId(usuario.getIdUsuario());

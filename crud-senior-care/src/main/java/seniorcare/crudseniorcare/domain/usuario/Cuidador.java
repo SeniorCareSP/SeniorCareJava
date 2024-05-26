@@ -19,12 +19,8 @@ public class Cuidador extends Usuario{
     private String experiencia;
     private String faixaEtaria;
     private double precoHora;
-    @OneToMany
-    @JoinTable(name = "cuidador_caracteristica", joinColumns = @JoinColumn(name = "cuidador_id"), inverseJoinColumns = @JoinColumn(name = "caracteristica_id"))
+    @OneToMany(mappedBy = "cuidador", cascade = CascadeType.ALL)
     private List<Caracteristica> caracteristicas;
-    @OneToMany
-    @JoinTable(name = "cuidador_ajuda",
-            joinColumns = @JoinColumn(name = "cuidador_id"),
-            inverseJoinColumns = @JoinColumn(name = "ajuda_id"))
+    @OneToMany(mappedBy = "cuidador", cascade = CascadeType.ALL)
     private List<Ajuda> ajudas;
 }

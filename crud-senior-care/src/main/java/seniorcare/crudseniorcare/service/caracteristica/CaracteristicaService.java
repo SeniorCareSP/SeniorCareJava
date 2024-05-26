@@ -47,7 +47,7 @@ public class CaracteristicaService {
         Caracteristica uptCaracteristica = caraOpt.get();
 
         uptCaracteristica.setNome(caracteristica.getNome());
-        uptCaracteristica.setCuidadores(caracteristica.getCuidadores());
+        uptCaracteristica.setCuidador(caracteristica.getCuidador());
 
         return uptCaracteristica;
     }

@@ -15,6 +15,5 @@ public class CaracteristicaCriacaoDto {
     @NotBlank
     private String nome;
 
-    private List<Cuidador> cuidadores;
 
 }
