@@ -5,5 +5,5 @@ import seniorcare.crudseniorcare.domain.endereco.Endereco;
 
 import java.util.UUID;
 
-public interface EnderecoRepository extends JpaRepository<Endereco, UUID> {
+public interface EnderecoRepository extends JpaRepository<Endereco, Integer> {
 }

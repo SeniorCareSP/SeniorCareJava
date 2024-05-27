@@ -21,7 +21,7 @@ public class IdosoService {
 
     public List<Idoso> list(){ return repository.findAll();}
 
-    public Idoso byId(UUID id){
+    public Idoso byId(Integer id){
         return repository.findById(id).orElseThrow(
                 () -> new NaoEncontradoException("Idoso")
         );
@@ -34,7 +34,7 @@ public class IdosoService {
         return repository.save(novaIdoso);
     }
 
-    public void delete(UUID id){
+    public void delete(Integer id){
         Optional<Idoso> idoso = repository.findById(id);
         if (idoso.isEmpty()){
             throw new NaoEncontradoException("Idoso");

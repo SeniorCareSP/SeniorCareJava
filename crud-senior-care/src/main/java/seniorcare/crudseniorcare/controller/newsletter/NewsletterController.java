@@ -43,7 +43,7 @@ public class NewsletterController {
     }
 
     @GetMapping("/{idNewsletter}")
-    public ResponseEntity<Newsletter> buscarPorId(@PathVariable UUID idNewsletter) {
+    public ResponseEntity<Newsletter> buscarPorId(@PathVariable Integer  idNewsletter) {
         return ResponseEntity.status(200).body(this.newsletterService.buscarPorId(idNewsletter));
     }
 
@@ -55,7 +55,7 @@ public class NewsletterController {
 
     @PostMapping("/{idNewsletter}/assinantes")
     public ResponseEntity<Void> inscrever(
-            @PathVariable UUID idNewsletter,
+            @PathVariable Integer idNewsletter,
             @RequestBody AssinanteEmail assinanteEmail
     ) {
         this.newsletterService.adicionarAssinante(idNewsletter, assinanteEmail);
@@ -63,7 +63,7 @@ public class NewsletterController {
     }
 
     @PostMapping("/{idNewsletter}/publicacao")
-    public ResponseEntity<Void> publicar(@PathVariable UUID idNewsletter) {
+    public ResponseEntity<Void> publicar(@PathVariable Integer idNewsletter) {
         this.newsletterService.publicarNewsletter(idNewsletter);
         return ResponseEntity.status(200).build();
     }

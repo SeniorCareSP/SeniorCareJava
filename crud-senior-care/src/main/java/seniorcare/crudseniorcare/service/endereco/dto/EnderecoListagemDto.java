@@ -10,7 +10,7 @@ import java.util.UUID;
 @Setter
 public class EnderecoListagemDto {
 
-    private UUID idEndereco;
+    private Integer idEndereco;
     private String cep;
     private String logradouro;
     private String complemento;

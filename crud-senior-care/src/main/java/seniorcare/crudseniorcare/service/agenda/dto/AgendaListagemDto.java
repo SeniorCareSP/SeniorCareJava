@@ -10,6 +10,6 @@ import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import java.util.UUID;
 @Data
 public class AgendaListagemDto {
-        private UUID idAgenda;
+        private Integer idAgenda;
         private boolean[][] disponibilidade;
 }

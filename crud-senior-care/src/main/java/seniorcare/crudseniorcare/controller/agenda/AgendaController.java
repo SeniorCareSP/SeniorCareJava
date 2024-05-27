@@ -34,7 +34,7 @@ public class AgendaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AgendaListagemDto> porId(@PathVariable UUID id){
+    public ResponseEntity<AgendaListagemDto> porId(@PathVariable Integer id){
         Agenda agenda = service.byId(id);
         AgendaListagemDto dto = AgendaMapper.toListagemDto(agenda);
         return ResponseEntity.ok(dto);
@@ -53,13 +53,13 @@ public class AgendaController {
         return ResponseEntity.created(uri).body(dto);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id){
+    public ResponseEntity<Void> delete(@PathVariable Integer id){
         service.delete(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AgendaListagemDto> update(@PathVariable UUID id, @RequestBody Agenda agenda){
+    public ResponseEntity<AgendaListagemDto> update(@PathVariable Integer id, @RequestBody Agenda agenda){
         Agenda uptAgenda = service.update(id, agenda);
         AgendaListagemDto dto = AgendaMapper.toListagemDto(uptAgenda);
         return ResponseEntity.ok(dto);

@@ -8,7 +8,7 @@ import seniorcare.crudseniorcare.domain.assinante.AssinanteEmail;
 import java.util.List;
 import java.util.UUID;
 
-public interface AssinanteEmailRepository extends JpaRepository<AssinanteEmail, UUID> {
+public interface AssinanteEmailRepository extends JpaRepository<AssinanteEmail, Integer> {
     @Query("SELECT ae FROM AssinanteEmail ae JOIN FETCH ae.newsletter n WHERE n.id = :newsletterId")
-    List<AssinanteEmail> findAssinantesByNewsletterId(@Param("newsletterId") UUID newsletterId);
+    List<AssinanteEmail> findAssinantesByNewsletterId(@Param("newsletterId") Integer newsletterId);
 }

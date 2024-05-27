@@ -26,16 +26,16 @@ public class NewsletterService {
     private final NewsletterRepository newsletterRepository;
     private final AssinanteEmailRepository assinanteEmailRepository;
 
-    public void publicarNewsletter(UUID id) {
+    public void publicarNewsletter(Integer id) {
         this.assinanteEmailRepository.findAssinantesByNewsletterId(id)
                 .forEach(assinanteEmail -> assinanteEmail.receberNewsletter(this.enviadorEmailService, assinanteEmail.getNewsletter()));
     }
 
-    public List<AssinanteEmail> listarAssinantesPeloId(UUID uuid) {
+    public List<AssinanteEmail> listarAssinantesPeloId(Integer uuid) {
         return this.assinanteEmailRepository.findAssinantesByNewsletterId(uuid);
     }
 
-    public void adicionarAssinante(UUID idNewsletter, AssinanteEmail assinante) {
+    public void adicionarAssinante(Integer idNewsletter, AssinanteEmail assinante) {
         Newsletter newsletter = this.buscarPorIndice(idNewsletter);
 
         if (newsletter != null) {
@@ -54,11 +54,11 @@ public class NewsletterService {
         return this.newsletterRepository.findAll();
     }
 
-    public Newsletter buscarPorId(UUID idNewsletter) {
+    public Newsletter buscarPorId(Integer idNewsletter) {
         return buscarPorIndice(idNewsletter);
     }
 
-    private Newsletter buscarPorIndice(UUID id) {
+    private Newsletter buscarPorIndice(Integer id) {
         return this.newsletterRepository.findById(id).orElseThrow();
     }
 

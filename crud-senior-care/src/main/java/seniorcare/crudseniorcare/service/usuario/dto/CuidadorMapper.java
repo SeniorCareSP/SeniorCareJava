@@ -41,7 +41,6 @@ public class CuidadorMapper {
         cuidador.setCaracteristicas(CaracteristicaMapper.toCaracteristicaListagemEntityList(dto.getCaracteristicas()));
         cuidador.setAjudas(AjudaMapper.toAjudaListagemEntityList(dto.getAjuda()));
 
-
         cuidador.setEndereco(EnderecoMapper.toEndereco(dto.getEndereco()));
 
         return cuidador;

@@ -19,7 +19,7 @@ public class IdiomaService {
 
     public List<Idioma> list(){ return repository.findAll();}
 
-    public Idioma byId(UUID id){
+    public Idioma byId(Integer id){
         return repository.findById(id).orElseThrow(
                 () -> new NaoEncontradoException("Idioma")
         );
@@ -32,7 +32,7 @@ public class IdiomaService {
         return repository.save(novaIdioma);
     }
 
-    public void delete(UUID id){
+    public void delete(Integer id){
         Optional<Idioma> idioma = repository.findById(id);
         if (idioma.isEmpty()){
             throw new NaoEncontradoException("Idioma");
@@ -40,7 +40,7 @@ public class IdiomaService {
         repository.delete(idioma.get());
     }
 
-    public Idioma update(UUID id, Idioma idioma){
+    public Idioma update(Integer id, Idioma idioma){
         Optional<Idioma> idiomaOpt = repository.findById(id);
 
         if (idiomaOpt.isEmpty()) {

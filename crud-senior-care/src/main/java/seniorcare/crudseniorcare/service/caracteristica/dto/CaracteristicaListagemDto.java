@@ -11,7 +11,7 @@ import java.util.UUID;
 @Setter
 public class CaracteristicaListagemDto {
 
-        private UUID idCaracteristica;
+        private Integer idCaracteristica;
         private String nome;
 
 

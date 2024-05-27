@@ -14,8 +14,8 @@ import java.util.UUID;
 @Table(name="tb_agenda")
 public class Agenda implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID idAgenda;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idAgenda;
 
     private boolean[][] disponibilidade = new boolean[7][3];
     @ManyToOne

@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Data
 public class AssinanteEmailDTO {
-    private UUID uuid;
+    private Integer uuid;
     private String nome;
     private String email;
 

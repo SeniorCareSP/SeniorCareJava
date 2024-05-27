@@ -19,7 +19,7 @@ public class AjudaService {
 
     public List<Ajuda> list(){ return repository.findAll();}
 
-    public Ajuda byId(UUID id){
+    public Ajuda byId(Integer id){
         return repository.findById(id).orElseThrow(
                 () -> new NaoEncontradoException("Ajuda")
         );
@@ -29,7 +29,7 @@ public class AjudaService {
         return repository.save(novaAjuda);
     }
 
-    public void delete(UUID id){
+    public void delete(Integer id){
         Optional<Ajuda> ajuda = repository.findById(id);
         if (ajuda.isEmpty()){
             throw new NaoEncontradoException("Ajuda");
@@ -37,7 +37,7 @@ public class AjudaService {
         repository.delete(ajuda.get());
     }
 
-    public Ajuda update(UUID id, Ajuda ajuda){
+    public Ajuda update(Integer id, Ajuda ajuda){
         Optional<Ajuda> ajudaOpt = repository.findById(id);
 
         if (ajudaOpt.isEmpty()) {

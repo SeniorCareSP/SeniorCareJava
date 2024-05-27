@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class AjudaListagemDto {
 
-    private UUID idAjuda;
+    private Integer idAjuda;
     private String nome;
     //private List<Cuidador> cuidadores;
 

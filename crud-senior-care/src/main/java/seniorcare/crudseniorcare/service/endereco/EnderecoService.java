@@ -24,7 +24,7 @@ public class EnderecoService {
 
     public List<Endereco> list(){ return repository.findAll();}
 
-    public Endereco byId(UUID id){
+    public Endereco byId(Integer id){
         return repository.findById(id).orElseThrow(
                 () -> new NaoEncontradoException("Endereco")
         );
@@ -34,7 +34,7 @@ public class EnderecoService {
         return repository.save(novoEndereco);
     }
 
-    public void delete(UUID id){
+    public void delete(Integer id){
         Optional<Endereco> endereco = repository.findById(id);
         if (endereco.isEmpty()){
             throw new NaoEncontradoException("Endereco");
@@ -42,7 +42,7 @@ public class EnderecoService {
         repository.delete(endereco.get());
     }
 
-    public Endereco update(UUID id, Endereco endereco){
+    public Endereco update(Integer id, Endereco endereco){
         Optional<Endereco> enderecoOpt = repository.findById(id);
 
         if (enderecoOpt.isEmpty()) {

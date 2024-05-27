@@ -5,5 +5,5 @@ import seniorcare.crudseniorcare.domain.idioma.Idioma;
 
 import java.util.UUID;
 
-public interface IdiomaRepository extends JpaRepository<Idioma, UUID> {
+public interface IdiomaRepository extends JpaRepository<Idioma, Integer> {
 }

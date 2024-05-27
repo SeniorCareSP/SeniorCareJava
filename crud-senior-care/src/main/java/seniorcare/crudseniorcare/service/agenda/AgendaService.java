@@ -19,7 +19,7 @@ public class AgendaService {
 
     public List<Agenda> list(){ return repository.findAll();}
 
-    public Agenda byId(UUID id){
+    public Agenda byId(Integer id){
         return repository.findById(id).orElseThrow(
                 () -> new NaoEncontradoException("Agenda")
         );
@@ -30,7 +30,7 @@ public class AgendaService {
         return repository.save(novaAgenda);
     }
 
-    public void delete(UUID id){
+    public void delete(Integer id){
         Optional<Agenda> agenda = repository.findById(id);
         if (agenda.isEmpty()){
             throw new NaoEncontradoException("Agenda");
@@ -38,7 +38,7 @@ public class AgendaService {
         repository.delete(agenda.get());
     }
 
-    public Agenda update(UUID id, Agenda agenda){
+    public Agenda update(Integer id, Agenda agenda){
         Optional<Agenda> agendaOpt = repository.findById(id);
 
         if (agendaOpt.isEmpty()) {

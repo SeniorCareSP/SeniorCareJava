@@ -18,8 +18,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Endereco implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID idEndereco;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idEndereco;
     private String cep;
     private String logradouro;
     private String complemento;

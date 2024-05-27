@@ -9,7 +9,7 @@ import java.util.UUID;
 @Data
 public class NewsletterDTO {
 
-    private UUID id;
+    private Integer id;
     private String titulo;
     private String conteudo;
     private List<AssinanteEmailDTO> assinantes;

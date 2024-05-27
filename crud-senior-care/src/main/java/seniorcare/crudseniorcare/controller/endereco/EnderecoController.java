@@ -40,7 +40,7 @@ public class EnderecoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EnderecoListagemDto> porId(@PathVariable UUID id){
+    public ResponseEntity<EnderecoListagemDto> porId(@PathVariable Integer id){
         Endereco endereco = service.byId(id);
         EnderecoListagemDto dto = EnderecoMapper.toEnderecoListagemDto(endereco);
         return ResponseEntity.ok(dto);
@@ -60,13 +60,13 @@ public class EnderecoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id){
+    public ResponseEntity<Void> delete(@PathVariable Integer id){
         service.delete(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EnderecoListagemDto> update(@PathVariable UUID id, @RequestBody Endereco endereco){
+    public ResponseEntity<EnderecoListagemDto> update(@PathVariable Integer id, @RequestBody Endereco endereco){
         Endereco uptEndereco = service.update(id, endereco);
         EnderecoListagemDto dto = EnderecoMapper.toEnderecoListagemDto(uptEndereco);
         return ResponseEntity.ok(dto);

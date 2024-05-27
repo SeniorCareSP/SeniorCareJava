@@ -20,7 +20,7 @@ public class CaracteristicaService {
 
     public List<Caracteristica> list(){ return repository.findAll();}
 
-    public Caracteristica byId(UUID id){
+    public Caracteristica byId(Integer id){
         return repository.findById(id).orElseThrow(
                 () -> new NaoEncontradoException("Caracteristica")
         );
@@ -30,7 +30,7 @@ public class CaracteristicaService {
         return repository.save(novaCaracteristica);
     }
 
-    public void delete(UUID id){
+    public void delete(Integer id){
         Optional<Caracteristica> caracteristica = repository.findById(id);
         if (caracteristica.isEmpty()){
             throw new NaoEncontradoException("Caracteristica");
@@ -38,7 +38,7 @@ public class CaracteristicaService {
         repository.delete(caracteristica.get());
     }
 
-    public Caracteristica update(UUID id, Caracteristica caracteristica){
+    public Caracteristica update(Integer id, Caracteristica caracteristica){
         Optional<Caracteristica> caraOpt = repository.findById(id);
 
         if (caraOpt.isEmpty()) {

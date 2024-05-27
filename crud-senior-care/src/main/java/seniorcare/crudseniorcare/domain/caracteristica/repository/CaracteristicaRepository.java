@@ -5,6 +5,6 @@ import seniorcare.crudseniorcare.domain.caracteristica.Caracteristica;
 
 import java.util.UUID;
 
-public interface CaracteristicaRepository extends JpaRepository<Caracteristica, UUID> {
+public interface CaracteristicaRepository extends JpaRepository<Caracteristica, Integer> {
 
 }

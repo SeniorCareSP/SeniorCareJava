@@ -12,8 +12,8 @@ import java.util.UUID;
 @Table(name="tb_arquivo")
 public class Arquivo {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String nomeArquivoOriginal;
     private String nomeArquivoSalvo;
     private LocalDate dataUpload;

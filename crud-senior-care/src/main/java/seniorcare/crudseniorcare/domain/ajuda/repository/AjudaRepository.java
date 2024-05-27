@@ -5,6 +5,6 @@ import seniorcare.crudseniorcare.domain.ajuda.Ajuda;
 
 import java.util.UUID;
 
-public interface AjudaRepository extends JpaRepository<Ajuda, UUID> {
+public interface AjudaRepository extends JpaRepository<Ajuda, Integer> {
     boolean existsByNome(String nome);
 }

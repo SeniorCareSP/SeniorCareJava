@@ -12,7 +12,7 @@ import java.util.UUID;
 @Data
 public class IdosoListagemDto {
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID idIdoso;
+    private Integer idIdoso;
     private String nome;
     private boolean mobilidade;
     private boolean lucido;

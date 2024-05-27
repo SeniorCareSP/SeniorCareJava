@@ -5,5 +5,5 @@ import seniorcare.crudseniorcare.domain.newsletter.Newsletter;
 
 import java.util.UUID;
 
-public interface NewsletterRepository extends JpaRepository<Newsletter, UUID> {
+public interface NewsletterRepository extends JpaRepository<Newsletter, Integer> {
 }
