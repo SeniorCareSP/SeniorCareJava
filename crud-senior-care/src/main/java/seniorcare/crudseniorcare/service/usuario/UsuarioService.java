@@ -114,28 +114,31 @@ public class UsuarioService {
         }
     }
 
-    public void desfazerExclusaoCuidador() {
+    public Cuidador desfazerExclusaoCuidador() {
         if (!pilhaCuidador.isEmpty()) {
             Cuidador cuidador = pilhaCuidador.pop();
             cuidadorRepository.save(cuidador);
+            return cuidador;
         } else {
             throw new IllegalStateException("Não há cuidadores excluídos para desfazer.");
         }
     }
 
-    public void desfazerExclusaoResponsavel() {
+    public Responsavel desfazerExclusaoResponsavel() {
         if (!pilhaResponsavel.isEmpty()) {
             Responsavel responsavel = pilhaResponsavel.pop();
             responsavelRepository.save(responsavel);
+            return responsavel;
         } else {
             throw new IllegalStateException("Não há responsáveis excluídos para desfazer.");
         }
     }
 
-    public void desfazerExclusaoAdministrador() {
+    public Administrador desfazerExclusaoAdministrador() {
         if (!pilhaAdministrador.isEmpty()) {
             Administrador administrador = pilhaAdministrador.pop();
             administradorRepository.save(administrador);
+            return administrador;
         } else {
             throw new IllegalStateException("Não há administradores excluídos para desfazer.");
         }

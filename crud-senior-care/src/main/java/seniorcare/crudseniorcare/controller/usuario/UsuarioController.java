@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import seniorcare.crudseniorcare.domain.usuario.Administrador;
 import seniorcare.crudseniorcare.domain.usuario.Cuidador;
 import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
@@ -65,21 +66,21 @@ public class UsuarioController {
 
 
     @PostMapping("/desfazer-exclusao/cuidador")
-    public ResponseEntity<Void> desfazerExclusaoCuidador() {
-        usuarioService.desfazerExclusaoCuidador();
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Cuidador> desfazerExclusaoCuidador() {
+        Cuidador cuid = usuarioService.desfazerExclusaoCuidador();
+        return ResponseEntity.ok().body(cuid);
     }
 
     @PostMapping("/desfazer-exclusao/responsavel")
-    public ResponseEntity<Void> desfazerExclusaoResponsavel() {
-        usuarioService.desfazerExclusaoResponsavel();
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Responsavel> desfazerExclusaoResponsavel() {
+        Responsavel resp = usuarioService.desfazerExclusaoResponsavel();
+        return ResponseEntity.ok().body(resp);
     }
 
     @PostMapping("/desfazer-exclusao/administrador")
-    public ResponseEntity<Void> desfazerExclusaoAdministrador() {
-        usuarioService.desfazerExclusaoAdministrador();
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Administrador> desfazerExclusaoAdministrador() {
+       Administrador adm = usuarioService.desfazerExclusaoAdministrador();
+        return ResponseEntity.ok().body(adm);
     }
 }
 
