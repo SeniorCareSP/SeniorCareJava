@@ -7,5 +7,5 @@ import seniorcare.crudseniorcare.domain.notificacao.Notificacao;
 import java.util.UUID;
 
 @Repository
-public interface NotificacaoRepository extends JpaRepository<Notificacao, UUID> {
+public interface NotificacaoRepository extends JpaRepository<Notificacao, Integer> {
 }

@@ -27,7 +27,7 @@ public class NotificacaoService {
         return repository.findAll();
     }
 
-    public Notificacao byId(UUID id) {
+    public Notificacao byId(Integer id) {
         return repository.findById(id).orElseThrow(
                 () -> new NaoEncontradoException("Notificação")
         );
@@ -47,14 +47,14 @@ public class NotificacaoService {
         return salva;
     }
 
-    public void delete(UUID id) {
+    public void delete(Integer id) {
         Notificacao notificacao = repository.findById(id).orElseThrow(
                 () -> new NaoEncontradoException("Notificação")
         );
         repository.delete(notificacao);
     }
 
-    public Notificacao update(UUID id, Notificacao notificacao) {
+    public Notificacao update(Integer id, Notificacao notificacao) {
         Notificacao existente = repository.findById(id).orElseThrow(
                 () -> new NaoEncontradoException("Notificação")
         );

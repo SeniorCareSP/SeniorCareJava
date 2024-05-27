@@ -96,7 +96,7 @@ public class UsuarioService {
                 .collect(Collectors.toList());
     }
 
-    public void delete(UUID id){
+    public void delete(Integer id){
         Usuario usuario = usuarioRepository.findByIdUsuario(id)
                 .orElseThrow(() -> new NaoEncontradoException("Usuario"));
 

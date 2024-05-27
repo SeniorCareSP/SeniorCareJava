@@ -90,7 +90,7 @@ public class GravaArquivoCsv {
             while (entrada.hasNext()) {
 
                 //Corpo
-                UUID idUsuario = UUID.fromString(entrada.next());
+                Integer idUsuario = entrada.nextInt();
                 String nome = entrada.next();
                 String email = entrada.next();
                 String telefone = entrada.next();

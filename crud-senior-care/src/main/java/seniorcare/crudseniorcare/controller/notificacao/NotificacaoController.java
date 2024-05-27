@@ -31,7 +31,7 @@ public class NotificacaoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<NotificacaoListagemDto> porId(@PathVariable UUID id) {
+    public ResponseEntity<NotificacaoListagemDto> porId(@PathVariable Integer id) {
         Notificacao notificacao = service.byId(id);
         NotificacaoListagemDto dto = NotificacaoMapper.toNotificacaoDto(notificacao);
         return ResponseEntity.ok(dto);
@@ -46,13 +46,13 @@ public class NotificacaoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
         service.delete(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<NotificacaoListagemDto> update(@PathVariable UUID id, @RequestBody Notificacao notificacao) {
+    public ResponseEntity<NotificacaoListagemDto> update(@PathVariable Integer id, @RequestBody Notificacao notificacao) {
         Notificacao atualizado = service.update(id, notificacao);
         NotificacaoListagemDto dto = NotificacaoMapper.toNotificacaoDto(atualizado);
         return ResponseEntity.ok(dto);

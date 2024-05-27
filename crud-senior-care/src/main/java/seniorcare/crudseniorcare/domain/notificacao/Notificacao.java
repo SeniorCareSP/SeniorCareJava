@@ -20,10 +20,10 @@ import java.util.UUID;
 public class Notificacao {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private Integer id;
     private String mensagem;
     private String titulo;
     private LocalDateTime dataCriacao;
-    private UUID usuarioId;
+    private Integer usuarioId;
 
 }
