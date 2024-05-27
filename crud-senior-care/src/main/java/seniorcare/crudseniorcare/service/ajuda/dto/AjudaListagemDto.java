@@ -13,6 +13,6 @@ public class AjudaListagemDto {
 
     private UUID idAjuda;
     private String nome;
-    private List<Cuidador> cuidadores;
+    //private List<Cuidador> cuidadores;
 
 }

@@ -11,9 +11,11 @@ import seniorcare.crudseniorcare.domain.caracteristica.Caracteristica;
 import seniorcare.crudseniorcare.domain.endereco.Endereco;
 import seniorcare.crudseniorcare.domain.idioma.Idioma;
 import seniorcare.crudseniorcare.domain.usuario.TipoUsuario;
+import seniorcare.crudseniorcare.service.agenda.dto.AgendaCriacaoDto;
 import seniorcare.crudseniorcare.service.endereco.dto.EnderecoCriacaoDto;
 import seniorcare.crudseniorcare.service.endereco.dto.EnderecoListagemDto;
 import seniorcare.crudseniorcare.service.endereco.dto.EnderecoMapper;
+import seniorcare.crudseniorcare.service.idioma.dto.IdiomaCriacaoDto;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -39,9 +41,10 @@ public class UsuarioCriacaoDto {
     private LocalDate dtNascimento;
     private String apresentacao;
     private LocalDate dtCadastro;
-    private List<Agenda> agendas;
-    private List<Idioma> idiomas;
+    private AgendaCriacaoDto agendas;
+    private List<IdiomaCriacaoDto> idiomas;
     private String experiencia;
-    private Endereco endereco;
+    private EnderecoCriacaoDto endereco;
     private String faixaEtaria;
+
 }

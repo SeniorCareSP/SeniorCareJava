@@ -3,7 +3,6 @@ package seniorcare.crudseniorcare.controller.agenda;
 
 import lombok.Data;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import seniorcare.crudseniorcare.domain.agenda.Agenda;
 import seniorcare.crudseniorcare.service.agenda.AgendaService;

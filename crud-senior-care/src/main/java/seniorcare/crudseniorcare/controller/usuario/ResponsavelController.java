@@ -34,7 +34,7 @@ public class ResponsavelController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UsuarioListagemResponsavelDto> porId(@PathVariable UUID id){
+    public ResponseEntity<UsuarioListagemResponsavelDto> porId(@PathVariable Integer id){
         Responsavel responsavel = service.byId(id);
         UsuarioListagemResponsavelDto dto = ResponsavelMapper.toUsuarioListagemResponsavelDto(responsavel);
         return ResponseEntity.ok(dto);
@@ -53,13 +53,13 @@ public class ResponsavelController {
         return ResponseEntity.created(uri).body(dto);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id){
+    public ResponseEntity<Void> delete(@PathVariable Integer id){
         service.delete(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioListagemResponsavelDto> update(@PathVariable UUID id, @RequestBody Responsavel responsavel){
+    public ResponseEntity<UsuarioListagemResponsavelDto> update(@PathVariable Integer id, @RequestBody Responsavel responsavel){
         Responsavel uptResponsavel = service.update(id, responsavel);
         UsuarioListagemResponsavelDto dto = ResponsavelMapper.toUsuarioListagemResponsavelDto(uptResponsavel);
         return ResponseEntity.ok(dto);

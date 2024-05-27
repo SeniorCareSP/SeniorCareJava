@@ -1,12 +1,11 @@
 package seniorcare.crudseniorcare.service.agenda;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import seniorcare.crudseniorcare.domain.agenda.Agenda;
 import seniorcare.crudseniorcare.domain.agenda.repository.AgendaRepository;
 import seniorcare.crudseniorcare.exception.NaoEncontradoException;
+import seniorcare.crudseniorcare.service.agenda.dto.AgendaCriacaoDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +26,7 @@ public class AgendaService {
     }
 
     public Agenda create(Agenda novaAgenda){
+        if (novaAgenda == null) return null;
         return repository.save(novaAgenda);
     }
 
@@ -47,11 +47,14 @@ public class AgendaService {
         Agenda uptAgenda = agendaOpt.get();
 
         uptAgenda.setUsuario(agenda.getUsuario());
-        uptAgenda.setDiaDaSemana(agenda.getDiaDaSemana());
-        uptAgenda.setPeriodo_tarde(agenda.isPeriodo_tarde());
-        uptAgenda.setPeriodo_manha(agenda.isPeriodo_manha());
-        uptAgenda.setPeriodo_noite(agenda.isPeriodo_noite());
+        //uptAgenda.setDiaDaSemana(agenda.getDiaDaSemana());
+        uptAgenda.setDisponibilidade(agenda.getDisponibilidade());
 
         return uptAgenda;
     }
+
+
+
+
+
 }

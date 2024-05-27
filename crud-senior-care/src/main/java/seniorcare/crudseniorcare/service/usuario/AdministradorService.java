@@ -40,14 +40,14 @@ public class AdministradorService {
 
     public List<Administrador> list(){ return repository.findAll();}
 
-    public Administrador byId(UUID id){
+    public Administrador byId(Integer id){
         return repository.findById(id).orElseThrow(
                 () -> new NaoEncontradoException("Administrador")
         );
     }
 
 
-    public void delete(UUID id){
+    public void delete(Integer id){
         Optional<Administrador> administrador = repository.findById(id);
         if (administrador.isEmpty()){
             throw new NaoEncontradoException("Administrador");
@@ -55,7 +55,7 @@ public class AdministradorService {
         repository.delete(administrador.get());
     }
 
-    public Administrador update(UUID id, Administrador administrador){
+    public Administrador update(Integer id, Administrador administrador){
         Optional<Administrador> administradorOptional = repository.findById(id);
 
         if (administradorOptional.isEmpty()) {

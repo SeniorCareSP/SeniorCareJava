@@ -52,14 +52,14 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UsuarioListagemDto> porId(@PathVariable UUID id){
+    public ResponseEntity<UsuarioListagemDto> porId(@PathVariable Integer id){
         Usuario usuario = usuarioService.byId(id);
         UsuarioListagemDto dto = UsuarioMapper.toUsuarioListagemDto(usuario);
         return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id){
+    public ResponseEntity<Void> delete(@PathVariable Integer id){
         usuarioService.delete(id);
         return ResponseEntity.ok().build();
     }

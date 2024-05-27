@@ -18,10 +18,7 @@ public class Ajuda implements Serializable {
     private UUID idAjuda;
     private String nome;
 
-    @OneToMany
-    @JoinTable(name = "ajuda_cuidadores",
-            joinColumns = @JoinColumn(name = "idAjuda"),
-            inverseJoinColumns = @JoinColumn(name = "idUsuario"))
-    private List<Cuidador> cuidadores;
-
+    @ManyToOne
+    @JoinColumn(name = "cuidador_id", referencedColumnName = "idUsuario")
+    private Cuidador cuidador;
 }

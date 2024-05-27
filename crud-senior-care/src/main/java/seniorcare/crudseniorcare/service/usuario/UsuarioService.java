@@ -18,6 +18,7 @@ import seniorcare.crudseniorcare.domain.usuario.repository.AdministradorReposito
 import seniorcare.crudseniorcare.domain.usuario.repository.CuidadorRepository;
 import seniorcare.crudseniorcare.domain.usuario.repository.ResponsavelRepository;
 import seniorcare.crudseniorcare.exception.NaoEncontradoException;
+import seniorcare.crudseniorcare.service.endereco.EnderecoService;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioLoginDto;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioTokenDto;
 
@@ -40,15 +41,15 @@ public class UsuarioService {
     private final AdministradorRepository administradorRepository;
     private final UsuarioRepository usuarioRepository;
 
+
     public final PasswordEncoder passwordEncoder;
     private final GerenciadorTokenJwt gerenciadorTokenJwt;
     private final AuthenticationManager authenticationManager;
 
-
     private PilhaObj<Cuidador> pilhaCuidador = new PilhaObj<>(10);
     private PilhaObj<Responsavel> pilhaResponsavel = new PilhaObj<>(10);
     private PilhaObj<Administrador> pilhaAdministrador = new PilhaObj<>(10);
-
+  
     public UsuarioTokenDto autenticar(UsuarioLoginDto usuarioLoginDto){
         final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
                 usuarioLoginDto.getEmail(), usuarioLoginDto.getSenha());
@@ -56,7 +57,6 @@ public class UsuarioService {
         final Authentication authentication = this.authenticationManager.authenticate(credentials);
 
         Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(usuarioLoginDto.getEmail());
-
 
         if (usuarioOptional.isEmpty()){
             throw new NaoEncontradoException("Usuario email AUTENTICAR");
@@ -80,7 +80,7 @@ public class UsuarioService {
            return usuarioRepository.findAll();
     }
 
-    public Usuario byId(UUID id){
+    public Usuario byId(Integer id){
         return usuarioRepository.findByIdUsuario(id).orElseThrow(
                 () -> new NaoEncontradoException("Usuario")
         );
@@ -89,12 +89,12 @@ public class UsuarioService {
     public List<UsuarioListagemDto> listarTodos() {
         List<Usuario> usuarios = new ArrayList<>();
         usuarios.addAll(responsavelRepository.findAll());
+        usuarios.addAll(administradorRepository.findAll());
         usuarios.addAll(cuidadorRepository.findAll());
         return usuarios.stream()
                 .map(UsuarioMapper::toUsuarioListagemDto)
                 .collect(Collectors.toList());
     }
-
 
     public void delete(UUID id){
         Usuario usuario = usuarioRepository.findByIdUsuario(id)

@@ -21,6 +21,8 @@ public class Idoso implements Serializable {
     private boolean lucido;
     private String doencasCronicas;
     private Boolean cuidadosMin;
+    private String genero;
+
     @ManyToOne
     @JoinColumn(name = "responsavel_id", referencedColumnName = "idUsuario")
     private Responsavel responsavel;
