@@ -44,5 +44,8 @@ public abstract class Usuario implements Serializable {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Idioma> idiomas;
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
-    private Endereco endereco;
+    protected Endereco endereco;
+
+    public Usuario(String nome, String email, String senha, String telefone, String cpf, String sexoBiologico, TipoUsuario tipoDeUsuario, LocalDate dtNascimento, String apresentacao, LocalDate dtCadastro) {
+    }
 }

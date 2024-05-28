@@ -55,27 +55,34 @@ public class AdministradorService {
         repository.delete(administrador.get());
     }
 
-    public Administrador update(Integer id, Administrador administrador){
+    public Administrador update(Integer id, Administrador administrador) {
         Optional<Administrador> administradorOptional = repository.findById(id);
 
         if (administradorOptional.isEmpty()) {
             throw new NaoEncontradoException("Administrador");
         }
+
         Administrador administradorUpd = administradorOptional.get();
 
-        administradorUpd.setCpf(administrador.getCpf());
-        administradorUpd.setEmail(administrador.getEmail());
-        administradorUpd.setApresentacao(administrador.getApresentacao());
-        administradorUpd.setNome(administrador.getNome());
-        administradorUpd.setSenha(passwordEncoder.encode(administrador.getSenha()));
-        administradorUpd.setTelefone(administrador.getTelefone());
-        administradorUpd.setSexoBiologico(administrador.getSexoBiologico());
-        administradorUpd.setDtNascimento(administrador.getDtNascimento());
-        administradorUpd.setCargo(administrador.getCargo());
+        // Atualiza apenas os campos não nulos
+        administradorUpd.setCpf(administrador.getCpf() != null ? administrador.getCpf() : administradorUpd.getCpf());
+        administradorUpd.setEmail(administrador.getEmail() != null ? administrador.getEmail() : administradorUpd.getEmail());
+        administradorUpd.setApresentacao(administrador.getApresentacao() != null ? administrador.getApresentacao() : administradorUpd.getApresentacao());
+        administradorUpd.setNome(administrador.getNome() != null ? administrador.getNome() : administradorUpd.getNome());
+        administradorUpd.setTelefone(administrador.getTelefone() != null ? administrador.getTelefone() : administradorUpd.getTelefone());
+        administradorUpd.setSexoBiologico(administrador.getSexoBiologico() != null ? administrador.getSexoBiologico() : administradorUpd.getSexoBiologico());
+        administradorUpd.setDtNascimento(administrador.getDtNascimento() != null ? administrador.getDtNascimento() : administradorUpd.getDtNascimento());
+        administradorUpd.setCargo(administrador.getCargo() != null ? administrador.getCargo() : administradorUpd.getCargo());
 
+        // Criptografa a senha apenas se ela não for nula
+        if (administrador.getSenha() != null) {
+            administradorUpd.setSenha(passwordEncoder.encode(administrador.getSenha()));
+        }
 
-        return administradorUpd;
+        // Salva e retorna o administrador atualizado
+        return repository.save(administradorUpd);
     }
+
 
 
 }

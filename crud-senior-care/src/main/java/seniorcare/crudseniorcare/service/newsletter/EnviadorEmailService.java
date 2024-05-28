@@ -5,6 +5,7 @@ import jakarta.mail.internet.MimeMessage;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.mail.MailParseException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -17,6 +18,7 @@ public class EnviadorEmailService {
     @Autowired
     private JavaMailSender mailSender;
 
+    @Qualifier("applicationTaskExecutor")
     @Autowired
     private TaskExecutor taskExecutor;
 

@@ -1,7 +1,9 @@
 package seniorcare.crudseniorcare.domain.ajuda;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import seniorcare.crudseniorcare.domain.usuario.Cuidador;
 
@@ -12,6 +14,8 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "tb_ajuda")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Ajuda implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

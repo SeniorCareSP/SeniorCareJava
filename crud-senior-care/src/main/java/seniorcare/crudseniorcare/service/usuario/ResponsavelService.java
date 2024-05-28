@@ -93,13 +93,17 @@ public class ResponsavelService {
         Responsavel responsavelUpd = responsavelOpt.get();
 
         responsavelUpd.setCpf(responsavel.getCpf());
-        responsavelUpd.setEmail(responsavelUpd.getEmail());
+        responsavelUpd.setEmail(responsavel.getEmail());
         responsavelUpd.setApresentacao(responsavel.getApresentacao());
         responsavelUpd.setNome(responsavel.getNome());
         responsavelUpd.setSenha(passwordEncoder.encode(responsavel.getSenha()));
         responsavelUpd.setTelefone(responsavel.getTelefone());
         responsavelUpd.setSexoBiologico(responsavel.getSexoBiologico());
         responsavelUpd.setDtNascimento(responsavel.getDtNascimento());
+
+        repository.save(responsavelUpd);
+        //return repository.save(responsavelUpd);
+
 
         return responsavelUpd;
     }
