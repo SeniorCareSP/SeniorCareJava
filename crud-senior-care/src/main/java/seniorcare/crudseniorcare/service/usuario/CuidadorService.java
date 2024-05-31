@@ -3,14 +3,20 @@ package seniorcare.crudseniorcare.service.usuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import seniorcare.crudseniorcare.domain.agenda.Agenda;
 import seniorcare.crudseniorcare.domain.endereco.Endereco;
+import seniorcare.crudseniorcare.domain.idioma.Idioma;
+import seniorcare.crudseniorcare.domain.idoso.Idoso;
 import seniorcare.crudseniorcare.domain.usuario.Cuidador;
+import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.domain.usuario.repository.CuidadorRepository;
 import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
 import seniorcare.crudseniorcare.exception.ConflitoException;
 import seniorcare.crudseniorcare.exception.NaoEncontradoException;
+import seniorcare.crudseniorcare.service.agenda.AgendaService;
 import seniorcare.crudseniorcare.service.endereco.EnderecoService;
+import seniorcare.crudseniorcare.service.idioma.IdiomaService;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,24 +28,30 @@ import java.util.Optional;
         private final UsuarioRepository usuarioRepository;
         private final PasswordEncoder passwordEncoder;
         private final EnderecoService enderecoService;
-
+        private final AgendaService agendaService;
+        private final IdiomaService idiomaService;
         public Cuidador criar(Cuidador novoCuidador) {
             String senhaCriptografada = passwordEncoder.encode(novoCuidador.getSenha());
             novoCuidador.setSenha(senhaCriptografada);
-
-            // Aqui você precisa verificar se novoCuidador.getEndereco() é nulo antes de chamar enderecoService.create()
-            if (novoCuidador.getEndereco() != null) {
-                // Chama o método create do enderecoService para salvar o novo endereço
-                Endereco enderecoCriado = enderecoService.create(novoCuidador.getEndereco());
-                // Define o endereço criado no novoCuidador
-                novoCuidador.setEndereco(enderecoCriado);
-            }
-
             if (emailJaExiste(novoCuidador.getEmail())) {
                 throw new ConflitoException("Email Cuidador");
             }
 
-            return repository.save(novoCuidador);
+            Endereco endereco = enderecoService.create(novoCuidador.getEndereco());
+            Agenda agenda = agendaService.create(novoCuidador.getAgenda());
+
+            novoCuidador.setEndereco(endereco);
+            novoCuidador.setAgenda(agenda);
+            Cuidador usuarioSalvo = repository.save(novoCuidador);
+
+
+            for (Idioma idioma : usuarioSalvo.getIdiomas()){
+                idioma.setUsuario(usuarioSalvo);
+                idiomaService.create(idioma);
+            }
+
+            return usuarioSalvo;
+
         }
 
 
@@ -71,21 +83,9 @@ import java.util.Optional;
             if (cuidadadorOpt.isEmpty()) {
                 throw new NaoEncontradoException("Cuidador");
             }
-            Cuidador cuidadorUpd = cuidadadorOpt.get();
 
-            cuidadorUpd.setCpf(cuidador.getCpf());
-            cuidadorUpd.setEmail(cuidador.getEmail());
-            cuidadorUpd.setApresentacao(cuidador.getApresentacao());
-            cuidadorUpd.setPrecoHora(cuidador.getPrecoHora());
-            cuidadorUpd.setNome(cuidador.getNome());
-            cuidadorUpd.setSenha(passwordEncoder.encode(cuidador.getSenha()));
-            cuidadorUpd.setTelefone(cuidador.getTelefone());
-            cuidadorUpd.setSexoBiologico(cuidador.getSexoBiologico());
-            cuidadorUpd.setDtNascimento(cuidador.getDtNascimento());
-            cuidadorUpd.setExperiencia(cuidador.getExperiencia());
-            cuidadorUpd.setFaixaEtaria(cuidador.getFaixaEtaria());
-
-            return cuidadorUpd;
+            cuidador.setIdUsuario(id);
+            return repository.save(cuidador);
         }
 
     }

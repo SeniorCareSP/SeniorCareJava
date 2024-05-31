@@ -41,4 +41,16 @@ public class IdosoService {
         }
         repository.delete(idoso.get());
     }
+
+    public Idoso update(Integer id, Idoso idoso){
+        Optional<Idoso> idosoOpt = repository.findById(id);
+
+        if (idosoOpt.isEmpty()) {
+            throw new NaoEncontradoException("Idioma");
+        }
+
+        idoso.setIdIdoso(id);
+
+        return repository.save(idoso);
+    }
 }

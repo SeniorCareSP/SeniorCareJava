@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import seniorcare.crudseniorcare.domain.idioma.Idioma;
 import seniorcare.crudseniorcare.domain.idioma.repository.IdiomaRepository;
+import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.exception.NaoEncontradoException;
 
 import java.util.List;
@@ -46,11 +47,9 @@ public class IdiomaService {
         if (idiomaOpt.isEmpty()) {
             throw new NaoEncontradoException("Idioma");
         }
-        Idioma uptIdioma = idiomaOpt.get();
 
-        uptIdioma.setIdioma(idioma.getIdioma());
-        uptIdioma.setUsuario(idioma.getUsuario());
+        idioma.setIdIdioma(id);
 
-        return uptIdioma;
+        return repository.save(idioma);
     }
 }

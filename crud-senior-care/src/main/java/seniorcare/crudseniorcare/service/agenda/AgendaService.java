@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import seniorcare.crudseniorcare.domain.agenda.Agenda;
 import seniorcare.crudseniorcare.domain.agenda.repository.AgendaRepository;
+import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.exception.NaoEncontradoException;
 import seniorcare.crudseniorcare.service.agenda.dto.AgendaCriacaoDto;
 
@@ -44,13 +45,8 @@ public class AgendaService {
         if (agendaOpt.isEmpty()) {
             throw new NaoEncontradoException("Agenda");
         }
-        Agenda uptAgenda = agendaOpt.get();
-
-        uptAgenda.setUsuario(agenda.getUsuario());
-        //uptAgenda.setDiaDaSemana(agenda.getDiaDaSemana());
-        uptAgenda.setDisponibilidade(agenda.getDisponibilidade());
-
-        return uptAgenda;
+        agenda.setIdAgenda(id);
+        return repository.save(agenda);
     }
 
 

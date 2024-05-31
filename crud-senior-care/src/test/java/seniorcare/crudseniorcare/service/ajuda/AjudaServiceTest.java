@@ -30,8 +30,8 @@ class AjudaServiceTest {
     void cenarioCorreto1(){
         //GIVEN
         List<Ajuda> ajudasEsperada = List.of(
-                new Ajuda(1, "Passar roupa", new Cuidador("7 anos", "80-90", 25.00, null, null)),
-                new Ajuda(2, "Lavar louça", new Cuidador("Familiar", "80 anos", 20.0, null, null))
+                new Ajuda(1, "Passar roupa", new Cuidador()),
+                new Ajuda(2, "Lavar louça", new Cuidador())
         );
 
         //WHEN
@@ -56,7 +56,7 @@ class AjudaServiceTest {
     @DisplayName("Buscar por ID")
     void cenarioCorretoPorId() {
         // GIVEN
-        Ajuda ajuda = new Ajuda(1, "Passar roupa", new Cuidador("7 anos", "80-90", 25.00, null, null));
+        Ajuda ajuda = new Ajuda(1, "Passar roupa", new Cuidador());
 
         Integer idInformado = 1;
 
@@ -79,7 +79,7 @@ class AjudaServiceTest {
     void cenarioCorreto3(){
         //GIVEN
         Ajuda ajuda =
-                new Ajuda(1, "Passar roupa", new Cuidador("7 anos", "80-90", 25.00, null, null));
+                new Ajuda(1, "Passar roupa", new Cuidador());
 
         // Configurando o mock para retornar a entidade Ajuda quando findById for chamado
         when(repository.findById(1)).thenReturn(Optional.of(ajuda));
@@ -131,7 +131,7 @@ class AjudaServiceTest {
     @DisplayName("Ajuda não encontrada para atualização")
     void cenarioIncorretoAtt(){
         //GIVEN
-        Ajuda ajuda = new Ajuda(1, "Passar roupa", new Cuidador("7 anos", "80-90", 25.00, null, null));
+        Ajuda ajuda = new Ajuda(1, "Passar roupa", new Cuidador());
         int idCadastrado = 1;
 
         //ASSERT
@@ -144,7 +144,7 @@ class AjudaServiceTest {
     @DisplayName("Ajuda não encontrada para deletar")
     void cenarioIncorretoDel(){
         //GIVEN
-        Ajuda ajuda = new Ajuda(1, "Passar roupa", new Cuidador("7 anos", "80-90", 25.00, null, null));
+        Ajuda ajuda = new Ajuda(1, "Passar roupa", new Cuidador());
         repository.save(ajuda);
         //ASSERT
         assertThrows(NaoEncontradoException.class,

@@ -3,6 +3,7 @@ package seniorcare.crudseniorcare.service.notificacao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import seniorcare.crudseniorcare.domain.idioma.Idioma;
 import seniorcare.crudseniorcare.domain.notificacao.Notificacao;
 import seniorcare.crudseniorcare.domain.notificacao.repository.NotificacaoRepository;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
@@ -14,6 +15,7 @@ import seniorcare.crudseniorcare.utils.FilaCircularObj;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -58,12 +60,8 @@ public class NotificacaoService {
         Notificacao existente = repository.findById(id).orElseThrow(
                 () -> new NaoEncontradoException("Notificação")
         );
-        existente.setTitulo(notificacao.getTitulo());
-        existente.setMensagem(notificacao.getMensagem());
-        existente.setDataCriacao(notificacao.getDataCriacao());
-        existente.setUsuarioId(notificacao.getUsuarioId());
-
-        return repository.save(existente);
+            notificacao.setId(id);
+            return repository.save(notificacao);
     }
 
     public Notificacao processarNotificacao() {

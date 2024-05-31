@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import seniorcare.crudseniorcare.domain.endereco.Endereco;
 import seniorcare.crudseniorcare.domain.endereco.repository.EnderecoRepository;
 import seniorcare.crudseniorcare.domain.usuario.Cuidador;
+import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.domain.usuario.repository.CuidadorRepository;
 import seniorcare.crudseniorcare.exception.NaoEncontradoException;
@@ -48,17 +49,10 @@ public class EnderecoService {
         if (enderecoOpt.isEmpty()) {
             throw new NaoEncontradoException("Endereco");
         }
-        Endereco uptEndereco = enderecoOpt.get();
 
-        uptEndereco.setNumero(endereco.getNumero());
-        uptEndereco.setUsuario(endereco.getUsuario());
-        uptEndereco.setCep(endereco.getCep());
-        uptEndereco.setCidade(endereco.getCidade());
-        uptEndereco.setBairro(endereco.getBairro());
-        uptEndereco.setComplemento(endereco.getComplemento());
-        uptEndereco.setLogradouro(endereco.getLogradouro());
+        endereco.setIdEndereco(id);
 
-        return uptEndereco;
+        return repository.save(endereco);
     }
 
 }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import seniorcare.crudseniorcare.domain.ajuda.Ajuda;
 import seniorcare.crudseniorcare.domain.ajuda.repository.AjudaRepository;
+import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.exception.NaoEncontradoException;
 
 import java.util.List;
@@ -40,13 +41,11 @@ public class AjudaService {
         Optional<Ajuda> ajudaOpt = repository.findById(id);
 
         if (ajudaOpt.isEmpty()) {
-            throw new NaoEncontradoException("Ajuda");
+            throw new NaoEncontradoException("Responsavel");
         }
-        Ajuda uptAjuda = ajudaOpt.get();
 
-        uptAjuda.setNome(ajuda.getNome());
-        uptAjuda.setCuidador(ajuda.getCuidador());
+        ajuda.setIdAjuda(id);
 
-        return uptAjuda;
+        return repository.save(ajuda);
     }
 }

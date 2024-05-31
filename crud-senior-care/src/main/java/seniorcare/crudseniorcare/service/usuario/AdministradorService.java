@@ -62,25 +62,14 @@ public class AdministradorService {
             throw new NaoEncontradoException("Administrador");
         }
 
-        Administrador administradorUpd = administradorOptional.get();
-
-        // Atualiza apenas os campos não nulos
-        administradorUpd.setCpf(administrador.getCpf() != null ? administrador.getCpf() : administradorUpd.getCpf());
-        administradorUpd.setEmail(administrador.getEmail() != null ? administrador.getEmail() : administradorUpd.getEmail());
-        administradorUpd.setApresentacao(administrador.getApresentacao() != null ? administrador.getApresentacao() : administradorUpd.getApresentacao());
-        administradorUpd.setNome(administrador.getNome() != null ? administrador.getNome() : administradorUpd.getNome());
-        administradorUpd.setTelefone(administrador.getTelefone() != null ? administrador.getTelefone() : administradorUpd.getTelefone());
-        administradorUpd.setSexoBiologico(administrador.getSexoBiologico() != null ? administrador.getSexoBiologico() : administradorUpd.getSexoBiologico());
-        administradorUpd.setDtNascimento(administrador.getDtNascimento() != null ? administrador.getDtNascimento() : administradorUpd.getDtNascimento());
-        administradorUpd.setCargo(administrador.getCargo() != null ? administrador.getCargo() : administradorUpd.getCargo());
-
         // Criptografa a senha apenas se ela não for nula
         if (administrador.getSenha() != null) {
-            administradorUpd.setSenha(passwordEncoder.encode(administrador.getSenha()));
+            administrador.setSenha(passwordEncoder.encode(administrador.getSenha()));
         }
 
-        // Salva e retorna o administrador atualizado
-        return repository.save(administradorUpd);
+        administrador.setIdUsuario(id);
+
+        return repository.save(administrador);
     }
 
 

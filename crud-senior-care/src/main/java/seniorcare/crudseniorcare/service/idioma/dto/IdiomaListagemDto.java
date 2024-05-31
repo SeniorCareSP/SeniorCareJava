@@ -7,7 +7,6 @@ import java.util.UUID;
 @Getter
 @Setter
 public class IdiomaListagemDto {
-
     private Integer idIdioma;
     private String idioma;
 }

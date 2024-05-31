@@ -8,6 +8,7 @@ import seniorcare.crudseniorcare.domain.endereco.Endereco;
 import seniorcare.crudseniorcare.domain.idioma.Idioma;
 import seniorcare.crudseniorcare.domain.idoso.Idoso;
 import seniorcare.crudseniorcare.domain.usuario.Responsavel;
+import seniorcare.crudseniorcare.domain.usuario.TipoUsuario;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.domain.usuario.repository.ResponsavelRepository;
 import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
@@ -18,6 +19,7 @@ import seniorcare.crudseniorcare.service.endereco.EnderecoService;
 import seniorcare.crudseniorcare.service.idioma.IdiomaService;
 import seniorcare.crudseniorcare.service.idoso.IdosoService;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -35,19 +37,19 @@ public class ResponsavelService {
 
 
     public Responsavel criar(Responsavel novoResponsavel) {
-
         String senhaCriptografada = passwordEncoder.encode(novoResponsavel.getSenha());
         novoResponsavel.setSenha(senhaCriptografada);
         if (emailJaExiste(novoResponsavel.getEmail())){
             throw new ConflitoException("Email Responsavel");
         }
+
+        Endereco endereco = enderecoService.create(novoResponsavel.getEndereco());
+        Agenda agenda = agendaService.create(novoResponsavel.getAgenda());
+
+        novoResponsavel.setEndereco(endereco);
+        novoResponsavel.setAgenda(agenda);
         Responsavel usuarioSalvo = repository.save(novoResponsavel);
 
-        usuarioSalvo.getEndereco().setUsuario(usuarioSalvo);
-        enderecoService.create(usuarioSalvo.getEndereco());
-
-        usuarioSalvo.getAgenda().setUsuario(usuarioSalvo);
-        agendaService.create(usuarioSalvo.getAgenda());
 
         for (Idioma idioma : usuarioSalvo.getIdiomas()){
             idioma.setUsuario(usuarioSalvo);
@@ -90,22 +92,9 @@ public class ResponsavelService {
         if (responsavelOpt.isEmpty()) {
             throw new NaoEncontradoException("Responsavel");
         }
-        Responsavel responsavelUpd = responsavelOpt.get();
 
-        responsavelUpd.setCpf(responsavel.getCpf());
-        responsavelUpd.setEmail(responsavel.getEmail());
-        responsavelUpd.setApresentacao(responsavel.getApresentacao());
-        responsavelUpd.setNome(responsavel.getNome());
-        responsavelUpd.setSenha(passwordEncoder.encode(responsavel.getSenha()));
-        responsavelUpd.setTelefone(responsavel.getTelefone());
-        responsavelUpd.setSexoBiologico(responsavel.getSexoBiologico());
-        responsavelUpd.setDtNascimento(responsavel.getDtNascimento());
-
-        repository.save(responsavelUpd);
-        //return repository.save(responsavelUpd);
-
-
-        return responsavelUpd;
+        responsavel.setIdUsuario(id);
+        return repository.save(responsavel);
     }
 
 }

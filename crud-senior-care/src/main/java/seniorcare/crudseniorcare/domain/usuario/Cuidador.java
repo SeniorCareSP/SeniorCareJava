@@ -5,6 +5,7 @@ import lombok.*;
 import seniorcare.crudseniorcare.domain.ajuda.Ajuda;
 import seniorcare.crudseniorcare.domain.caracteristica.Caracteristica;
 import seniorcare.crudseniorcare.domain.endereco.Endereco;
+import seniorcare.crudseniorcare.domain.favorito.Favorito;
 
 import java.util.List;
 
@@ -18,17 +19,6 @@ import java.util.List;
 @Builder
 public class Cuidador extends Usuario{
 
-    public Cuidador(String experiencia, String faixaEtaria, double precoHora, List<Caracteristica> caracteristicas, List<Ajuda> ajudas, Endereco endereco) {
-        super();
-        this.experiencia = experiencia;
-        this.faixaEtaria = faixaEtaria;
-        this.precoHora = precoHora;
-        this.caracteristicas = caracteristicas;
-        this.ajudas = ajudas;
-        this.endereco = endereco;
-    }
-
-
     private String experiencia;
     private String faixaEtaria;
     private double precoHora;
@@ -36,6 +26,6 @@ public class Cuidador extends Usuario{
     private List<Caracteristica> caracteristicas;
     @OneToMany(mappedBy = "cuidador", cascade = CascadeType.ALL)
     private List<Ajuda> ajudas;
-
+    private List<Favorito> favoritos;
 
 }
