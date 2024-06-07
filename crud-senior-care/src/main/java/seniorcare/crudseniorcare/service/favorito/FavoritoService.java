@@ -2,53 +2,72 @@ package seniorcare.crudseniorcare.service.favorito;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import seniorcare.crudseniorcare.domain.endereco.Endereco;
-import seniorcare.crudseniorcare.domain.endereco.repository.EnderecoRepository;
 import seniorcare.crudseniorcare.domain.favorito.Favorito;
 import seniorcare.crudseniorcare.domain.favorito.repository.FavoritoRepository;
+import seniorcare.crudseniorcare.domain.idioma.Idioma;
+import seniorcare.crudseniorcare.domain.usuario.Responsavel;
+import seniorcare.crudseniorcare.domain.usuario.Usuario;
+import seniorcare.crudseniorcare.service.usuario.ResponsavelService;
+import seniorcare.crudseniorcare.service.usuario.UsuarioService;
 import seniorcare.crudseniorcare.exception.NaoEncontradoException;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-    @Service
-    @RequiredArgsConstructor
+@Service
+@RequiredArgsConstructor
 public class FavoritoService {
 
-        private final FavoritoRepository repository;
+    private final FavoritoRepository repository;
+    private final UsuarioService usuarioService;
+    private final ResponsavelService responsavelService;
 
-        public List<Favorito> list(){ return repository.findAll();}
+    public List<Favorito> listByUsuario(Integer idUsuario) {
+        return repository.findByUsuarioIdUsuario(idUsuario);
+    }
 
-        public Favorito byId(Integer id){
-            return repository.findById(id).orElseThrow(
-                    () -> new NaoEncontradoException("Favorito")
-            );
+//    public Favorito byId(Integer idUsuario, Integer id) {
+//        return repository.findByUsuarioIdUsuarioAndIdUsuario(idUsuario, id)
+//                .orElseThrow(() -> new NaoEncontradoException("Favorito não encontrado"));
+//    }
+
+    public Favorito create(Integer idUsuarioFavoritando, Integer idUsuarioFavoritado) {
+        Usuario usuarioFavoritando = usuarioService.findById(idUsuarioFavoritando)
+                .orElseThrow(() -> new NaoEncontradoException("Usuário favoritando não encontrado"));
+
+        Usuario usuarioFavoritado = usuarioService.findById(idUsuarioFavoritado)
+                .orElseThrow(() -> new NaoEncontradoException("Usuário favoritado não encontrado"));
+
+        Favorito favorito = new Favorito();
+        favorito.setUsuario(usuarioFavoritando);
+        favorito.setUsuarioFavoritado(usuarioFavoritado);
+
+        favorito = repository.save(favorito);
+
+        if (usuarioFavoritando.getFavoritos() == null) {
+            usuarioFavoritando.setFavoritos(new ArrayList<>());
         }
+        usuarioFavoritando.getFavoritos().add(favorito);
 
-        public Favorito create(Favorito novoFavorito){
-            return repository.save(novoFavorito);
-        }
+        // Atualizar o responsável no banco de dados com a nova lista de favoritos
+        usuarioService.update(usuarioFavoritando.getIdUsuario(), usuarioFavoritando);
 
-        public void delete(Integer id){
-            Optional<Favorito> favorito = repository.findById(id);
-            if (favorito.isEmpty()){
-                throw new NaoEncontradoException("Favorito");
-            }
-            repository.delete(favorito.get());
-        }
-
-        public Favorito update(Integer id, Favorito favorito){
-            Optional<Favorito> favoritoOptional = repository.findById(id);
-
-            if (favoritoOptional.isEmpty()) {
-                throw new NaoEncontradoException("Favorito");
-            }
-
-            favorito.setId(id);
-
-            return repository.save(favorito);
-        }
-
+        // Retornar o objeto Favorito criado
+        return favorito;
     }
 
 
+
+
+//    public void delete(Integer idUsuario, Integer id) {
+//        Favorito favorito = byId(idUsuario, id);
+//        repository.delete(favorito);
+//    }
+//
+//    public Favorito update(Integer idUsuario, Integer id, Favorito favorito) {
+//        Favorito existingFavorito = byId(idUsuario, id);
+//        existingFavorito.setUsuarioFavoritado(favorito.getUsuarioFavoritado());
+//        existingFavorito.setUsuario(favorito.getUsuario());
+//        return repository.save(existingFavorito);
+//    }
+}

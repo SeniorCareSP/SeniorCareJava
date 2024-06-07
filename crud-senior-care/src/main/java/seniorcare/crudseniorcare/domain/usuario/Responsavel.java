@@ -22,7 +22,7 @@ public class Responsavel extends Usuario {
 
     @OneToMany(mappedBy = "responsavel")
     private List<Idoso> idosos;
-    private List<Favorito> favoritos;
+
 
 
 }

@@ -86,6 +86,10 @@ public class UsuarioService {
         );
     }
 
+    public Optional<Usuario> findById(Integer idUsuario) {
+        return usuarioRepository.findById(idUsuario);
+    }
+
     public List<UsuarioListagemDto> listarTodos() {
         List<Usuario> usuarios = new ArrayList<>();
         usuarios.addAll(responsavelRepository.findAll());
@@ -143,6 +147,29 @@ public class UsuarioService {
             throw new IllegalStateException("Não há administradores excluídos para desfazer.");
         }
     }
+
+    public Usuario update(Integer id, Usuario usuario) {
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+
+        if (usuarioOptional.isEmpty()) {
+            throw new NaoEncontradoException("Usuário não encontrado");
+        }
+
+        Usuario usuarioExistente = usuarioOptional.get();
+
+        if (usuario.getSenha() != null && !usuario.getSenha().isEmpty()) {
+            usuarioExistente.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        }
+
+        // Verifica se a lista de favoritos não é nula antes de atribuí-la
+        if (usuario.getFavoritos() != null) {
+            // Atualiza a lista de favoritos do usuário existente com a lista fornecida
+            usuarioExistente.getFavoritos().addAll(usuario.getFavoritos());
+        }
+
+        return usuarioRepository.save(usuarioExistente);
+    }
+
 
 }
 

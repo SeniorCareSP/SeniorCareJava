@@ -8,6 +8,7 @@ import lombok.Setter;
 import seniorcare.crudseniorcare.domain.agenda.Agenda;
 
 import seniorcare.crudseniorcare.domain.endereco.Endereco;
+import seniorcare.crudseniorcare.domain.favorito.Favorito;
 import seniorcare.crudseniorcare.domain.idioma.Idioma;
 import seniorcare.crudseniorcare.service.idioma.dto.IdiomaListagemDto;
 
@@ -43,6 +44,9 @@ public abstract class Usuario implements Serializable {
     private Agenda agenda;
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Idioma> idiomas;
+
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    private List<Favorito> favoritos;
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private Endereco endereco;
 

@@ -26,6 +26,6 @@ public class Cuidador extends Usuario{
     private List<Caracteristica> caracteristicas;
     @OneToMany(mappedBy = "cuidador", cascade = CascadeType.ALL)
     private List<Ajuda> ajudas;
-    private List<Favorito> favoritos;
+
 
 }

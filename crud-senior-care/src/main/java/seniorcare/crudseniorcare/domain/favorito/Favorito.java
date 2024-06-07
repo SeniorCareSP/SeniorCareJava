@@ -17,6 +17,14 @@ public class Favorito implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @ManyToMany
-    private List<Usuario> usuarios;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_favoritado_id")
+    private Usuario usuarioFavoritado;
+
+
 }

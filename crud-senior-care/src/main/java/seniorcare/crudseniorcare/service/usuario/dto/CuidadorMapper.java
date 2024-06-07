@@ -11,6 +11,7 @@ import seniorcare.crudseniorcare.service.ajuda.dto.AjudaMapper;
 import seniorcare.crudseniorcare.service.caracteristica.dto.CaracteristicaMapper;
 import seniorcare.crudseniorcare.service.endereco.dto.EnderecoListagemDto;
 import seniorcare.crudseniorcare.service.endereco.dto.EnderecoMapper;
+import seniorcare.crudseniorcare.service.favorito.dto.FavoritoMapper;
 import seniorcare.crudseniorcare.service.idioma.dto.IdiomaMapper;
 import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioCriacaoCuidadorDto;
 import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioListagemCuidadorDto;
@@ -64,8 +65,9 @@ public class CuidadorMapper {
         dto.setIdiomas(IdiomaMapper.toListagemDtoList(cuidador.getIdiomas()));
         dto.setCaracteristicas(CaracteristicaMapper.toCaracteristicaListagemDtoList(cuidador.getCaracteristicas()));
         dto.setAjudas(AjudaMapper.toAjudaListagemDtoList(cuidador.getAjudas()));
-
+        dto.setFavoritos(FavoritoMapper.toListagemUsuarioDtoList(cuidador.getFavoritos()));
         dto.setEndereco(EnderecoMapper.toEnderecoListagemDto(cuidador.getEndereco()));
+
 
         return dto;
     }
