@@ -6,6 +6,7 @@ import seniorcare.crudseniorcare.domain.usuario.Cuidador;
 import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.service.agenda.dto.AgendaMapper;
+import seniorcare.crudseniorcare.service.denuncia.dto.DenunciaMapper;
 import seniorcare.crudseniorcare.service.endereco.dto.EnderecoMapper;
 import seniorcare.crudseniorcare.service.favorito.dto.FavoritoMapper;
 import seniorcare.crudseniorcare.service.idioma.dto.IdiomaMapper;
@@ -14,6 +15,7 @@ import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioCriacaoCuid
 import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioListagemCuidadorDto;
 import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioCriacaoResponsavelDto;
 import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioCriacaoDto;
+import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioListagemDenunciaDto;
 import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioListagemDto;
 import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioListagemFavoritoDto;
 
@@ -37,7 +39,7 @@ public class UsuarioMapper {
         dto.setAgenda(AgendaMapper.toListagemDto(usuario.getAgenda()));
         dto.setEndereco(EnderecoMapper.toEnderecoListagemDto(usuario.getEndereco()));
         dto.setFavoritos(FavoritoMapper.toListagemUsuarioDtoList(usuario.getFavoritos()));
-
+        dto.setDenuncias(DenunciaMapper.toListagemUsuarioDtoList(usuario.getDenuncias()));
         return dto;
     }
 
@@ -57,6 +59,21 @@ public class UsuarioMapper {
         dto.setDtCadastro(usuario.getDtCadastro());
         dto.setAgenda(AgendaMapper.toListagemDto(usuario.getAgenda()));
         dto.setEndereco(EnderecoMapper.toEnderecoListagemDto(usuario.getEndereco()));
+
+        return dto;
+    }
+
+    public static UsuarioListagemDenunciaDto toUsuarioListagemDenunciaDto(Usuario usuario) {
+        if (usuario == null) return null;
+        UsuarioListagemDenunciaDto dto = new UsuarioListagemDenunciaDto();
+
+        dto.setIdUsuario(usuario.getIdUsuario());
+        dto.setNome(usuario.getNome());
+        dto.setEmail(usuario.getEmail());
+        dto.setTelefone(usuario.getTelefone());
+        dto.setSexoBiologico(usuario.getSexoBiologico());
+        dto.setTipoDeUsuario(usuario.getTipoDeUsuario());
+        dto.setDtNascimento(usuario.getDtNascimento());
 
         return dto;
     }

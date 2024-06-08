@@ -1,14 +1,12 @@
 package seniorcare.crudseniorcare.service.denuncia.dto;
 
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Data;
-import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioListagemDenunciaDto;
 
 import java.util.List;
 @Data
-public class DenunciaListagemDto {
+public class DenunciaListagemUsuarioDto {
+
 
     private Integer id;
 
@@ -18,8 +16,5 @@ public class DenunciaListagemDto {
 
     private Boolean status;
 
-    private UsuarioListagemDenunciaDto usuarioDenunciador;
-
     private UsuarioListagemDenunciaDto usuarioDenunciado;
-
 }

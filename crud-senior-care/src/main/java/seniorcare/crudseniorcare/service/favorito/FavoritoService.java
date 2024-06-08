@@ -13,6 +13,7 @@ import seniorcare.crudseniorcare.exception.NaoEncontradoException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +33,9 @@ public class FavoritoService {
 //    }
 
     public Favorito create(Integer idUsuarioFavoritando, Integer idUsuarioFavoritado) {
+        if (Objects.equals(idUsuarioFavoritando, idUsuarioFavoritado)){
+            throw new RuntimeException("Um usuário não pode favoritar a si mesmo.");
+        }
         Usuario usuarioFavoritando = usuarioService.findById(idUsuarioFavoritando)
                 .orElseThrow(() -> new NaoEncontradoException("Usuário favoritando não encontrado"));
 

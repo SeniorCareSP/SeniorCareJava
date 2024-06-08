@@ -26,7 +26,7 @@ public class FavoritoController {
                 }
                 List<FavoritoListagemDto> dto = FavoritoMapper.toListagemDtoList(favoritos);
                 return ResponseEntity.ok(dto);
-        }
+}
 
 //        @GetMapping("/{idUsuario}/{id}")
 //        public ResponseEntity<FavoritoListagemDto> porId(@PathVariable Integer idUsuario, @PathVariable Integer id) {

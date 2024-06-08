@@ -5,33 +5,53 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import seniorcare.crudseniorcare.domain.denuncia.Denuncia;
 import seniorcare.crudseniorcare.domain.denuncia.repository.DenunciaRepository;
+import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.exception.NaoEncontradoException;
 import seniorcare.crudseniorcare.service.denuncia.dto.DenunciaCriacaoDto;
 import seniorcare.crudseniorcare.service.denuncia.dto.DenunciaListagemDto;
 import seniorcare.crudseniorcare.service.denuncia.dto.DenunciaMapper;
+import seniorcare.crudseniorcare.service.usuario.UsuarioService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-
+@RequiredArgsConstructor
 public class DenunciaService {
 
     private final DenunciaRepository denunciaRepository;
+    private final UsuarioService usuarioService;
 
-    @Autowired
-    public DenunciaService(DenunciaRepository denunciaRepository) {
-        this.denunciaRepository = denunciaRepository;
+    public Denuncia criarDenuncia(DenunciaCriacaoDto denunciaDto) {
+        Usuario usuarioDenunciador = usuarioService.findById(denunciaDto.getUsuarioDenunciador())
+                .orElseThrow(() -> new NaoEncontradoException("Usuário favoritando não encontrado"));
+
+        Usuario usuarioDenunciado = usuarioService.findById(denunciaDto.getUsuarioDenunciado())
+                .orElseThrow(() -> new NaoEncontradoException("Usuário favoritado não encontrado"));
+
+        Denuncia denuncia = new Denuncia();
+        denuncia.setDetalhes(denunciaDto.getDetalhes());
+        denuncia.setUsuario(usuarioDenunciador);
+        denuncia.setUsuarioDenunciado(usuarioDenunciado);
+        denuncia.setInfo(denunciaDto.getInfo());
+        denuncia.setStatus(false);
+
+        denuncia = denunciaRepository.save(denuncia);
+
+        if (usuarioDenunciador.getFavoritos() == null) {
+            usuarioDenunciador.setFavoritos(new ArrayList<>());
+        }
+        usuarioDenunciador.getDenuncias().add(denuncia);
+
+        usuarioService.update(usuarioDenunciado.getIdUsuario(), usuarioDenunciador);
+
+        return denuncia;
     }
 
-    public DenunciaListagemDto criarDenuncia(DenunciaCriacaoDto denunciaDto) {
-        Denuncia denuncia = DenunciaMapper.toEntity(denunciaDto);
-        return DenunciaMapper.toListagemDto(denunciaRepository.save(denuncia));
-    }
-
-    public List<DenunciaListagemDto> listarDenuncias() {
+    public List<Denuncia> listarDenuncias() {
         List<Denuncia> denuncias = denunciaRepository.findAll();
-        return DenunciaMapper.toListagemDtoList(denuncias);
+        return denuncias;
     }
 
     public DenunciaListagemDto buscarDenunciaPorId(Integer id) {
