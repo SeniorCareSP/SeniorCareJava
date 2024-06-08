@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import seniorcare.crudseniorcare.domain.agenda.Agenda;
 
+import seniorcare.crudseniorcare.domain.denuncia.Denuncia;
 import seniorcare.crudseniorcare.domain.endereco.Endereco;
 import seniorcare.crudseniorcare.domain.favorito.Favorito;
 import seniorcare.crudseniorcare.domain.idioma.Idioma;
@@ -50,4 +51,6 @@ public abstract class Usuario implements Serializable {
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private Endereco endereco;
 
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    private List<Denuncia> denuncias;
 }
