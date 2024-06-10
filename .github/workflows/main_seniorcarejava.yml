@@ -16,4 +16,15 @@ jobs:
       - name: Set up Java version
         uses: actions/setup-java@v1
         with:
-          java-version: '17
+          java-version: '17'
+
+      - name: Build with Maven
+        run: mvn -B clean package --file pom.xml
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'seniorcarejava' # Nome da sua aplicação no Azure
+          slot-name: 'production' # Opcional: nome do slot para implantar (geralmente "production")
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISH_PROFILE }} # Variável de ambiente com perfil de publicação do Azure
+          package: '${{ github.workspace }}/target/*.war' # Caminho para o pacote WAR gerado pelo Maven
