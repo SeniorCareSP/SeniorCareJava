@@ -46,9 +46,9 @@ public class UsuarioService {
     private final GerenciadorTokenJwt gerenciadorTokenJwt;
     private final AuthenticationManager authenticationManager;
 
-    private PilhaObj<Cuidador> pilhaCuidador = new PilhaObj<>(10);
-    private PilhaObj<Responsavel> pilhaResponsavel = new PilhaObj<>(10);
-    private PilhaObj<Administrador> pilhaAdministrador = new PilhaObj<>(10);
+    private final PilhaObj<Cuidador> pilhaCuidador = new PilhaObj<>(10);
+    private final PilhaObj<Responsavel> pilhaResponsavel = new PilhaObj<>(10);
+    private final PilhaObj<Administrador> pilhaAdministrador = new PilhaObj<>(10);
   
     public UsuarioTokenDto autenticar(UsuarioLoginDto usuarioLoginDto){
         final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
