@@ -20,9 +20,6 @@ import java.util.UUID;
 public class AgendaController {
 
     private final AgendaService service;
-    //solid com responsabilidade unica (clean code). Se tiver um outro endpoint que chama o mesmo metodo, so muda o retorno dele.
-
-    //na controller so tem caminho feliz, ao contrario disso vai pra service. 204 é caminho feliz
 
     @GetMapping
     public ResponseEntity<List<AgendaListagemDto>> listar(){
