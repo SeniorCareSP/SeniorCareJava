@@ -23,6 +23,7 @@ import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioListagemDto;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -46,10 +47,13 @@ public class UsuarioController {
 
     @GetMapping
     public ResponseEntity<List<UsuarioListagemDto>> listarUsuario(){
-        List<UsuarioListagemDto> listaUsuario = usuarioService.listarTodos();
-
-        return ResponseEntity.status(200).body(listaUsuario);
+        List<Usuario> listaUsuario = usuarioService.list();
+        List<UsuarioListagemDto> listaUsuarioDto = listaUsuario.stream()
+                .map(UsuarioMapper::toUsuarioListagemDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.status(200).body(listaUsuarioDto);
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioListagemDto> porId(@PathVariable Integer id){

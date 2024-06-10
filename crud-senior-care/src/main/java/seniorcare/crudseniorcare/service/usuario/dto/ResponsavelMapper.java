@@ -5,6 +5,7 @@ import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.service.agenda.AgendaService;
 import seniorcare.crudseniorcare.service.agenda.dto.AgendaMapper;
 import seniorcare.crudseniorcare.service.endereco.dto.EnderecoMapper;
+import seniorcare.crudseniorcare.service.favorito.dto.FavoritoMapper;
 import seniorcare.crudseniorcare.service.idioma.dto.IdiomaMapper;
 import seniorcare.crudseniorcare.service.idoso.dto.IdosoMapper;
 import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioCriacaoResponsavelDto;
@@ -51,7 +52,7 @@ public class ResponsavelMapper {
         dto.setIdiomas(IdiomaMapper.toListagemDtoList(responsavel.getIdiomas()));
         dto.setEndereco(EnderecoMapper.toEnderecoListagemDto(responsavel.getEndereco()));
         dto.setIdosos(IdosoMapper.toListagemDtoList(responsavel.getIdosos()));
-
+        dto.setFavoritos(FavoritoMapper.toListagemUsuarioDtoList( responsavel.getFavoritos()));
 
         return dto;
     }

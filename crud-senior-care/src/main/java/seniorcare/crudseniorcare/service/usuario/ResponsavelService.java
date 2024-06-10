@@ -64,12 +64,19 @@ public class ResponsavelService {
 
     }
 
+
+
+
     public boolean emailJaExiste(String email) {
         Optional<Usuario> emailUsuario = usuarioRepository.findByEmail(email);
         return emailUsuario.isPresent();
     }
 
     public List<Responsavel> list(){ return repository.findAll();}
+
+    public Optional<Responsavel> findById(Integer idUsuario) {
+        return repository.findById(idUsuario);
+    }
 
     public Responsavel byId(Integer id){
         return repository.findById(id).orElseThrow(

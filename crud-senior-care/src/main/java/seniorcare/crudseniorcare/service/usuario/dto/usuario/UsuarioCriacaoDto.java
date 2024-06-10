@@ -9,12 +9,14 @@ import seniorcare.crudseniorcare.domain.agenda.Agenda;
 import seniorcare.crudseniorcare.domain.ajuda.Ajuda;
 import seniorcare.crudseniorcare.domain.caracteristica.Caracteristica;
 import seniorcare.crudseniorcare.domain.endereco.Endereco;
+import seniorcare.crudseniorcare.domain.favorito.Favorito;
 import seniorcare.crudseniorcare.domain.idioma.Idioma;
 import seniorcare.crudseniorcare.domain.usuario.TipoUsuario;
 import seniorcare.crudseniorcare.service.agenda.dto.AgendaCriacaoDto;
 import seniorcare.crudseniorcare.service.endereco.dto.EnderecoCriacaoDto;
 import seniorcare.crudseniorcare.service.endereco.dto.EnderecoListagemDto;
 import seniorcare.crudseniorcare.service.endereco.dto.EnderecoMapper;
+import seniorcare.crudseniorcare.service.favorito.dto.FavoritoCriacaoDto;
 import seniorcare.crudseniorcare.service.idioma.dto.IdiomaCriacaoDto;
 
 import java.time.LocalDate;
@@ -43,6 +45,7 @@ public class UsuarioCriacaoDto {
     private LocalDate dtCadastro;
     private AgendaCriacaoDto agendas;
     private List<IdiomaCriacaoDto> idiomas;
+    private List<FavoritoCriacaoDto> favoritos;
     private String experiencia;
     private EnderecoCriacaoDto endereco;
     private String faixaEtaria;

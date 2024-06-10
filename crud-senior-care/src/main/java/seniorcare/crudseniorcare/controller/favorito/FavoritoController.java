@@ -1,6 +1,6 @@
 package seniorcare.crudseniorcare.controller.favorito;
 
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import seniorcare.crudseniorcare.domain.favorito.Favorito;
@@ -11,51 +11,55 @@ import seniorcare.crudseniorcare.service.favorito.dto.FavoritoMapper;
 
 import java.net.URI;
 import java.util.List;
-@Data
+
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/favoritos")
 public class FavoritoController {
         private final FavoritoService service;
 
-        @GetMapping
-        public ResponseEntity<List<FavoritoListagemDto>> listar(){
-            List<Favorito> favoritos = service.list();
+        @GetMapping("/{idUsuario}")
+        public ResponseEntity<List<FavoritoListagemDto>> listar(@PathVariable Integer idUsuario) {
+                List<Favorito> favoritos = service.listByUsuario(idUsuario);
+                if (favoritos.isEmpty()) {
+                        return ResponseEntity.noContent().build();
+                }
+                List<FavoritoListagemDto> dto = FavoritoMapper.toListagemDtoList(favoritos);
+                return ResponseEntity.ok(dto);
+}
 
-            if (favoritos.isEmpty()) return ResponseEntity.noContent().build();
-            List<FavoritoListagemDto> dto = FavoritoMapper.toListagemDtoList(favoritos);
-            return ResponseEntity.ok(dto);
-        }
-
-        @GetMapping("/{id}")
-        public ResponseEntity<FavoritoListagemDto> porId(@PathVariable Integer id){
-            Favorito favorito = service.byId(id);
-            FavoritoListagemDto dto = FavoritoMapper.toFavoritoDto(favorito);
-            return ResponseEntity.ok(dto);
-        }
+//        @GetMapping("/{idUsuario}/{id}")
+//        public ResponseEntity<FavoritoListagemDto> porId(@PathVariable Integer idUsuario, @PathVariable Integer id) {
+//                Favorito favorito = service.byId(idUsuario, id);
+//
+//                if (favorito == null) {
+//                        return ResponseEntity.notFound().build();
+//                }
+//                FavoritoListagemDto dto = FavoritoMapper.toFavoritoDto(favorito);
+//                return ResponseEntity.ok(dto);
+//        }
 
         @PostMapping
-        public ResponseEntity<FavoritoListagemDto> criar (
-                @RequestBody FavoritoCriacaoDto favoritoCriacaoDto){
+        public ResponseEntity<FavoritoListagemDto> criar(@RequestBody FavoritoCriacaoDto dto) {
 
-            Favorito salvoEntity = FavoritoMapper.toFavorito(favoritoCriacaoDto);
+                Favorito favorito = service.create(dto.getIdUsuarioFavoritando(), dto.getIdUsuarioFavoritado());
 
-            Favorito salvo = service.create(salvoEntity);
-            FavoritoListagemDto dto = FavoritoMapper.toFavoritoDto(salvo);
-            URI uri = URI.create("/favoritos/" + salvo.getId());
-
-            return ResponseEntity.created(uri).body(dto);
+                return ResponseEntity.ok(FavoritoMapper.toFavoritoDto(favorito));
         }
-
-        @DeleteMapping("/{id}")
-        public ResponseEntity<Void> delete(@PathVariable Integer id){
-            service.delete(id);
-            return ResponseEntity.ok().build();
-        }
-
-        @PutMapping("/{id}")
-        public ResponseEntity<FavoritoListagemDto> update(@PathVariable Integer id, @RequestBody Favorito favorito){
-            Favorito uptFavorito = service.update(id, favorito);
-            FavoritoListagemDto dto = FavoritoMapper.toFavoritoDto(uptFavorito);
-            return ResponseEntity.ok(dto);
-        }
+//
+//        @DeleteMapping("/{idUsuario}/{id}")
+//        public ResponseEntity<Void> delete(@PathVariable Integer idUsuario, @PathVariable Integer id) {
+//                service.delete(idUsuario, id);
+//                return ResponseEntity.ok().build();
+//        }
+//
+//        @PutMapping("/{idUsuario}/{id}")
+//        public ResponseEntity<FavoritoListagemDto> update(@PathVariable Integer idUsuario, @PathVariable Integer id, @RequestBody Favorito favorito) {
+//                Favorito uptFavorito = service.update(idUsuario, id, favorito);
+//                if (uptFavorito == null) {
+//                        return ResponseEntity.notFound().build();
+//                }
+//                FavoritoListagemDto dto = FavoritoMapper.toFavoritoDto(uptFavorito);
+//                return ResponseEntity.ok(dto);
+//        }
 }

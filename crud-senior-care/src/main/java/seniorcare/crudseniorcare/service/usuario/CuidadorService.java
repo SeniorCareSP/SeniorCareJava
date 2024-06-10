@@ -40,8 +40,8 @@ import java.util.Optional;
             Endereco endereco = enderecoService.create(novoCuidador.getEndereco());
             Agenda agenda = agendaService.create(novoCuidador.getAgenda());
 
-            novoCuidador.setEndereco(endereco);
             novoCuidador.setAgenda(agenda);
+            novoCuidador.setEndereco(endereco);
             Cuidador usuarioSalvo = repository.save(novoCuidador);
 
 
