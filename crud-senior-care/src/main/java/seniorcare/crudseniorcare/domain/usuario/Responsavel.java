@@ -1,9 +1,6 @@
 package seniorcare.crudseniorcare.domain.usuario;
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import seniorcare.crudseniorcare.domain.favorito.Favorito;
 import seniorcare.crudseniorcare.domain.idoso.Idoso;
@@ -22,7 +19,8 @@ public class Responsavel extends Usuario {
 
     @OneToMany(mappedBy = "responsavel")
     private List<Idoso> idosos;
-
+    @OneToMany(mappedBy = "responsavel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Favorito> favoritos;
 
 
 }

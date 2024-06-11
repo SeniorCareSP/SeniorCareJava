@@ -9,6 +9,6 @@ import java.util.List;
 
 @Getter @Setter
 public class FavoritoCriacaoDto {
-    private Integer idUsuarioFavoritando;
-    private Integer idUsuarioFavoritado;
+    private Integer responsavelFavoritando;
+    private Integer cuidadorFavoritado;
 }

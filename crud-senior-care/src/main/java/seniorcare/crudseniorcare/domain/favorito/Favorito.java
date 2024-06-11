@@ -3,6 +3,8 @@ package seniorcare.crudseniorcare.domain.favorito;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import seniorcare.crudseniorcare.domain.usuario.Cuidador;
+import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
 
 import java.io.Serializable;
@@ -18,11 +20,12 @@ public class Favorito implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
+    private Responsavel responsavel;
 
     @ManyToOne
     @JoinColumn(name = "usuario_favoritado_id")
-    private Usuario usuarioFavoritado;
+    private Cuidador cuidador;
+
 
 
 }

@@ -49,6 +49,7 @@ public class DenunciaController {
     }
 
 
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarDenuncia(@PathVariable Integer id) {
         denunciaService.deletarDenuncia(id);

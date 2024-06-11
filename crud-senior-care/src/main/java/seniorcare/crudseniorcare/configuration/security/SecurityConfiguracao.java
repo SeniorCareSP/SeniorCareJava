@@ -8,10 +8,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,8 +25,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import seniorcare.crudseniorcare.configuration.security.jwt.GerenciadorTokenJwt;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.AutenticacaoService;
-
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,7 +32,7 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfiguracao {
-    private static final String ORIGENS_PERMITIDAS = "*";
+
     @Autowired
     private AutenticacaoService autenticacaoService;
 
@@ -41,16 +41,8 @@ public class SecurityConfiguracao {
 
     private static final AntPathRequestMatcher[] URLS_PERMITIDAS = {
             new AntPathRequestMatcher("/swagger-ui/**"),
-            new AntPathRequestMatcher("/h2-console/**"),
             new AntPathRequestMatcher("/swagger-ui.html"),
-            new AntPathRequestMatcher("/usuarios/login"),
-            new AntPathRequestMatcher("/usuarios/responsaveis"),
-            new AntPathRequestMatcher("/cuidador/*"),
-            new AntPathRequestMatcher("/responsaveis/*"),
-            new AntPathRequestMatcher("/favoritos/*"),
-            new AntPathRequestMatcher("/favoritos/*/*"),
-            new AntPathRequestMatcher("/usuariosx'/*"),
-            new AntPathRequestMatcher("/*"),
+            new AntPathRequestMatcher("/swagger-resources"),
             new AntPathRequestMatcher("/swagger-resources/**"),
             new AntPathRequestMatcher("/configuration/ui"),
             new AntPathRequestMatcher("/configuration/security"),
@@ -60,18 +52,24 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/v3/api-docs/**"),
             new AntPathRequestMatcher("/actuator/*"),
             new AntPathRequestMatcher("/usuarios/login/**"),
-            new AntPathRequestMatcher("/newsletter/**", "POST"),
-            new AntPathRequestMatcher("/newsletter/**", "GET"),
-            new AntPathRequestMatcher("/h2-console/*"),
-            new AntPathRequestMatcher("/error/**"),
-            new AntPathRequestMatcher("/arquivos/**"),
-            new AntPathRequestMatcher("/usuarios/signup", "POST"),
-            new AntPathRequestMatcher("/notificacoes/**"),
+            new AntPathRequestMatcher("/usuarios/login/*"),
+            new AntPathRequestMatcher("/usuarios/login"),
+            new AntPathRequestMatcher("/cuidadores"),
+            new AntPathRequestMatcher("/cuidadores/*"),
+            new AntPathRequestMatcher("/responsaveis"),
+            new AntPathRequestMatcher("/responsaveis/*"),
+            new AntPathRequestMatcher("/administradores"),
+            new AntPathRequestMatcher("/administradores/*"),
+            new AntPathRequestMatcher("/h2-console/**"),
+            new AntPathRequestMatcher("/h2-console/**/**"),
+            new AntPathRequestMatcher("/error/**")
     };
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .headers(headers -> headers
+                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .cors(Customizer.withDefaults())
                 .csrf(CsrfConfigurer<HttpSecurity>::disable)
                 .authorizeHttpRequests(authorize -> authorize.requestMatchers(URLS_PERMITIDAS)
@@ -84,44 +82,41 @@ public class SecurityConfiguracao {
                 .sessionManagement(management -> management
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.addFilterBefore(jwtAuthenticationFilterBean(),
-                UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilterBean(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
     @Bean
-    public AuthenticationManager authManager(HttpSecurity http) throws Exception{
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder =
                 http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.authenticationProvider(new
-                AutenticacaoProvider(autenticacaoService, passwordEncoder()));
+        authenticationManagerBuilder.authenticationProvider(new AutenticacaoProvider(autenticacaoService, passwordEncoder()));
         return authenticationManagerBuilder.build();
     }
 
     @Bean
-    public AutenticacaoEntryPoint jwtAuthenticationEntryPointBean(){
+    public AutenticacaoEntryPoint jwtAuthenticationEntryPointBean() {
         return new AutenticacaoEntryPoint();
     }
 
     @Bean
-    public AutenticacaoFilter jwtAuthenticationFilterBean(){
+    public AutenticacaoFilter jwtAuthenticationFilterBean() {
         return new AutenticacaoFilter(autenticacaoService, jwtAuthenticationUtilBean());
     }
 
     @Bean
-    public GerenciadorTokenJwt jwtAuthenticationUtilBean(){
+    public GerenciadorTokenJwt jwtAuthenticationUtilBean() {
         return new GerenciadorTokenJwt();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource(){
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuracao = new CorsConfiguration();
         configuracao.applyPermitDefaultValues();
         configuracao.setAllowedMethods(
@@ -142,5 +137,49 @@ public class SecurityConfiguracao {
 
         return origem;
     }
-
 }
+
+
+
+    //    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http
+//                .headers(headers -> headers
+//                        .frameOptions().disable())
+//                .cors(Customizer.withDefaults())
+//                .csrf(CsrfConfigurer::disable)
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .requestMatchers(URLS_PERMITIDAS).permitAll()
+//                        .anyRequest().authenticated())
+//                .exceptionHandling(handling -> handling
+//                        .authenticationEntryPoint(autenticacaoJwtEntryPoint))
+//                .sessionManagement(management -> management
+//                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+//
+//        http.addFilterBefore(jwtAuthenticationFilterBean(), UsernamePasswordAuthenticationFilter.class);
+//
+//        return http.build();
+//    }
+
+//
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http
+//                .headers().frameOptions().disable()
+//                .and()
+//                .cors().configurationSource(corsConfigurationSource())
+//                .and()
+//                .csrf().disable()
+//                .authorizeRequests()
+//                .requestMatchers(URLS_PERMITIDAS).permitAll()
+//                .anyRequest().authenticated()
+//                .and()
+//                .exceptionHandling().authenticationEntryPoint(autenticacaoJwtEntryPoint)
+//                .and()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//
+//        http.addFilterBefore(jwtAuthenticationFilterBean(), UsernamePasswordAuthenticationFilter.class);
+//
+//        return http.build();
+//    }
+

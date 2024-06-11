@@ -2,8 +2,11 @@ package seniorcare.crudseniorcare.service.favorito.dto;
 
 import seniorcare.crudseniorcare.domain.favorito.Favorito;
 import seniorcare.crudseniorcare.domain.idoso.Idoso;
+import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.service.idoso.dto.IdosoListagemDto;
 import seniorcare.crudseniorcare.service.idoso.dto.IdosoMapper;
+import seniorcare.crudseniorcare.service.usuario.dto.CuidadorMapper;
+import seniorcare.crudseniorcare.service.usuario.dto.ResponsavelMapper;
 import seniorcare.crudseniorcare.service.usuario.dto.UsuarioMapper;
 
 import java.util.Collections;
@@ -18,8 +21,8 @@ public class FavoritoMapper {
         if (favorito == null) return null;
         FavoritoListagemDto dto = new FavoritoListagemDto();
         dto.setId(favorito.getId());
-        dto.setUsuarioFavoritando(UsuarioMapper.toUsuarioListagemFavoritoDto(favorito.getUsuario()));
-        dto.setUsuarioFavoritado(UsuarioMapper.toUsuarioListagemFavoritoDto(favorito.getUsuarioFavoritado()));
+        dto.setCuidadorFavoritado(CuidadorMapper.toUsuarioListagemCuidadorDto(favorito.getCuidador()));
+//        dto.setResponsavelFavoritando(ResponsavelMapper.toUsuarioListagemResponsavelDto(favorito.getResponsavel()));
 
         return dto;
     }
@@ -29,7 +32,7 @@ public class FavoritoMapper {
         if (favorito == null) return null;
         FavoritoListagemUsuarioDto dto = new FavoritoListagemUsuarioDto();
         dto.setId(favorito.getId());
-        dto.setUsuarioFavoritado(UsuarioMapper.toUsuarioListagemFavoritoDto(favorito.getUsuarioFavoritado()));
+        dto.setCuidadorFavoritado(CuidadorMapper.toUsuarioListagemCuidadorDto(favorito.getCuidador()));
 
         return dto;
     }

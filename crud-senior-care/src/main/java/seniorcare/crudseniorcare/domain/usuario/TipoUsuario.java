@@ -5,3 +5,4 @@ public enum TipoUsuario {
     RESPONSAVEL,
     ADMINISTRADOR
 }
+    

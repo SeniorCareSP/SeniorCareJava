@@ -38,7 +38,6 @@ public class UsuarioMapper {
         dto.setDtCadastro(usuario.getDtCadastro());
         dto.setAgenda(AgendaMapper.toListagemDto(usuario.getAgenda()));
         dto.setEndereco(EnderecoMapper.toEnderecoListagemDto(usuario.getEndereco()));
-        dto.setFavoritos(FavoritoMapper.toListagemUsuarioDtoList(usuario.getFavoritos()));
         dto.setDenuncias(DenunciaMapper.toListagemUsuarioDtoList(usuario.getDenuncias()));
         return dto;
     }

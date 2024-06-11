@@ -55,6 +55,7 @@ public class CuidadorController {
         URI uri = URI.create("/cuidadores/" + salvo.getIdUsuario());
         return ResponseEntity.created(uri).body(dto);
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         service.delete(id);

@@ -5,6 +5,8 @@ import seniorcare.crudseniorcare.domain.usuario.Administrador;
 import seniorcare.crudseniorcare.service.agenda.dto.AgendaMapper;
 import seniorcare.crudseniorcare.service.usuario.dto.administrador.AdministradorCriacaoDto;
 import seniorcare.crudseniorcare.service.usuario.dto.administrador.AdministradorListagemDto;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Mapper
@@ -17,7 +19,7 @@ public class AdministradorMapper {
         administrador.setEmail(dto.getEmail());
         administrador.setSenha(dto.getSenha());
         administrador.setTipoDeUsuario(dto.getTipoDeUsuario());
-        administrador.setDtCadastro(dto.getDtCadastro());
+        administrador.setDtCadastro(LocalDate.now());
         administrador.setCargo(dto.getCargo());
 
 

@@ -1,6 +1,8 @@
 package seniorcare.crudseniorcare.controller.usuario;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,9 +35,19 @@ public class UsuarioController {
 
     private final UsuarioService usuarioService;
 
+    private static final Logger logger = LoggerFactory.getLogger(UsuarioController.class);
+
+
     @PostMapping("/login")
     public ResponseEntity<UsuarioTokenDto> login(@RequestBody UsuarioLoginDto usuarioLoginDto){
+
+        logger.info("Usuario pra login: {}", usuarioLoginDto);  // Log do token gerado
+
+
         UsuarioTokenDto usuarioToken = this.usuarioService.autenticar(usuarioLoginDto);
+
+        logger.info("Usuario token login: {}", usuarioToken);  // Log do token gerado
+
         return ResponseEntity.status(200).body(usuarioToken);
     }
 

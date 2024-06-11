@@ -37,8 +37,10 @@ public class ResponsavelService {
 
 
     public Responsavel criar(Responsavel novoResponsavel) {
+
         String senhaCriptografada = passwordEncoder.encode(novoResponsavel.getSenha());
         novoResponsavel.setSenha(senhaCriptografada);
+
         if (emailJaExiste(novoResponsavel.getEmail())){
             throw new ConflitoException("Email Responsavel");
         }

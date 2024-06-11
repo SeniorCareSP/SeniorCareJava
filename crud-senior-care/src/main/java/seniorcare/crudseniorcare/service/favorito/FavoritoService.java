@@ -5,8 +5,11 @@ import org.springframework.stereotype.Service;
 import seniorcare.crudseniorcare.domain.favorito.Favorito;
 import seniorcare.crudseniorcare.domain.favorito.repository.FavoritoRepository;
 import seniorcare.crudseniorcare.domain.idioma.Idioma;
+import seniorcare.crudseniorcare.domain.usuario.Cuidador;
 import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
+import seniorcare.crudseniorcare.exception.ConflitoException;
+import seniorcare.crudseniorcare.service.usuario.CuidadorService;
 import seniorcare.crudseniorcare.service.usuario.ResponsavelService;
 import seniorcare.crudseniorcare.service.usuario.UsuarioService;
 import seniorcare.crudseniorcare.exception.NaoEncontradoException;
@@ -22,29 +25,36 @@ public class FavoritoService {
     private final FavoritoRepository repository;
     private final UsuarioService usuarioService;
     private final ResponsavelService responsavelService;
+    private final CuidadorService cuidadorService;
 
     public List<Favorito> listByUsuario(Integer idUsuario) {
-        return repository.findByUsuarioIdUsuario(idUsuario);
+        return repository.findByResponsavelIdUsuario(idUsuario);
     }
 
-//    public Favorito byId(Integer idUsuario, Integer id) {
-//        return repository.findByUsuarioIdUsuarioAndIdUsuario(idUsuario, id)
-//                .orElseThrow(() -> new NaoEncontradoException("Favorito não encontrado"));
-//    }
 
-    public Favorito create(Integer idUsuarioFavoritando, Integer idUsuarioFavoritado) {
-        if (Objects.equals(idUsuarioFavoritando, idUsuarioFavoritado)){
+
+    public Favorito byIdFavorito(Integer id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new NaoEncontradoException("Favorito não encontrado"));
+    }
+
+    public Favorito create(Integer idResponsavel, Integer idCuidador) {
+        if (Objects.equals(idResponsavel, idCuidador)){
             throw new RuntimeException("Um usuário não pode favoritar a si mesmo.");
         }
-        Usuario usuarioFavoritando = usuarioService.findById(idUsuarioFavoritando)
-                .orElseThrow(() -> new NaoEncontradoException("Usuário favoritando não encontrado"));
 
-        Usuario usuarioFavoritado = usuarioService.findById(idUsuarioFavoritado)
+        if(isFavoritoExists(idResponsavel, idCuidador)){
+            throw new ConflitoException("Favorito Já Existe");
+        }
+        Responsavel usuarioFavoritando = responsavelService.findById(idResponsavel)
+                .orElseThrow(() -> new NaoEncontradoException("Responsável favoritando não encontrado"));
+
+        Cuidador usuarioFavoritado = cuidadorService.findById(idCuidador)
                 .orElseThrow(() -> new NaoEncontradoException("Usuário favoritado não encontrado"));
 
         Favorito favorito = new Favorito();
-        favorito.setUsuario(usuarioFavoritando);
-        favorito.setUsuarioFavoritado(usuarioFavoritado);
+        favorito.setCuidador(usuarioFavoritado);
+        favorito.setResponsavel(usuarioFavoritando);
 
         favorito = repository.save(favorito);
 
@@ -61,12 +71,42 @@ public class FavoritoService {
     }
 
 
+        public void desfavoritar(Integer idResponsavel, Integer idCuidador) {
+            // Verifica se a relação de favorito existe
+            boolean favoritoExists = isFavoritoExists(idResponsavel, idCuidador);
 
 
-//    public void delete(Integer idUsuario, Integer id) {
-//        Favorito favorito = byId(idUsuario, id);
-//        repository.delete(favorito);
-//    }
+
+            // Se a relação de favorito não existir, lança uma exceção ou retorna uma mensagem, conforme necessário
+            if (!favoritoExists) {
+                throw new NaoEncontradoException("Esta relação de favorito não existe.");
+                // Ou você pode retornar uma mensagem de erro ou simplesmente encerrar a função, dependendo do comportamento desejado
+            }
+
+            Favorito favorito = repository.findByUsuarioIdAndUsuarioFavoritadoId(idResponsavel, idCuidador)
+                    .orElseThrow(() -> new NaoEncontradoException("Relação de favorito não encontrada"));
+
+            Responsavel responsavel = responsavelService.findById(idResponsavel)
+                    .orElseThrow(() -> new NaoEncontradoException("Responsável não encontrado"));
+            responsavel.getFavoritos().remove(favorito);
+
+            usuarioService.update(idResponsavel, responsavel);
+
+            repository.delete(favorito);
+        }
+
+
+
+    public boolean isFavoritoExists(Integer idResponsavel, Integer idCuidador) {
+        return repository.existsByResponsavelIdAndCuidadorId(idResponsavel, idCuidador);
+    }
+
+
+    public void delete(Integer id) {
+        Favorito favorito = byIdFavorito(id);
+
+        repository.delete(favorito);
+    }
 //
 //    public Favorito update(Integer idUsuario, Integer id, Favorito favorito) {
 //        Favorito existingFavorito = byId(idUsuario, id);

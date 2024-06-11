@@ -1,6 +1,8 @@
 package seniorcare.crudseniorcare.service.usuario.autenticacao;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,6 +18,8 @@ import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioDetalhe
 
 import java.util.Optional;
 
+import static com.mysql.cj.conf.PropertyKey.logger;
+
 @Service
 @RequiredArgsConstructor
 public class AutenticacaoService implements UserDetailsService {
@@ -24,13 +28,20 @@ public class AutenticacaoService implements UserDetailsService {
     private final ResponsavelRepository responsavelRepository;
 
     private final UsuarioRepository usuarioRepository;
+    private static final Logger logger = LoggerFactory.getLogger(AutenticacaoService.class);
 
     //Método da interface implementada
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException{
-        Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
-        if (usuario.isEmpty()) throw new UsernameNotFoundException("Usuário não encontrado");
-        return new UsuarioDetalhesDto(usuario.get());
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        logger.info("Tentando autenticar usuário com email: {}", username);
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(username);
+        logger.info("\nUsuario Repository email: {}", usuarioOpt.get().getEmail());
+
+        if (usuarioOpt.isEmpty()) {
+
+            throw new UsernameNotFoundException(String.format("usuario: %s nao encontrado", username));
+        }
+        return new UsuarioDetalhesDto(usuarioOpt.get());
 
     }
 

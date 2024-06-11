@@ -1,5 +1,9 @@
 package seniorcare.crudseniorcare.configuration.security;
 
+import com.mysql.cj.conf.PropertySet;
+import com.mysql.cj.exceptions.ExceptionInterceptor;
+import com.mysql.cj.protocol.Protocol;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -8,9 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import seniorcare.crudseniorcare.service.usuario.autenticacao.AutenticacaoService;
-
 public class AutenticacaoProvider implements AuthenticationProvider {
-
     private final AutenticacaoService usuarioAutorizacaoService;
     private final PasswordEncoder passwordEncoder;
 
@@ -21,6 +23,7 @@ public class AutenticacaoProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
+
         final String username = authentication.getName();
         final String password = authentication.getCredentials().toString();
 
@@ -34,7 +37,7 @@ public class AutenticacaoProvider implements AuthenticationProvider {
     }
 
     @Override
-    public boolean supports(Class<?> authentication) {
+    public boolean supports(final Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
 }

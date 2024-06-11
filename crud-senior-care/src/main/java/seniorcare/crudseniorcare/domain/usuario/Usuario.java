@@ -40,14 +40,13 @@ public abstract class Usuario implements Serializable {
     private LocalDate dtNascimento;
     private String apresentacao;
     private LocalDate dtCadastro;
-
+    private Boolean status;
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private Agenda agenda;
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Idioma> idiomas;
 
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
-    private List<Favorito> favoritos;
+
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private Endereco endereco;
 

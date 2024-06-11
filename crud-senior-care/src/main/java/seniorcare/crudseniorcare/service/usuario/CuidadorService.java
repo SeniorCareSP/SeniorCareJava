@@ -30,9 +30,11 @@ import java.util.Optional;
         private final EnderecoService enderecoService;
         private final AgendaService agendaService;
         private final IdiomaService idiomaService;
-        public Cuidador criar(Cuidador novoCuidador) {
+        public Cuidador         criar(Cuidador novoCuidador) {
+
             String senhaCriptografada = passwordEncoder.encode(novoCuidador.getSenha());
             novoCuidador.setSenha(senhaCriptografada);
+
             if (emailJaExiste(novoCuidador.getEmail())) {
                 throw new ConflitoException("Email Cuidador");
             }
@@ -68,6 +70,10 @@ import java.util.Optional;
                 () -> new NaoEncontradoException("Cuidador")
         );
     }
+
+        public Optional<Cuidador> findById(Integer idUsuario) {
+            return repository.findById(idUsuario);
+        }
 
     public void delete(Integer id){
         Optional<Cuidador> cuidador = repository.findById(id);

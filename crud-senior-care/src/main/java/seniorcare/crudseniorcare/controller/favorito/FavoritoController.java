@@ -26,7 +26,7 @@ public class FavoritoController {
                 }
                 List<FavoritoListagemDto> dto = FavoritoMapper.toListagemDtoList(favoritos);
                 return ResponseEntity.ok(dto);
-}
+        }
 
 //        @GetMapping("/{idUsuario}/{id}")
 //        public ResponseEntity<FavoritoListagemDto> porId(@PathVariable Integer idUsuario, @PathVariable Integer id) {
@@ -39,19 +39,31 @@ public class FavoritoController {
 //                return ResponseEntity.ok(dto);
 //        }
 
-        @PostMapping
-        public ResponseEntity<FavoritoListagemDto> criar(@RequestBody FavoritoCriacaoDto dto) {
 
-                Favorito favorito = service.create(dto.getIdUsuarioFavoritando(), dto.getIdUsuarioFavoritado());
+        @PostMapping("/{idResponsavel}/{idCuidador}")
+        public ResponseEntity<FavoritoListagemDto> criar(@PathVariable Integer idResponsavel,  @PathVariable Integer idCuidador) {
+
+                Favorito favorito = service.create(idResponsavel, idCuidador);
 
                 return ResponseEntity.ok(FavoritoMapper.toFavoritoDto(favorito));
         }
-//
-//        @DeleteMapping("/{idUsuario}/{id}")
-//        public ResponseEntity<Void> delete(@PathVariable Integer idUsuario, @PathVariable Integer id) {
-//                service.delete(idUsuario, id);
-//                return ResponseEntity.ok().build();
-//        }
+
+        @GetMapping("/exists/{idResponsavel}/{idCuidador}")
+        public ResponseEntity<Boolean> exists(@PathVariable Integer idResponsavel, @PathVariable Integer idCuidador) {
+                boolean exists = service.isFavoritoExists(idResponsavel, idCuidador);
+                return ResponseEntity.ok(exists);
+        }
+        @DeleteMapping("/{idResponsavel}/{idCuidador}")
+        public ResponseEntity<Void> desfavoritar(@PathVariable Integer idResponsavel, @PathVariable Integer idCuidador) {
+                service.desfavoritar(idResponsavel, idCuidador);
+                return ResponseEntity.ok().build();
+        }
+
+        @DeleteMapping("/{id}")
+        public ResponseEntity<Void> delete(@PathVariable Integer id) {
+                service.delete( id);
+                return ResponseEntity.ok().build();
+        }
 //
 //        @PutMapping("/{idUsuario}/{id}")
 //        public ResponseEntity<FavoritoListagemDto> update(@PathVariable Integer idUsuario, @PathVariable Integer id, @RequestBody Favorito favorito) {

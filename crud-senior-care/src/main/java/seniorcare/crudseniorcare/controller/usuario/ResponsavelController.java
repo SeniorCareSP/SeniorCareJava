@@ -50,15 +50,13 @@ public class ResponsavelController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Criar novo responsável", notes = "Cria um novo responsável")
-    @ApiResponses({
-            @ApiResponse(code = 201, message = "Responsável criado com sucesso"),
-            @ApiResponse(code = 400, message = "Dados inválidos para criação do responsável")
-    })
+
     public ResponseEntity<UsuarioListagemResponsavelDto> criar(@RequestBody UsuarioCriacaoResponsavelDto responsavelDto) {
         Responsavel salvoEntity = ResponsavelMapper.toResponsavel(responsavelDto);
+
         Responsavel salvo = service.criar(salvoEntity);
         UsuarioListagemResponsavelDto dto = ResponsavelMapper.toUsuarioListagemResponsavelDto(salvo);
+
         URI uri = URI.create("/responsaveis/" + salvo.getIdUsuario());
         return ResponseEntity.created(uri).body(dto);
     }

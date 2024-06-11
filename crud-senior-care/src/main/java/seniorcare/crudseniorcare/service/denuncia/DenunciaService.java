@@ -39,8 +39,8 @@ public class DenunciaService {
 
         denuncia = denunciaRepository.save(denuncia);
 
-        if (usuarioDenunciador.getFavoritos() == null) {
-            usuarioDenunciador.setFavoritos(new ArrayList<>());
+        if (usuarioDenunciador.getDenuncias() == null) {
+            usuarioDenunciador.setDenuncias(new ArrayList<>());
         }
         usuarioDenunciador.getDenuncias().add(denuncia);
 

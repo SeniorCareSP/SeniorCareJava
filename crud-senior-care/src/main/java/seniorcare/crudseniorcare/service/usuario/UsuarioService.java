@@ -2,6 +2,9 @@ package seniorcare.crudseniorcare.service.usuario;
 
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.Authentication;
 
+import org.springframework.web.server.ResponseStatusException;
 import seniorcare.crudseniorcare.configuration.security.jwt.GerenciadorTokenJwt;
 import seniorcare.crudseniorcare.domain.usuario.Administrador;
 import seniorcare.crudseniorcare.domain.usuario.Cuidador;
@@ -26,7 +30,6 @@ import seniorcare.crudseniorcare.service.usuario.dto.UsuarioMapper;
 import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
 import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioListagemDto;
 import seniorcare.crudseniorcare.utils.PilhaObj;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +38,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+
 public class UsuarioService {
     private final CuidadorRepository cuidadorRepository;
     private final ResponsavelRepository responsavelRepository;
@@ -49,27 +53,31 @@ public class UsuarioService {
     private final PilhaObj<Cuidador> pilhaCuidador = new PilhaObj<>(10);
     private final PilhaObj<Responsavel> pilhaResponsavel = new PilhaObj<>(10);
     private final PilhaObj<Administrador> pilhaAdministrador = new PilhaObj<>(10);
-  
-    public UsuarioTokenDto autenticar(UsuarioLoginDto usuarioLoginDto){
+
+    private static final Logger logger = LoggerFactory.getLogger(UsuarioService.class);
+
+    public UsuarioTokenDto autenticar(UsuarioLoginDto usuarioLoginDto) {
+
         final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
                 usuarioLoginDto.getEmail(), usuarioLoginDto.getSenha());
 
         final Authentication authentication = this.authenticationManager.authenticate(credentials);
 
-        Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(usuarioLoginDto.getEmail());
-
-        if (usuarioOptional.isEmpty()){
-            throw new NaoEncontradoException("Usuario email AUTENTICAR");
-        }
-
-        Usuario usuarioAutenticado = usuarioOptional.get();
+        Usuario usuarioAutenticado =
+                usuarioRepository.findByEmail(usuarioLoginDto.getEmail())
+                        .orElseThrow(
+                            () -> new ResponseStatusException(404, "Email do usuário não cadastrado", null)
+                        );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         final String token = gerenciadorTokenJwt.generateToken(authentication);
 
+        logger.info("Generated Token for user {}: {}", usuarioLoginDto.getEmail(), token);
+
         return UsuarioMapper.of(usuarioAutenticado, token);
     }
+
 
     public void logout() {
         SecurityContextHolder.clearContext();
@@ -162,10 +170,7 @@ public class UsuarioService {
         }
 
         // Verifica se a lista de favoritos não é nula antes de atribuí-la
-        if (usuario.getFavoritos() != null) {
-            // Atualiza a lista de favoritos do usuário existente com a lista fornecida
-            usuarioExistente.getFavoritos().addAll(usuario.getFavoritos());
-        }
+
 
         return usuarioRepository.save(usuarioExistente);
     }

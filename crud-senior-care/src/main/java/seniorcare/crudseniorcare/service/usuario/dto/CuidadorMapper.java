@@ -65,7 +65,6 @@ public class CuidadorMapper {
         dto.setIdiomas(IdiomaMapper.toListagemDtoList(cuidador.getIdiomas()));
         dto.setCaracteristicas(CaracteristicaMapper.toCaracteristicaListagemDtoList(cuidador.getCaracteristicas()));
         dto.setAjudas(AjudaMapper.toAjudaListagemDtoList(cuidador.getAjudas()));
-        dto.setFavoritos(FavoritoMapper.toListagemUsuarioDtoList(cuidador.getFavoritos()));
         dto.setEndereco(EnderecoMapper.toEnderecoListagemDto(cuidador.getEndereco()));
 
 

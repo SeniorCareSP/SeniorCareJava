@@ -35,7 +35,6 @@ public class UsuarioListagemDto {
     private LocalDate dtCadastro;
     private AgendaListagemDto agenda;
     private List<IdiomaListagemDto> idiomas;
-    private List<FavoritoListagemUsuarioDto> favoritos;
     private List<DenunciaListagemUsuarioDto> denuncias;
     private EnderecoListagemDto endereco;
 }
