@@ -33,7 +33,6 @@ public class ResponsavelService {
     private final EnderecoService enderecoService;
     private final AgendaService agendaService;
     private final IdiomaService idiomaService;
-    private final IdosoService idosoService;
 
 
     public Responsavel criar(Responsavel novoResponsavel) {
@@ -56,10 +55,6 @@ public class ResponsavelService {
         for (Idioma idioma : usuarioSalvo.getIdiomas()){
             idioma.setUsuario(usuarioSalvo);
             idiomaService.create(idioma);
-        }
-        for (Idoso idoso : usuarioSalvo.getIdosos()){
-            idoso.setResponsavel(usuarioSalvo);
-            idosoService.create(idoso);
         }
 
         return usuarioSalvo;

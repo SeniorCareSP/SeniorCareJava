@@ -11,14 +11,14 @@ import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioListagem
 import java.util.UUID;
 @Data
 public class IdosoListagemDto {
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     private Integer idIdoso;
     private String nome;
+    private String descricao;
     private boolean mobilidade;
     private boolean lucido;
     private String doencasCronicas;
     private Boolean cuidadosMin;
     private String genero;
-    private UsuarioListagemResponsavelDto responsavel;
 
 }

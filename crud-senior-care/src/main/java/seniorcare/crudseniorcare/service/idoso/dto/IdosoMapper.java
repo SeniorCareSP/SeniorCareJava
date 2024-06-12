@@ -13,6 +13,7 @@ public class IdosoMapper {
         Idoso idoso = new Idoso();
 
         idoso.setNome(dto.getNome());
+        idoso.setDescricao(dto.getDescricao());
         idoso.setMobilidade(dto.isMobilidade());
         idoso.setLucido(dto.isLucido());
         idoso.setDoencasCronicas(dto.getDoencasCronicas());
@@ -28,6 +29,7 @@ public class IdosoMapper {
 
         dto.setIdIdoso(idoso.getIdIdoso());
         dto.setNome(idoso.getNome());
+        dto.setDescricao(idoso.getDescricao());
         dto.setMobilidade(idoso.isMobilidade());
         dto.setLucido(idoso.isLucido());
         dto.setDoencasCronicas(idoso.getDoencasCronicas());

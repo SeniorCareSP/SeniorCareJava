@@ -38,6 +38,7 @@ public class CuidadorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioListagemCuidadorDto> porId(@PathVariable Integer id){
+
         Cuidador cuidador = service.byId(id);
         UsuarioListagemCuidadorDto dto = CuidadorMapper.toUsuarioListagemCuidadorDto(cuidador);
         return ResponseEntity.ok(dto);

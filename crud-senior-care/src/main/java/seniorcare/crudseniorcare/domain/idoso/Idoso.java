@@ -17,6 +17,7 @@ public class Idoso implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idIdoso;
     private String nome;
+    private String descricao;
     private boolean mobilidade;
     private boolean lucido;
     private String doencasCronicas;
