@@ -163,7 +163,7 @@ class ResponsavelServiceTest {
         String senhaCriptografada = "senhaCriptografada";
 
 
-        when(usuarioRepository.findByEmail(responsavelSalvo.getEmail())).thenReturn(Optional.empty());
+        when(usuarioRepository.findByEmailIgnoreCase(responsavelSalvo.getEmail())).thenReturn(Optional.empty());
         when(enderecoService.create(endereco)).thenReturn(enderecoCriado);
         when(agendaService.create(agenda)).thenReturn(agendaCriado);
         when(repository.save(responsavelParaSalvar)).thenReturn(responsavelSalvo);
@@ -193,7 +193,7 @@ class ResponsavelServiceTest {
         novoResponsavel.setDtCadastro(LocalDate.now());
         novoResponsavel.setIdosos(List.of());
 
-        when(usuarioRepository.findByEmail(novoResponsavel.getEmail())).thenReturn(Optional.of(new Responsavel()));
+        when(usuarioRepository.findByEmailIgnoreCase(novoResponsavel.getEmail())).thenReturn(Optional.of(new Responsavel()));
 
         assertThrows(ConflitoException.class, () -> service.criar(novoResponsavel));
     }

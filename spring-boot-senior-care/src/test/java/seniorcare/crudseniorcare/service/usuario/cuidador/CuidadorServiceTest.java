@@ -134,7 +134,7 @@ class CuidadorServiceTest {
         String senhaCriptografada = "senhaCriptografada";
 
 
-        when(usuarioRepository.findByEmail(cuidadorSalvo.getEmail())).thenReturn(Optional.empty());
+        when(usuarioRepository.findByEmailIgnoreCase(cuidadorSalvo.getEmail())).thenReturn(Optional.empty());
         when(enderecoService.create(endereco)).thenReturn(enderecoCriado);
         when(agendaService.create(agenda)).thenReturn(agendaCriado);
         when(repository.save(cuidadorParaSalvar)).thenReturn(cuidadorSalvo);
@@ -160,7 +160,7 @@ class CuidadorServiceTest {
         novoCuidador.setFaixaEtaria("Faixa etaria 2");
         novoCuidador.setPrecoHora(30.0);
         novoCuidador.setIdiomas(new ArrayList<>());
-        when(usuarioRepository.findByEmail(novoCuidador.getEmail())).thenReturn(Optional.of(new Cuidador()));
+        when(usuarioRepository.findByEmailIgnoreCase(novoCuidador.getEmail())).thenReturn(Optional.of(new Cuidador()));
 
         assertThrows(ConflitoException.class, () -> service.criar(novoCuidador));
     }

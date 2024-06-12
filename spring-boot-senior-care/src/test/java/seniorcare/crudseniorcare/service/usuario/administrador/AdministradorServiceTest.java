@@ -46,7 +46,7 @@ class AdministradorServiceTest {
         administrador.setSenha("senha123");
 
         when(passwordEncoder.encode(administrador.getSenha())).thenReturn("senhaCriptografada");
-        when(usuarioRepository.findByEmail(administrador.getEmail())).thenReturn(Optional.empty());
+        when(usuarioRepository.findByEmailIgnoreCase(administrador.getEmail())).thenReturn(Optional.empty());
         when(repository.save(administrador)).thenReturn(administrador);
 
         // WHEN
@@ -138,7 +138,7 @@ class AdministradorServiceTest {
         administrador.setEmail("admin@example.com");
         administrador.setSenha("senha123");
 
-        when(usuarioRepository.findByEmail(administrador.getEmail())).thenReturn(Optional.of(new Administrador()));
+        when(usuarioRepository.findByEmailIgnoreCase(administrador.getEmail())).thenReturn(Optional.of(new Administrador()));
 
         // WHEN/THEN
         assertThrows(ConflitoException.class, () -> service.criar(administrador));

@@ -34,7 +34,7 @@ public class AdministradorService {
     }
 
     public boolean emailJaExiste(String email) {
-        Optional<Usuario> emailUsuario = usuarioRepository.findByEmail(email);
+        Optional<Usuario> emailUsuario = usuarioRepository.findByEmailIgnoreCase(email);
         return emailUsuario.isPresent();
     }
 

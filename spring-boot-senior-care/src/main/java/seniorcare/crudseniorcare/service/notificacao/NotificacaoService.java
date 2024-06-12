@@ -37,7 +37,7 @@ public class NotificacaoService {
 
     @Transactional
     public Notificacao criar(NotificacaoCriacaoDto dto) {
-        Usuario usuario = usuarioRepository.findByEmail(dto.getUsuarioEmail()).orElseThrow(
+        Usuario usuario = usuarioRepository.findByEmailIgnoreCase(dto.getUsuarioEmail()).orElseThrow(
                 () -> new NaoEncontradoException("Usuário não encontrado com o e-mail: " + dto.getUsuarioEmail())
         );
 

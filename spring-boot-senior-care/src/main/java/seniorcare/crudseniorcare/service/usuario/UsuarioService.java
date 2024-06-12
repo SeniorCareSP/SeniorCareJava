@@ -64,7 +64,7 @@ public class UsuarioService {
         final Authentication authentication = this.authenticationManager.authenticate(credentials);
 
         Usuario usuarioAutenticado =
-                usuarioRepository.findByEmail(usuarioLoginDto.getEmail())
+                usuarioRepository.findByEmailIgnoreCase(usuarioLoginDto.getEmail())
                         .orElseThrow(
                             () -> new ResponseStatusException(404, "Email do usuário não cadastrado", null)
                         );
