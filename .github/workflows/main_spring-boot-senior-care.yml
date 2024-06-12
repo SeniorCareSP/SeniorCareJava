@@ -61,6 +61,6 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'seniorcarejava'
+          app-name: 'spring-boot-senior-care'
           slot-name: 'Production'
-          package: spring-boot-senior-care/target/spring-boot-senior-care-0.0.1-SNAPSHOT.jar
+          package: spring-boot-senior-care/target/*.jar
