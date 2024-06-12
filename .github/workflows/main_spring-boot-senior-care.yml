@@ -1,4 +1,7 @@
-name: Build and deploy WAR app to Azure Web App - seniorcarejava
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy WAR app to Azure Web App - spring-boot-senior-care
 
 on:
   push:
@@ -19,14 +22,16 @@ jobs:
           java-version: '17'
 
       - name: Build with Maven
-        run: mvn clean install -Dfile.encoding=UTF-8
-        working-directory: spring-boot-senior-care
+        run: |
+          cd spring-boot-senior-care
+          mvn clean install -Dfile.encoding=UTF-8
+
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: java-app
-          path: spring-boot-senior-care/target/*.war
+          path: '${{ github.workspace }}/target/*.war'
 
   deploy:
     runs-on: ubuntu-latest
@@ -35,7 +40,7 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write # This is required for requesting the JWT
+      id-token: write #This is required for requesting the JWT
 
     steps:
       - name: Download artifact from build job
@@ -46,14 +51,15 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_3EC5E8ACBC8A4559A45042B393251C19 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_8061BE698BFA4CEEAD532EADD396ECD8 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_61B2E56426594FC18359596134DECD5A }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_6F9BCC0BABDB4F59B8F4D7778ABB97F5 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_4FF1581C6AFD4F41B3AC57155BE6FE36 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_C6C2D2268F9B4CE7AEA208CBCA476A8F }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'seniorcarejava'
+          app-name: 'spring-boot-senior-care'
           slot-name: 'Production'
-          package: spring-boot-senior-care/target/*.war
+          package: '*.war'
+
