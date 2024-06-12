@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>senior-care</groupId>
-	<artifactId>crud-senior-care</artifactId>
+	<artifactId>spring-boot-senior-care</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>crud-senior-care</name>
