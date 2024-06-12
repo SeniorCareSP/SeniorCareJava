@@ -12,10 +12,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor // Adiciona esta anotação
 @Builder
 @Entity
+@Table(name = "tb_chat_room")
+
 public class ChatRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Integer id;
     private String chatId;
     private String senderId;
     private String recipientId;

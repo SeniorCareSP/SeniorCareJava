@@ -15,10 +15,11 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
+@Table(name = "tb_chat_message")
 public class ChatMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Integer id;
     private String chatId;
     private String senderId;
     private String recipientId;

@@ -1,5 +1,8 @@
 package seniorcare.crudseniorcare.domain.chat;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.*;
 
 @Data
@@ -7,7 +10,10 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class ChatNotification {
-    private String id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String senderId;
     private String recipientId;
     private String content;
