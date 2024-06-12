@@ -63,6 +63,10 @@ public class UsuarioController {
         List<UsuarioListagemDto> listaUsuarioDto = listaUsuario.stream()
                 .map(UsuarioMapper::toUsuarioListagemDto)
                 .collect(Collectors.toList());
+
+        if (listaUsuarioDto.isEmpty()){
+            return ResponseEntity.status(204).body(listaUsuarioDto);
+        }
         return ResponseEntity.status(200).body(listaUsuarioDto);
     }
 
