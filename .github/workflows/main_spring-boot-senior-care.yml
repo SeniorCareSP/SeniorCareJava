@@ -19,7 +19,10 @@ jobs:
           java-version: '17'
 
       - name: Build with Maven
-        run: mvn clean install
+        run: |
+          cd spring-boot-senior-care
+          mvn clean install -Dfile.encoding=UTF-8
+          ls -la target
 
       - name: Verify JAR file
         run: |
@@ -30,7 +33,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: java-app
-          path: '${{ github.workspace }}/target/*.jar'
+          path: spring-boot-senior-care/target/spring-boot-senior-care-0.0.1-SNAPSHOT.jar
 
   deploy:
     runs-on: ubuntu-latest
