@@ -35,7 +35,10 @@ public class AutenticacaoService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         logger.info("Tentando autenticar usuário com email: {}", username);
         Optional<Usuario> usuarioOpt = usuarioRepository.findByEmailIgnoreCase(username);
+<<<<<<< HEAD
         logger.info("\nUsuario Repository email: {}", usuarioOpt.get().getEmail());
+=======
+>>>>>>> c68b5c006773f888217380294209525caa4ea64b
 
         if (usuarioOpt.isEmpty()) {
 
