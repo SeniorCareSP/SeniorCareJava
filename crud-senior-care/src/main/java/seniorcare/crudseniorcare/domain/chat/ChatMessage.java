@@ -18,7 +18,7 @@ import java.util.List;
 public class ChatMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private String chatId;
     private String senderId;
     private String recipientId;
