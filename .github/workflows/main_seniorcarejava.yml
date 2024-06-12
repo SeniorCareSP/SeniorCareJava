@@ -27,7 +27,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: java-app
-          path: 'spring-boot-senior-care/target/*.war'
+          path: 'spring-boot-senior-care/target/*.jar'
 
   deploy:
     runs-on: ubuntu-latest
@@ -57,4 +57,4 @@ jobs:
         with:
           app-name: 'seniorcarejava'
           slot-name: 'Production'
-          package: '*.war'
+          package: '*.jar'
