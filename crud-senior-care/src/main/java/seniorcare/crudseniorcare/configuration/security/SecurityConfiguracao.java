@@ -44,6 +44,7 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/swagger-ui.html"),
             new AntPathRequestMatcher("/swagger-resources"),
             new AntPathRequestMatcher("/swagger-resources/**"),
+            new AntPathRequestMatcher("/websocket"),
             new AntPathRequestMatcher("/configuration/ui"),
             new AntPathRequestMatcher("/configuration/security"),
             new AntPathRequestMatcher("/api/public/**"),
@@ -62,7 +63,8 @@ public class SecurityConfiguracao {
             new AntPathRequestMatcher("/administradores/*"),
             new AntPathRequestMatcher("/h2-console/**"),
             new AntPathRequestMatcher("/h2-console/**/**"),
-            new AntPathRequestMatcher("/error/**")
+            new AntPathRequestMatcher("/error/**"),
+            new AntPathRequestMatcher("/websocket/**")
     };
 
     @Bean

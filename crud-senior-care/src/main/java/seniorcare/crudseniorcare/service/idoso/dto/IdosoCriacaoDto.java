@@ -6,6 +6,7 @@ import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioCriacaoResponsavelDto;
 import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioListagemResponsavelDto;
 
+import java.time.LocalDate;
 import java.util.UUID;
 @Data
 public class IdosoCriacaoDto {
@@ -18,4 +19,5 @@ public class IdosoCriacaoDto {
     private Boolean cuidadosMin;
     private String genero;
     private Integer responsavel;
+    private LocalDate dtNasc;
 }

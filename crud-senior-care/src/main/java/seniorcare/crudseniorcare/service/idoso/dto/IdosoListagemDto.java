@@ -8,6 +8,7 @@ import lombok.Data;
 import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioListagemResponsavelDto;
 
+import java.time.LocalDate;
 import java.util.UUID;
 @Data
 public class IdosoListagemDto {
@@ -20,5 +21,6 @@ public class IdosoListagemDto {
     private String doencasCronicas;
     private Boolean cuidadosMin;
     private String genero;
+    private LocalDate dtNasc;
 
 }

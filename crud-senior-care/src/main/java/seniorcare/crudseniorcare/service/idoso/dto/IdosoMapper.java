@@ -19,7 +19,7 @@ public class IdosoMapper {
         idoso.setDoencasCronicas(dto.getDoencasCronicas());
         idoso.setCuidadosMin(dto.getCuidadosMin());
         idoso.setGenero(dto.getGenero());
-
+        idoso.setDtNascimento(dto.getDtNasc());
         return idoso;
     }
 
@@ -35,7 +35,7 @@ public class IdosoMapper {
         dto.setDoencasCronicas(idoso.getDoencasCronicas());
         dto.setCuidadosMin(idoso.getCuidadosMin());
         dto.setGenero(idoso.getGenero());
-
+        dto.setDtNasc(idoso.getDtNascimento());
         return dto;
     }
 

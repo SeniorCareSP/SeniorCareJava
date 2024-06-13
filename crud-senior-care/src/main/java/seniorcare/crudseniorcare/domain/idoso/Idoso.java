@@ -6,6 +6,7 @@ import lombok.Setter;
 import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -22,6 +23,7 @@ public class Idoso implements Serializable {
     private boolean lucido;
     private String doencasCronicas;
     private Boolean cuidadosMin;
+    private LocalDate DtNascimento;
     private String genero;
 
     @ManyToOne

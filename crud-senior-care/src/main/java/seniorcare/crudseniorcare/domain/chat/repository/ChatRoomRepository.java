@@ -12,4 +12,7 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Integer> {
 
     @Query("SELECT cr FROM ChatRoom cr WHERE cr.senderId = :userId OR cr.recipientId = :userId")
     List<ChatRoom> findChatsByUserId(Integer userId);
+
+    List<ChatRoom> findBySenderIdOrRecipientId(String senderId, String recipientId);
+
 }
