@@ -5,6 +5,7 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/crud-senior-care/pom.xml" />
+        <option value="$PROJECT_DIR$/spring-boot-senior-care/pom.xml" />
       </list>
     </option>
   </component>
