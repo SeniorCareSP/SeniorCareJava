@@ -11,6 +11,10 @@ import seniorcare.crudseniorcare.domain.chat.ChatNotification;
 import seniorcare.crudseniorcare.domain.chat.ChatRoom;
 import seniorcare.crudseniorcare.service.chat.ChatMessageService;
 import seniorcare.crudseniorcare.service.chat.ChatRoomService;
+import seniorcare.crudseniorcare.service.chat.dto.ChatMapper;
+import seniorcare.crudseniorcare.service.chat.dto.ChatRoomListagem;
+import seniorcare.crudseniorcare.service.usuario.UsuarioService;
+import seniorcare.crudseniorcare.service.usuario.dto.UsuarioMapper;
 
 import java.util.List;
 
@@ -18,10 +22,11 @@ import java.util.List;
 @RequestMapping("/notification")
 @RequiredArgsConstructor
 public class ChatController {
-
+    private final UsuarioService usuarioService;
     private final SimpMessagingTemplate messagingTemplate;
     private final ChatMessageService chatMessageService;
     private final ChatRoomService chatRoomService;
+
 
 
     @PostMapping("/chat")
@@ -42,14 +47,21 @@ public class ChatController {
 
 
     @GetMapping("/chats/{userId}")
-    public ResponseEntity<List<ChatRoom>> getAllChatsForUser(@PathVariable String userId) {
+    public ResponseEntity<List<ChatRoomListagem>> getAllChatsForUser(@PathVariable String userId) {
         List<ChatRoom> chatRooms = chatRoomService.getAllUniqueChatRoomsForUser(userId);
+        List<ChatRoomListagem> chatRoomListagems = new java.util.ArrayList<>(List.of());
 
+        for (ChatRoom chatRoom : chatRooms) {
+            ChatRoomListagem dto = ChatMapper.toChatRoomDto(chatRoom);
+            int id = Integer.parseInt(chatRoom.getRecipientId());
+            dto.setUsuario2(UsuarioMapper.toUsuarioListagemDto(usuarioService.byId(id)));
+            chatRoomListagems.add(dto);
+        }
 
-        if (chatRooms.isEmpty()) {
+        if (chatRoomListagems.isEmpty()) {
             return ResponseEntity.noContent().build();
         } else {
-            return ResponseEntity.ok(chatRooms);
+            return ResponseEntity.ok(chatRoomListagems);
         }
     }
 

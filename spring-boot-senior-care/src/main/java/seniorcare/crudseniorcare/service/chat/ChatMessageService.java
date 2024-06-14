@@ -44,4 +44,4 @@ public class ChatMessageService {
         Objects.requireNonNull(chatMessage.getRecipientId(), "O ID do destinatário da mensagem não pode ser nulo");
         Objects.requireNonNull(chatMessage.getContent(), "O conteúdo da mensagem não pode ser nulo");
     }
-}
+}       

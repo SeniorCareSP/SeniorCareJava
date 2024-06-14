@@ -61,14 +61,13 @@ public class ChatRoomService {
 
 
     public List<ChatRoom> getAllUniqueChatRoomsForUser(String userId) {
-        List<ChatRoom> allChatRooms = chatRoomRepository.findBySenderIdOrRecipientId(userId, userId);
 
         // Usamos um conjunto para armazenar chatIds únicos
-        Set<String> uniqueChatIds = new HashSet<>();
-        List<ChatRoom> uniqueChatRooms = allChatRooms.stream()
-                .filter(chatRoom -> uniqueChatIds.add(chatRoom.getChatId())) // Adiciona ao conjunto e filtra duplicatas
-                .collect(Collectors.toList());
+//        Set<String> uniqueChatIds = new HashSet<>();
+//        List<ChatRoom> uniqueChatRooms = allChatRooms.stream()
+//                .filter(chatRoom -> uniqueChatIds.add(chatRoom.getChatId())) // Adiciona ao conjunto e filtra duplicatas
+//                .collect(Collectors.toList());
 
-        return uniqueChatRooms;
+        return chatRoomRepository.findBySenderId(userId);
     }
 }
