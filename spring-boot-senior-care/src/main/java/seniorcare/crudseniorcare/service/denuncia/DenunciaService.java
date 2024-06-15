@@ -12,6 +12,7 @@ import seniorcare.crudseniorcare.service.denuncia.dto.DenunciaListagemDto;
 import seniorcare.crudseniorcare.service.denuncia.dto.DenunciaMapper;
 import seniorcare.crudseniorcare.service.usuario.UsuarioService;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +36,7 @@ public class DenunciaService {
         denuncia.setUsuario(usuarioDenunciador);
         denuncia.setUsuarioDenunciado(usuarioDenunciado);
         denuncia.setInfo(denunciaDto.getInfo());
+        denuncia.setDataDenuncia(LocalDateTime.now());
         denuncia.setStatus(false);
 
         denuncia = denunciaRepository.save(denuncia);
@@ -47,6 +49,15 @@ public class DenunciaService {
         usuarioService.update(usuarioDenunciado.getIdUsuario(), usuarioDenunciador);
 
         return denuncia;
+    }
+
+    public Denuncia resolverDenuncia(Integer idDenuncia){
+        Denuncia denuncia = denunciaRepository.findById(idDenuncia)
+                .orElseThrow(() -> new NaoEncontradoException("Denúncia não encontrada"));
+
+        denuncia.setStatus(true);
+
+        return (denunciaRepository.save(denuncia));
     }
 
     public List<Denuncia> listarDenuncias() {
@@ -70,7 +81,9 @@ public class DenunciaService {
     public DenunciaListagemDto atualizarDenuncia(Integer id, DenunciaCriacaoDto denunciaDto) {
         Denuncia denunciaExistente = denunciaRepository.findById(id)
                 .orElseThrow(() -> new NaoEncontradoException("Denúncia não encontrada"));
+
         Denuncia denunciaAtualizada = DenunciaMapper.toEntity(denunciaDto);
+
         denunciaAtualizada.setId(id);
         return DenunciaMapper.toListagemDto(denunciaRepository.save(denunciaAtualizada));
     }

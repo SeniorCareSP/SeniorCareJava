@@ -32,6 +32,7 @@ public class UsuarioListagemDto {
     private String apresentacao;
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipoDeUsuario;
+    private Boolean status;
     private LocalDate dtCadastro;
     private AgendaListagemDto agenda;
     private List<IdiomaListagemDto> idiomas;

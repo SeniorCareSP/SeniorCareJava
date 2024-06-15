@@ -6,6 +6,6 @@ import lombok.Data;
 public class ChatRoomCriacao {
 
     private String chatId;
-    private String senderId;
-    private String recipientId;
+    private Integer senderId;
+    private Integer recipientId;
 }

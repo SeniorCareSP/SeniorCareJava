@@ -36,6 +36,7 @@ public class CuidadorMapper {
         cuidador.setAgenda(AgendaMapper.toEntity(dto.getAgendas()));
         cuidador.setDtCadastro(LocalDate.now());
         cuidador.setIdiomas(IdiomaMapper.toListagemIdioma(dto.getIdiomas()));
+        cuidador.setStatus(true);
         cuidador.setExperiencia(dto.getExperiencia());
         cuidador.setFaixaEtaria(dto.getFaixaEtaria());
         cuidador.setPrecoHora(dto.getPrecoHora());
@@ -60,6 +61,7 @@ public class CuidadorMapper {
         dto.setApresentacao(cuidador.getApresentacao());
         dto.setExperiencia(cuidador.getExperiencia());
         dto.setFaixaEtaria(cuidador.getFaixaEtaria());
+        dto.setStatus(cuidador.getStatus());
         dto.setDtCadastro(cuidador.getDtCadastro());
         dto.setAgenda(AgendaMapper.toListagemDto(cuidador.getAgenda()));
         dto.setIdiomas(IdiomaMapper.toListagemDtoList(cuidador.getIdiomas()));

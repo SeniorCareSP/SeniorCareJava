@@ -14,8 +14,8 @@ public class ChatNotification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String senderId;
-    private String recipientId;
+        private Integer senderId;
+    private Integer recipientId;
     private String content;
 
 }

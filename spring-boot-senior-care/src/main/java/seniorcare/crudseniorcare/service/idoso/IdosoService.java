@@ -31,28 +31,44 @@ public class IdosoService {
         );
     }
 
-    public Idoso create(Idoso novaIdoso, Integer idResponsavel){
+    public Idoso create(Idoso novaIdoso, Integer idResponsavel) {
 
-        if (novaIdoso == null) return null;
+        if (novaIdoso == null) {
+            throw new IllegalArgumentException("Novo idoso não pode ser nulo");
+        }
 
-
+        // Busca o responsável associado
         Responsavel usuarioResponsavel = responsavelService.findById(idResponsavel)
-                .orElseThrow(() -> new NaoEncontradoException("Responsável favoritando não encontrado"));
+                .orElseThrow(() -> new NaoEncontradoException("Responsável não encontrado"));
 
+        // Cria um novo idoso e copia os campos de novaIdoso
         Idoso idoso = new Idoso();
+        idoso.setNome(novaIdoso.getNome());  // Exemplo de campo
+        idoso.setDescricao(novaIdoso.getDescricao());
+        idoso.setDescricao(novaIdoso.getDescricao());
+        idoso.setMobilidade(novaIdoso.isMobilidade());
+        idoso.setLucido(novaIdoso.isLucido());
+        idoso.setDoencasCronicas(novaIdoso.getDoencasCronicas());
+        idoso.setCuidadosMin(novaIdoso.getCuidadosMin());
+        idoso.setDtNascimento(novaIdoso.getDtNascimento());  // Outro exemplo de campo
         idoso.setResponsavel(usuarioResponsavel);
+        idoso.setGenero(novaIdoso.getGenero());
 
+        // Salva o idoso no repositório
         idoso = repository.save(idoso);
 
-        if (usuarioResponsavel.getIdosos() == null){
+        // Adiciona o idoso à lista de idosos do responsável
+        if (usuarioResponsavel.getIdosos() == null) {
             usuarioResponsavel.setIdosos(new ArrayList<>());
         }
         usuarioResponsavel.getIdosos().add(idoso);
 
+        // Atualiza o responsável no serviço
         responsavelService.update(usuarioResponsavel.getIdUsuario(), usuarioResponsavel);
 
-        return repository.save(novaIdoso);
+        return idoso;
     }
+
 
     public void delete(Integer id){
         Optional<Idoso> idoso = repository.findById(id);

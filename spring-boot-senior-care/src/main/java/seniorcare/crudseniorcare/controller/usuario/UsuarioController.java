@@ -43,7 +43,6 @@ public class UsuarioController {
 
         logger.info("Usuario pra login: {}", usuarioLoginDto);  // Log do token gerado
 
-
         UsuarioTokenDto usuarioToken = this.usuarioService.autenticar(usuarioLoginDto);
 
         logger.info("Usuario token login: {}", usuarioToken);  // Log do token gerado
@@ -77,6 +76,8 @@ public class UsuarioController {
         UsuarioListagemDto dto = UsuarioMapper.toUsuarioListagemDto(usuario);
         return ResponseEntity.ok(dto);
     }
+
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id){

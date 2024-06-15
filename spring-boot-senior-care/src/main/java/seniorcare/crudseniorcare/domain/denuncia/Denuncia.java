@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -18,7 +19,7 @@ public class Denuncia {
     private List<String> info;
     private String detalhes;
     private Boolean status;
-
+    private LocalDateTime dataDenuncia;
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;

@@ -34,7 +34,7 @@ public class ChatController {
         public void processMessage(@RequestBody ChatMessage chatMessage) {
         ChatMessage savedMsg = chatMessageService.save(chatMessage);
         messagingTemplate.convertAndSendToUser(
-                chatMessage.getRecipientId(), "/queue/messages",
+                String.valueOf(chatMessage.getRecipientId()), "/queue/messages",
                 new ChatNotification(
                         savedMsg.getId(),
                         savedMsg.getSenderId(),
@@ -47,16 +47,17 @@ public class ChatController {
 
 
     @GetMapping("/chats/{userId}")
-    public ResponseEntity<List<ChatRoomListagem>> getAllChatsForUser(@PathVariable String userId) {
+    public ResponseEntity<List<ChatRoomListagem>> getAllChatsForUser(@PathVariable Integer userId) {
         List<ChatRoom> chatRooms = chatRoomService.getAllUniqueChatRoomsForUser(userId);
         List<ChatRoomListagem> chatRoomListagems = new java.util.ArrayList<>(List.of());
 
         for (ChatRoom chatRoom : chatRooms) {
             ChatRoomListagem dto = ChatMapper.toChatRoomDto(chatRoom);
-            int id = Integer.parseInt(chatRoom.getRecipientId());
-            dto.setUsuario2(UsuarioMapper.toUsuarioListagemDto(usuarioService.byId(id)));
+
+            dto.setUsuario2(UsuarioMapper.toUsuarioListagemDto(usuarioService.byId(chatRoom.getRecipientId())));
             chatRoomListagems.add(dto);
         }
+
 
         if (chatRoomListagems.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -68,8 +69,8 @@ public class ChatController {
 
 
     @GetMapping("/messages/{senderId}/{recipientId}")
-    public ResponseEntity<List<ChatMessage>> findChatMessages(@PathVariable String senderId,
-                                                              @PathVariable String recipientId) {
+    public ResponseEntity<List<ChatMessage>> findChatMessages(@PathVariable Integer senderId,
+                                                              @PathVariable Integer recipientId) {
 
 
         List<ChatMessage> chatMessages = chatMessageService.findChatMessages(senderId, recipientId);

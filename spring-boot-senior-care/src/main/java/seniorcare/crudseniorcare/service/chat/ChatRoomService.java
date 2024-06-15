@@ -5,11 +5,8 @@ import org.springframework.stereotype.Service;
 import seniorcare.crudseniorcare.domain.chat.ChatRoom;
 import seniorcare.crudseniorcare.domain.chat.repository.ChatRoomRepository;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,37 +14,29 @@ public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
 
-
-    public Optional<String> getChatRoomId(
-            String senderId,
-            String recipientId,
-            boolean createNewRoomIfNotExists
-    ) {
+    public Optional<String> getChatRoomId(Integer senderId, Integer recipientId, boolean createNewRoomIfNotExists) {
         return chatRoomRepository
                 .findBySenderIdAndRecipientId(senderId, recipientId)
                 .map(ChatRoom::getChatId)
                 .or(() -> {
-                    if(createNewRoomIfNotExists) {
-                        var chatId = createChatId(senderId, recipientId);
+                    if (createNewRoomIfNotExists) {
+                        String chatId = createChatId(senderId, recipientId);
                         return Optional.of(chatId);
                     }
-
-                    return  Optional.empty();
+                    return Optional.empty();
                 });
     }
 
-    private String createChatId(String senderId, String recipientId) {
-        var chatId = String.format("%s_%s", senderId, recipientId);
+    private String createChatId(Integer senderId, Integer recipientId) {
+        String chatId = String.format("%d_%d", senderId, recipientId);
 
-        ChatRoom senderRecipient = ChatRoom
-                .builder()
+        ChatRoom senderRecipient = ChatRoom.builder()
                 .chatId(chatId)
                 .senderId(senderId)
                 .recipientId(recipientId)
                 .build();
 
-        ChatRoom recipientSender = ChatRoom
-                .builder()
+        ChatRoom recipientSender = ChatRoom.builder()
                 .chatId(chatId)
                 .senderId(recipientId)
                 .recipientId(senderId)
@@ -59,15 +48,7 @@ public class ChatRoomService {
         return chatId;
     }
 
-
-    public List<ChatRoom> getAllUniqueChatRoomsForUser(String userId) {
-
-        // Usamos um conjunto para armazenar chatIds únicos
-//        Set<String> uniqueChatIds = new HashSet<>();
-//        List<ChatRoom> uniqueChatRooms = allChatRooms.stream()
-//                .filter(chatRoom -> uniqueChatIds.add(chatRoom.getChatId())) // Adiciona ao conjunto e filtra duplicatas
-//                .collect(Collectors.toList());
-
+    public List<ChatRoom> getAllUniqueChatRoomsForUser(Integer userId) {
         return chatRoomRepository.findBySenderId(userId);
     }
-}
+}   

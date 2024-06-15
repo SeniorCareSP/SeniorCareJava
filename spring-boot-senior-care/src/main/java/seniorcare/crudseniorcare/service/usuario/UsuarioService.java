@@ -5,8 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -56,32 +58,36 @@ public class UsuarioService {
 
     private static final Logger logger = LoggerFactory.getLogger(UsuarioService.class);
 
-    public UsuarioTokenDto autenticar(UsuarioLoginDto usuarioLoginDto) {
-
-        final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
-                usuarioLoginDto.getEmail(), usuarioLoginDto.getSenha());
-
-        final Authentication authentication = this.authenticationManager.authenticate(credentials);
-
-        Usuario usuarioAutenticado =
-                usuarioRepository.findByEmailIgnoreCase(usuarioLoginDto.getEmail())
-                        .orElseThrow(
-                            () -> new ResponseStatusException(404, "Email do usuário não cadastrado", null)
-                        );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        final String token = gerenciadorTokenJwt.generateToken(authentication);
-
-        logger.info("Generated Token for user {}: {}", usuarioLoginDto.getEmail(), token);
-
-        return UsuarioMapper.of(usuarioAutenticado, token);
-    }
-
 
     public void logout() {
         SecurityContextHolder.clearContext();
     }
+
+    public UsuarioTokenDto autenticar(UsuarioLoginDto usuarioLoginDto) {
+        logger.info("Tentativa de autenticação para o email: {}", usuarioLoginDto.getEmail());
+
+        final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
+                usuarioLoginDto.getEmail(), usuarioLoginDto.getSenha());
+
+        try {
+            final Authentication authentication = authenticationManager.authenticate(credentials);
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            Usuario usuarioAutenticado = usuarioRepository.findByEmailIgnoreCase(usuarioLoginDto.getEmail())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+
+            final String token = gerenciadorTokenJwt.generateToken(authentication);
+
+            logger.info("Token gerado para o usuário {}: {}", usuarioLoginDto.getEmail(), token);
+
+            return UsuarioMapper.of(usuarioAutenticado, token);
+        } catch (AuthenticationException e) {
+            logger.error("Falha na autenticação para o email: {}", usuarioLoginDto.getEmail());
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciais inválidas", e);
+        }
+    }
+
 
 
     public List<Usuario> list(){
@@ -106,6 +112,18 @@ public class UsuarioService {
         return usuarios.stream()
                 .map(UsuarioMapper::toUsuarioListagemDto)
                 .collect(Collectors.toList());
+    }
+
+
+    public Usuario bloquearUsuario(Integer idUsuario){
+
+        Usuario usuario = usuarioRepository.findByIdUsuario(idUsuario)
+                .orElseThrow(() -> new NaoEncontradoException("Usuario"));
+
+
+        usuario.setStatus(false);
+
+        return update(usuario.getIdUsuario(),usuario);
     }
 
     public void delete(Integer id){

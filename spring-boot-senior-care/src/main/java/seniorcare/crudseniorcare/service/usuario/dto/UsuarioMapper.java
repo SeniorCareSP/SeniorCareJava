@@ -35,6 +35,7 @@ public class UsuarioMapper {
         dto.setTipoDeUsuario(usuario.getTipoDeUsuario());
         dto.setDtNascimento(usuario.getDtNascimento());
         dto.setApresentacao(usuario.getApresentacao());
+        dto.setStatus(usuario.getStatus());
         dto.setDtCadastro(usuario.getDtCadastro());
         dto.setAgenda(AgendaMapper.toListagemDto(usuario.getAgenda()));
         dto.setEndereco(EnderecoMapper.toEnderecoListagemDto(usuario.getEndereco()));
@@ -86,6 +87,7 @@ public class UsuarioMapper {
         usuarioTokenDto.setUserId(usuario.getIdUsuario());
         usuarioTokenDto.setEmail(usuario.getEmail());
         usuarioTokenDto.setTipoUsuario(usuario.getTipoDeUsuario());
+        usuarioTokenDto.setStatus(usuario.getStatus());
         usuarioTokenDto.setNome(usuario.getNome());
 
         usuarioTokenDto.setToken(token);

@@ -19,9 +19,10 @@ public class AdministradorMapper {
         administrador.setEmail(dto.getEmail());
         administrador.setSenha(dto.getSenha());
         administrador.setTipoDeUsuario(dto.getTipoDeUsuario());
+        administrador.setTelefone(dto.getTelefone());
         administrador.setDtCadastro(LocalDate.now());
         administrador.setCargo(dto.getCargo());
-
+        administrador.setStatus(true);
 
         return administrador;
     }
@@ -32,9 +33,11 @@ public class AdministradorMapper {
         dto.setIdUsuario(administrador.getIdUsuario());
         dto.setNome(administrador.getNome());
         dto.setEmail(administrador.getEmail());
+        dto.setTelefone(administrador.getTelefone());
         dto.setTipoDeUsuario(administrador.getTipoDeUsuario());
         dto.setDtCadastro(administrador.getDtCadastro());
         dto.setCargo(administrador.getCargo());
+        dto.setStatus(administrador.getStatus());
 
 
 

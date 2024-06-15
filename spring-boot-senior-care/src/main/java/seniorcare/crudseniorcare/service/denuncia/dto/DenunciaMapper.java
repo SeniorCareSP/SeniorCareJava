@@ -35,6 +35,7 @@ public class DenunciaMapper {
         dto.setStatus(denuncia.getStatus());
         dto.setUsuarioDenunciador(UsuarioMapper.toUsuarioListagemDenunciaDto(denuncia.getUsuario()));
         dto.setUsuarioDenunciado(UsuarioMapper.toUsuarioListagemDenunciaDto(denuncia.getUsuarioDenunciado()));
+        dto.setDataDenuncia(denuncia.getDataDenuncia());
         return dto;
     }
 

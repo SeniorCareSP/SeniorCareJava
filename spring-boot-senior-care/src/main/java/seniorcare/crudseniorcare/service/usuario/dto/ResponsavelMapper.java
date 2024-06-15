@@ -26,6 +26,7 @@ public class ResponsavelMapper {
         responsavel.setTipoDeUsuario(dto.getTipoDeUsuario());
         responsavel.setSexoBiologico(dto.getSexoBiologico());
         responsavel.setDtNascimento(dto.getDtNascimento());
+        responsavel.setStatus(true);
         responsavel.setIdiomas(IdiomaMapper.toListagemIdioma(dto.getIdiomas()));
         responsavel.setApresentacao(dto.getApresentacao());
         responsavel.setAgenda(AgendaMapper.toEntity(dto.getAgendas()));
@@ -48,6 +49,7 @@ public class ResponsavelMapper {
         dto.setTipoDeUsuario(responsavel.getTipoDeUsuario());
         dto.setApresentacao(responsavel.getApresentacao());
         dto.setDtCadastro(responsavel.getDtCadastro());
+        dto.setStatus(responsavel.getStatus());
         dto.setAgenda(AgendaMapper.toListagemDto(responsavel.getAgenda()));
         dto.setIdiomas(IdiomaMapper.toListagemDtoList(responsavel.getIdiomas()));
         dto.setEndereco(EnderecoMapper.toEnderecoListagemDto(responsavel.getEndereco()));

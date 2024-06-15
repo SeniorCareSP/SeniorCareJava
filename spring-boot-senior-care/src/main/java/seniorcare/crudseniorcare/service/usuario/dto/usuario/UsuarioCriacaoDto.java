@@ -43,6 +43,7 @@ public class UsuarioCriacaoDto {
     private LocalDate dtNascimento;
     private String apresentacao;
     private LocalDate dtCadastro;
+    private Boolean status;
     private AgendaCriacaoDto agendas;
     private List<IdiomaCriacaoDto> idiomas;
     private List<FavoritoCriacaoDto> favoritos;

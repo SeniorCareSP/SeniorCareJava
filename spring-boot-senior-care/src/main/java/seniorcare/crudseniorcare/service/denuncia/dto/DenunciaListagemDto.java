@@ -6,6 +6,7 @@ import lombok.Data;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioListagemDenunciaDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 @Data
 public class DenunciaListagemDto {
@@ -22,4 +23,5 @@ public class DenunciaListagemDto {
 
     private UsuarioListagemDenunciaDto usuarioDenunciado;
 
+    private LocalDateTime dataDenuncia;
 }

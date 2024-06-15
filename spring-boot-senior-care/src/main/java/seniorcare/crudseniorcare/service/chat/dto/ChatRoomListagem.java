@@ -8,6 +8,6 @@ import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioListagemDto;
 public class ChatRoomListagem {
     private Integer id;
     private String chatId;
-    private String usuario;
+    private Integer usuario;
     private UsuarioListagemDto usuario2;
 }

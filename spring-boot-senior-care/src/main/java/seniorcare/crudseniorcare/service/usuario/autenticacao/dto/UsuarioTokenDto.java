@@ -13,4 +13,5 @@ public class   UsuarioTokenDto {
     private String email;
     private TipoUsuario tipoUsuario;
     private String token;
+    private Boolean status;
 }
