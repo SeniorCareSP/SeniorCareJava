@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Api(tags = "ResponsavelController", description = "Controller da responsável")
-public class ResponsavelController {
+public class    ResponsavelController {
 
     private final ResponsavelService service;
 

@@ -51,4 +51,11 @@ public class ChatRoomService {
     public List<ChatRoom> getAllUniqueChatRoomsForUser(Integer userId) {
         return chatRoomRepository.findBySenderId(userId);
     }
-}   
+
+    // Método para criar uma sala de chat vazia
+    public ChatRoom createEmptyChatRoom(Integer senderId, Integer recipientId) {
+        String chatId = createChatId(senderId, recipientId);
+        return chatRoomRepository.findByChatId(chatId)
+                .orElseThrow(() -> new IllegalStateException("Erro ao criar a sala de chat"));
+    }
+}

@@ -15,4 +15,5 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Integer> {
 
     List<ChatRoom> findBySenderId(Integer senderId);
 
+    Optional<ChatRoom> findByChatId(String chatId); // Novo método adicionado
 }

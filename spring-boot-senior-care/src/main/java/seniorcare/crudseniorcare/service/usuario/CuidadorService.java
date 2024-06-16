@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import seniorcare.crudseniorcare.domain.agenda.Agenda;
+import seniorcare.crudseniorcare.domain.ajuda.Ajuda;
+import seniorcare.crudseniorcare.domain.caracteristica.Caracteristica;
 import seniorcare.crudseniorcare.domain.endereco.Endereco;
 import seniorcare.crudseniorcare.domain.idioma.Idioma;
 import seniorcare.crudseniorcare.domain.idoso.Idoso;
@@ -15,6 +17,8 @@ import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
 import seniorcare.crudseniorcare.exception.ConflitoException;
 import seniorcare.crudseniorcare.exception.NaoEncontradoException;
 import seniorcare.crudseniorcare.service.agenda.AgendaService;
+import seniorcare.crudseniorcare.service.ajuda.AjudaService;
+import seniorcare.crudseniorcare.service.caracteristica.CaracteristicaService;
 import seniorcare.crudseniorcare.service.endereco.EnderecoService;
 import seniorcare.crudseniorcare.service.idioma.IdiomaService;
 
@@ -30,6 +34,8 @@ import java.util.Optional;
         private final EnderecoService enderecoService;
         private final AgendaService agendaService;
         private final IdiomaService idiomaService;
+        private final AjudaService ajudaService;
+        private final CaracteristicaService  caracteristicaService;
         public Cuidador         criar(Cuidador novoCuidador) {
 
             String senhaCriptografada = passwordEncoder.encode(novoCuidador.getSenha());
@@ -38,20 +44,33 @@ import java.util.Optional;
             if (emailJaExiste(novoCuidador.getEmail())) {
                 throw new ConflitoException("Email Cuidador");
             }
-
-            Endereco endereco = enderecoService.create(novoCuidador.getEndereco());
-            Agenda agenda = agendaService.create(novoCuidador.getAgenda());
-
-            novoCuidador.setAgenda(agenda);
-            novoCuidador.setEndereco(endereco);
             Cuidador usuarioSalvo = repository.save(novoCuidador);
+
+
+
+            Endereco endereco = (usuarioSalvo.getEndereco());
+            endereco.setUsuario(usuarioSalvo);
+            enderecoService.create(endereco);
+
+
+            Agenda agenda = usuarioSalvo.getAgenda();
+            agenda.setUsuario(usuarioSalvo);
+            agendaService.create(agenda);
+
 
 
             for (Idioma idioma : usuarioSalvo.getIdiomas()){
                 idioma.setUsuario(usuarioSalvo);
                 idiomaService.create(idioma);
             }
-
+            for (Caracteristica caracteristica : usuarioSalvo.getCaracteristicas()){
+                caracteristica.setCuidador(usuarioSalvo);
+                caracteristicaService.create(caracteristica);
+            }
+            for (Ajuda ajuda : usuarioSalvo.getAjudas()){
+                ajuda.setCuidador(usuarioSalvo);
+                ajudaService.create(ajuda);
+            }
             return usuarioSalvo;
 
         }

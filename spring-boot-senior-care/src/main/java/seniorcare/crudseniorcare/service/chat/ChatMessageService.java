@@ -18,7 +18,7 @@ public class ChatMessageService {
     public ChatMessage save(ChatMessage chatMessage) {
         validateChatMessage(chatMessage);
 
-        // Obtém o chatId como String
+        // Obtém o chatId como Stringa
         String chatId = chatRoomService.getChatRoomId(chatMessage.getSenderId(), chatMessage.getRecipientId(), true)
                 .orElseThrow(() -> new IllegalArgumentException("Não foi possível encontrar ou criar a sala de chat"));
 

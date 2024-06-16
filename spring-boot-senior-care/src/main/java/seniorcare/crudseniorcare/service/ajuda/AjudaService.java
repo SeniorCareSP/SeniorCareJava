@@ -26,6 +26,8 @@ public class AjudaService {
     }
 
     public Ajuda create(Ajuda novaAjuda){
+        if (novaAjuda == null) return null;
+
         return repository.save(novaAjuda);
     }
 

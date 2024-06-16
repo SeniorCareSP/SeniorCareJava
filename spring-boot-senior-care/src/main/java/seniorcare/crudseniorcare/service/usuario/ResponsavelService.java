@@ -44,12 +44,15 @@ public class ResponsavelService {
             throw new ConflitoException("Email Responsavel");
         }
 
-        Endereco endereco = enderecoService.create(novoResponsavel.getEndereco());
-        Agenda agenda = agendaService.create(novoResponsavel.getAgenda());
-
-        novoResponsavel.setEndereco(endereco);
-        novoResponsavel.setAgenda(agenda);
         Responsavel usuarioSalvo = repository.save(novoResponsavel);
+
+        Endereco endereco = (usuarioSalvo.getEndereco());
+        endereco.setUsuario(usuarioSalvo);
+        enderecoService.create(endereco);
+
+        Agenda agenda = usuarioSalvo.getAgenda();
+        agenda.setUsuario(usuarioSalvo);
+        agendaService.create(agenda);
 
 
         for (Idioma idioma : usuarioSalvo.getIdiomas()){

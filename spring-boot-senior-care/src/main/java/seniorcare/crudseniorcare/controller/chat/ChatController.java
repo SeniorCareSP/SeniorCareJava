@@ -27,11 +27,9 @@ public class ChatController {
     private final ChatMessageService chatMessageService;
     private final ChatRoomService chatRoomService;
 
-
-
     @PostMapping("/chat")
     @CrossOrigin
-        public void processMessage(@RequestBody ChatMessage chatMessage) {
+    public ResponseEntity<ChatMessage   > processMessage(@RequestBody ChatMessage chatMessage) {
         ChatMessage savedMsg = chatMessageService.save(chatMessage);
         messagingTemplate.convertAndSendToUser(
                 String.valueOf(chatMessage.getRecipientId()), "/queue/messages",
@@ -43,8 +41,9 @@ public class ChatController {
                 )
         );
         messagingTemplate.convertAndSend("/topic/" + chatMessage.getChatId(), savedMsg.getContent());
-    }
 
+        return ResponseEntity.ok(savedMsg);
+    }
 
     @GetMapping("/chats/{userId}")
     public ResponseEntity<List<ChatRoomListagem>> getAllChatsForUser(@PathVariable Integer userId) {
@@ -53,11 +52,9 @@ public class ChatController {
 
         for (ChatRoom chatRoom : chatRooms) {
             ChatRoomListagem dto = ChatMapper.toChatRoomDto(chatRoom);
-
             dto.setUsuario2(UsuarioMapper.toUsuarioListagemDto(usuarioService.byId(chatRoom.getRecipientId())));
             chatRoomListagems.add(dto);
         }
-
 
         if (chatRoomListagems.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -66,17 +63,12 @@ public class ChatController {
         }
     }
 
-
-
     @GetMapping("/messages/{senderId}/{recipientId}")
-    public ResponseEntity<List<ChatMessage>> findChatMessages(@PathVariable Integer senderId,
-                                                              @PathVariable Integer recipientId) {
-
-
+    public ResponseEntity<List<ChatMessage>> findChatMessages(@PathVariable Integer senderId, @PathVariable Integer recipientId) {
         List<ChatMessage> chatMessages = chatMessageService.findChatMessages(senderId, recipientId);
 
-        for (ChatMessage chatMessages1 : chatMessages) {
-            System.out.println(chatMessages1.getContent());
+        for (ChatMessage chatMessage : chatMessages) {
+            System.out.println(chatMessage.getContent());
         }
         System.out.println(chatMessages);
 
@@ -85,5 +77,13 @@ public class ChatController {
         } else {
             return ResponseEntity.ok(chatMessages);
         }
+    }
+
+    // Novo endpoint para criar uma sala de chat vazia
+    @PostMapping("/chat/empty")
+    @CrossOrigin
+    public ResponseEntity<ChatRoom> createEmptyChatRoom(@RequestParam Integer senderId, @RequestParam Integer recipientId) {
+        ChatRoom chatRoom = chatRoomService.createEmptyChatRoom(senderId, recipientId);
+        return ResponseEntity.ok(chatRoom);
     }
 }
