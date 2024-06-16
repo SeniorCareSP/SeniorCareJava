@@ -54,7 +54,6 @@ public class ResponsavelService {
         agenda.setUsuario(usuarioSalvo);
         agendaService.create(agenda);
 
-
         for (Idioma idioma : usuarioSalvo.getIdiomas()){
             idioma.setUsuario(usuarioSalvo);
             idiomaService.create(idioma);

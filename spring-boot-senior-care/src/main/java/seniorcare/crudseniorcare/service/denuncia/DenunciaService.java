@@ -65,6 +65,11 @@ public class DenunciaService {
         return denuncias;
     }
 
+
+    public Integer getCountByStatusFalse() {
+        return denunciaRepository.countByStatusFalse();
+    }
+
     public DenunciaListagemDto buscarDenunciaPorId(Integer id) {
         Denuncia denuncia = denunciaRepository.findById(id)
                 .orElseThrow(() -> new NaoEncontradoException("Denúncia não encontrada"));
