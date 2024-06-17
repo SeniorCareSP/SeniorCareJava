@@ -8,9 +8,7 @@ import seniorcare.crudseniorcare.domain.caracteristica.Caracteristica;
 import seniorcare.crudseniorcare.domain.caracteristica.repository.CaracteristicaRepository;
 import seniorcare.crudseniorcare.exception.NaoEncontradoException;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -50,5 +48,17 @@ public class CaracteristicaService {
         uptCaracteristica.setCuidador(caracteristica.getCuidador());
 
         return uptCaracteristica;
+    }
+
+
+    public Map<String, Long> contarCaracteristicasPorNome() {
+        List<Object[]> results = repository.countByNomeGroupByNome();
+        Map<String, Long> contagemPorNome = new HashMap<>();
+        for (Object[] result : results) {
+            String nome = (String) result[0];
+            Long count = (Long) result[1];
+            contagemPorNome.put(nome, count);
+        }
+        return contagemPorNome;
     }
 }

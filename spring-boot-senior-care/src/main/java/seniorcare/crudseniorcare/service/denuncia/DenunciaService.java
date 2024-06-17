@@ -12,6 +12,7 @@ import seniorcare.crudseniorcare.service.denuncia.dto.DenunciaListagemDto;
 import seniorcare.crudseniorcare.service.denuncia.dto.DenunciaMapper;
 import seniorcare.crudseniorcare.service.usuario.UsuarioService;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,10 @@ public class DenunciaService {
         denuncia.setStatus(true);
 
         return (denunciaRepository.save(denuncia));
+    }
+
+    public long contarDenunciasPorDia(LocalDate data) {
+        return denunciaRepository.countByDataDenuncia(data);
     }
 
     public List<Denuncia> listarDenuncias() {

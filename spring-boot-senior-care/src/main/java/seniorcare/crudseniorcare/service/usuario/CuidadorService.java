@@ -22,7 +22,9 @@ import seniorcare.crudseniorcare.service.caracteristica.CaracteristicaService;
 import seniorcare.crudseniorcare.service.endereco.EnderecoService;
 import seniorcare.crudseniorcare.service.idioma.IdiomaService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
     @Service
@@ -113,4 +115,15 @@ import java.util.Optional;
             return repository.save(cuidador);
         }
 
+
+        public Map<String, Long> contarCuidadoresPorGenero() {
+            List<Object[]> results = repository.countByGeneroGroupByGenero();
+            Map<String, Long> contagemPorGenero = new HashMap<>();
+            for (Object[] result : results) {
+                String genero = (String) result[0];
+                Long count = (Long) result[1];
+                contagemPorGenero.put(genero, count);
+            }
+            return contagemPorGenero;
+        }
     }

@@ -11,10 +11,7 @@ import seniorcare.crudseniorcare.exception.NaoEncontradoException;
 import seniorcare.crudseniorcare.service.idoso.dto.IdosoMapper;
 import seniorcare.crudseniorcare.service.usuario.ResponsavelService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +19,21 @@ public class IdosoService {
 
     private final IdosoRepository repository;
     private final ResponsavelService responsavelService;
+
+
+    public Map<String, Map<String, Long>> contarIdososPorFaixaEtariaEGenero() {
+        List<Object[]> results = repository.countByFaixaEtariaAndGenero();
+        Map<String, Map<String, Long>> contagemPorFaixaEtariaEGenero = new HashMap<>();
+        for (Object[] result : results) {
+            String faixaEtaria = (String) result[0];
+            String genero = (String) result[1];
+            Long count = (Long) result[2];
+            contagemPorFaixaEtariaEGenero
+                    .computeIfAbsent(faixaEtaria, k -> new HashMap<>())
+                    .put(genero, count);
+        }
+        return contagemPorFaixaEtariaEGenero;
+    }
 
     public List<Idoso> list(){ return repository.findAll();}
 

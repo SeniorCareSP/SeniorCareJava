@@ -49,10 +49,10 @@ public class ResponsavelService {
         Endereco endereco = (usuarioSalvo.getEndereco());
         endereco.setUsuario(usuarioSalvo);
         enderecoService.create(endereco);
-
-        Agenda agenda = usuarioSalvo.getAgenda();
-        agenda.setUsuario(usuarioSalvo);
-        agendaService.create(agenda);
+//
+//        Agenda agenda = usuarioSalvo.getAgenda();
+//        agenda.setUsuario(usuarioSalvo);
+//        agendaService.create(agenda);
 
         for (Idioma idioma : usuarioSalvo.getIdiomas()){
             idioma.setUsuario(usuarioSalvo);

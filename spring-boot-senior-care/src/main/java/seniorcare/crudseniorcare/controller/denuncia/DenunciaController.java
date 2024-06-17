@@ -56,7 +56,7 @@ public class DenunciaController {
     @PostMapping("/bloquear/{idDenunciado}")
     public ResponseEntity<UsuarioListagemDto> bloquearUsuario(@PathVariable Integer idDenunciado) {
 
-        Usuario usuario = usuarioService.bloquearUsuario(idDenunciado);
+        Usuario usuario = usuarioService.bloquearUsuarioDenuncia(idDenunciado);
 
         return ResponseEntity.ok(UsuarioMapper.toUsuarioListagemDto(usuario));
     }

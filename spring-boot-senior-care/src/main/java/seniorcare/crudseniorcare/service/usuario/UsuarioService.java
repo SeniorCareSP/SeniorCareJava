@@ -51,6 +51,7 @@ public class UsuarioService {
     public final PasswordEncoder passwordEncoder;
     private final GerenciadorTokenJwt gerenciadorTokenJwt;
     private final AuthenticationManager authenticationManager;
+    private final PilhaObj<Usuario> pilhaUsuariosBloqueados = new PilhaObj<>(10);
 
     private final PilhaObj<Cuidador> pilhaCuidador = new PilhaObj<>(10);
     private final PilhaObj<Responsavel> pilhaResponsavel = new PilhaObj<>(10);
@@ -66,6 +67,11 @@ public class UsuarioService {
     public UsuarioTokenDto autenticar(UsuarioLoginDto usuarioLoginDto) {
         logger.info("Tentativa de autenticação para o email: {}", usuarioLoginDto.getEmail());
 
+        Optional<Usuario> usuario = usuarioRepository.findByEmailIgnoreCase(usuarioLoginDto.getEmail());
+        if (usuario.isEmpty()) {
+            logger.info("Usuário não encontrado para o email: {}", usuarioLoginDto.getEmail());
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT);
+        }
         final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
                 usuarioLoginDto.getEmail(), usuarioLoginDto.getSenha());
 
@@ -115,16 +121,40 @@ public class UsuarioService {
     }
 
 
-    public Usuario bloquearUsuario(Integer idUsuario){
+    public Usuario bloquearUsuarioDenuncia(Integer idUsuario){
 
         Usuario usuario = usuarioRepository.findByIdUsuario(idUsuario)
                 .orElseThrow(() -> new NaoEncontradoException("Usuario"));
-
 
         usuario.setStatus(false);
 
         return update(usuario.getIdUsuario(),usuario);
     }
+
+
+    public Usuario bloquearUsuario(Integer idUsuario) {
+        Usuario usuario = usuarioRepository.findByIdUsuario(idUsuario)
+                .orElseThrow(() -> new NaoEncontradoException("Usuário"));
+
+        usuario.setStatus(false);
+
+
+        pilhaUsuariosBloqueados.push(usuario);
+
+        return update(usuario.getIdUsuario(),usuario);
+    }
+
+    public Usuario desfazerBloqueioUsuario() {
+        if (!pilhaUsuariosBloqueados.isEmpty()) {
+            Usuario usuario = pilhaUsuariosBloqueados.pop();
+            usuario.setStatus(true); // Definindo o status como true para desbloquear o usuário
+            return update(usuario.getIdUsuario(), usuario);
+        } else {
+            throw new IllegalStateException("Não há usuários bloqueados para desfazer o bloqueio.");
+        }
+    }
+
+
 
     public void delete(Integer id){
         Usuario usuario = usuarioRepository.findByIdUsuario(id)
@@ -186,11 +216,11 @@ public class UsuarioService {
         if (usuario.getSenha() != null && !usuario.getSenha().isEmpty()) {
             usuarioExistente.setSenha(passwordEncoder.encode(usuario.getSenha()));
         }
-
+        usuario.setIdUsuario(usuarioExistente.getIdUsuario());
         // Verifica se a lista de favoritos não é nula antes de atribuí-la
 
 
-        return usuarioRepository.save(usuarioExistente);
+        return usuarioRepository.save(usuario);
     }
 
 

@@ -7,7 +7,9 @@ import seniorcare.crudseniorcare.domain.ajuda.repository.AjudaRepository;
 import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.exception.NaoEncontradoException;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -30,6 +32,17 @@ public class AjudaService {
 
         return repository.save(novaAjuda);
     }
+    public Map<String, Long> contarAjudasPorNome() {
+        List<Object[]> results = repository.countByNomeGroupByNome();
+        Map<String, Long> contagemPorNome = new HashMap<>();
+        for (Object[] result : results) {
+            String nome = (String) result[0];
+            Long count = (Long) result[1];
+            contagemPorNome.put(nome, count);
+        }
+        return contagemPorNome;
+    }
+
 
     public void delete(Integer id){
         Optional<Ajuda> ajuda = repository.findById(id);

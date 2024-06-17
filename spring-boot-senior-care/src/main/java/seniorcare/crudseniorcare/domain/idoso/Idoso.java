@@ -13,7 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Table(name = "tb_idoso")
-public class        Idoso implements Serializable {
+public class Idoso implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idIdoso;

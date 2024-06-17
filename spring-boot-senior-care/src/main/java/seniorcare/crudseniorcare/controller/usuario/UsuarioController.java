@@ -69,7 +69,20 @@
             return ResponseEntity.status(200).body(listaUsuarioDto);
         }
 
+        @PostMapping("/bloquear/{idBloqueado}")
+        public ResponseEntity<UsuarioListagemDto> bloquearUsuario(@PathVariable Integer idBloqueado) {
 
+            Usuario usuario = usuarioService.bloquearUsuario(idBloqueado);
+
+            return ResponseEntity.ok(UsuarioMapper.toUsuarioListagemDto(usuario));
+        }
+        @PostMapping("/desfazer-bloqueio")
+        public ResponseEntity<UsuarioListagemDto> desfazerBloqueio() {
+
+            Usuario usuario = usuarioService.desfazerBloqueioUsuario();
+            return ResponseEntity.ok(UsuarioMapper.toUsuarioListagemDto(usuario));
+
+        }
         @GetMapping("/{id}")
         public ResponseEntity<UsuarioListagemDto> porId(@PathVariable Integer id){
             Usuario usuario = usuarioService.byId(id);
