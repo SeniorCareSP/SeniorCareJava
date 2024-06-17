@@ -5,11 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 @RestController
 @RequestMapping("/files")
 public class FilesController {
@@ -17,26 +16,44 @@ public class FilesController {
     private final String UPLOAD_DIR = "src/main/resources/uploaded_files/";
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadFile(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("filename") String filename) {
+
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body("Please select a file to upload");
+        }
+
         try {
-            // Verifica se o diretório de upload existe, caso não exista, cria
-            File uploadDir = new File(UPLOAD_DIR);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
+            String originalFilename = file.getOriginalFilename();
+            String filepath = Paths.get(UPLOAD_DIR, filename).toString();
 
-            // Salva o arquivo no diretório de upload
-            File destFile = new File(uploadDir.getAbsolutePath() + "/" + file.getOriginalFilename());
-            try (FileOutputStream fos = new FileOutputStream(destFile)) {
-                fos.write(file.getBytes());
+            InputStream inputStream = file.getInputStream();
+            FileOutputStream outputStream = new FileOutputStream(filepath);
+            int readBytes = 0;
+            byte[] buffer = new byte[8192];
+            while ((readBytes = inputStream.read(buffer, 0, 8192)) != - 1) {
+                outputStream.write(buffer, 0, readBytes);
             }
+            outputStream.close();
+            inputStream.close();
 
-            // Retorna o caminho completo do arquivo salvo
-            String fileUrl = destFile.getAbsolutePath();
-            return ResponseEntity.ok("Arquivo salvo em: " + fileUrl);
+            return ResponseEntity.ok("File uploaded successfully: " + filename);
         } catch (IOException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Falha ao salvar o arquivo: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload file");
+        }
+    }
+
+    @GetMapping("/view/{filename:.+}")
+    public ResponseEntity<byte[]> viewFile(@PathVariable String filename) {
+        try {
+            Path filepath = Paths.get(UPLOAD_DIR, filename);
+            byte[] fileBytes = Files.readAllBytes(filepath);
+            return ResponseEntity.ok().body(fileBytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.notFound().build();
         }
     }
 }
