@@ -4,8 +4,8 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-06-16T13:15:20-0300",
-    comments = "version: 1.4.2.Final, compiler: javac, environment: Java 22.0.1 (Oracle Corporation)"
+    date = "2024-08-13T19:03:12-0300",
+    comments = "version: 1.4.2.Final, compiler: javac, environment: Java 21.0.4 (Amazon.com Inc.)"
 )
 public class AdministradorMapperImpl extends AdministradorMapper {
 }
