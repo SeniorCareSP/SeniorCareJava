@@ -70,8 +70,6 @@ public class AdministradorController {
         Administrador uptAdministrador = service.update(id, administrador);
         AdministradorListagemDto dto = AdministradorMapper.toAdministradorDto(uptAdministrador);
 
-        System.out.println("");
-
         return ResponseEntity.ok(dto);
     }
 }

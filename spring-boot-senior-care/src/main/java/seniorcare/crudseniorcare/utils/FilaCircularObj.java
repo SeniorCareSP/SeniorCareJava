@@ -18,7 +18,6 @@ public class FilaCircularObj<T> {
         fim = 0;
     }
 
-    // Método isEmpty() - Retorna true se a fila está vazia e false caso contrário
     public boolean isEmpty() {
         if (tamanho == 0){
             return true;

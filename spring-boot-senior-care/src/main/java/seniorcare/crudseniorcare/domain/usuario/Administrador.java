@@ -11,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "tb_administrador")
+        @Table(name = "tb_administrador")
 @DiscriminatorValue("ADMINISTRADOR")
 public class Administrador extends Usuario {
         private String cargo;

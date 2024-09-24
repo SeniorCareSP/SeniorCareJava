@@ -20,26 +20,29 @@ public class DistanceCalculator {
 
         String enderecoDestino = "Endereço de Destino";
 
-        // Criar uma lista de endereços de origem
         List<Endereco> enderecosOrigem = new ArrayList<>();
-        // Adicionar endereços de origem à lista
 
         List<String> enderecosOrigemString = new ArrayList<>();
 
         for (Endereco endereco : enderecosOrigem) {
+
             String enderecoCompleto = endereco.getLogradouro() + ", " +
                     endereco.getNumero() + " - " +
                     endereco.getBairro() + ", " +
                     endereco.getCidade() + " - " +
                     endereco.getCep();
+
             enderecosOrigemString.add(enderecoCompleto);
+
         }
 
         List<Double> distancias = (List<Double>) calcularDistancias(enderecosOrigemString, enderecoDestino);
+
         for (int i = 0; i < distancias.size(); i++) {
             System.out.println("Distância de " + enderecosOrigem.get(i).getLogradouro() +
                     " até " + enderecoDestino + ": " + distancias.get(i) + " km");
         }
+
     }
 
 

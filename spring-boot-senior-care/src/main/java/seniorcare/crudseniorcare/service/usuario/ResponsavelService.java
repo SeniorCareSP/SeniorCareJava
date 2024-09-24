@@ -1,5 +1,6 @@
 package seniorcare.crudseniorcare.service.usuario;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class ResponsavelService {
     private final AgendaService agendaService;
     private final IdiomaService idiomaService;
 
-
+    @Transactional
     public Responsavel criar(Responsavel novoResponsavel) {
 
         String senhaCriptografada = passwordEncoder.encode(novoResponsavel.getSenha());
@@ -50,9 +51,9 @@ public class ResponsavelService {
         endereco.setUsuario(usuarioSalvo);
         enderecoService.create(endereco);
 //
-//        Agenda agenda = usuarioSalvo.getAgenda();
-//        agenda.setUsuario(usuarioSalvo);
-//        agendaService.create(agenda);
+        Agenda agenda = usuarioSalvo.getAgenda();
+        agenda.setUsuario(usuarioSalvo);
+        agendaService.create(agenda);
 
         for (Idioma idioma : usuarioSalvo.getIdiomas()){
             idioma.setUsuario(usuarioSalvo);

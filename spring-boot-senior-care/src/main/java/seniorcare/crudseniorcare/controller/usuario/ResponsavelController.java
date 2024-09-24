@@ -50,7 +50,6 @@ public class    ResponsavelController {
     }
 
     @PostMapping
-
     public ResponseEntity<UsuarioListagemResponsavelDto> criar(@RequestBody UsuarioCriacaoResponsavelDto responsavelDto) {
         Responsavel salvoEntity = ResponsavelMapper.toResponsavel(responsavelDto);
 

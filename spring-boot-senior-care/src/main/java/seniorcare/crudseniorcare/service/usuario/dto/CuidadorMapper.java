@@ -73,6 +73,8 @@ public class CuidadorMapper {
         return dto;
     }
 
+
+
     public static List<UsuarioListagemCuidadorDto> toUsuarioListagemCuidadorDtoList(List<Cuidador> cuidadores) {
         return cuidadores.stream().map(CuidadorMapper::toUsuarioListagemCuidadorDto).toList();
     }

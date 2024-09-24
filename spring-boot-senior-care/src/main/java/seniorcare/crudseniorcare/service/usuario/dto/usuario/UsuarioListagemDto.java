@@ -15,6 +15,7 @@ import seniorcare.crudseniorcare.service.endereco.dto.EnderecoListagemDto;
 import seniorcare.crudseniorcare.service.favorito.dto.FavoritoListagemDto;
 import seniorcare.crudseniorcare.service.favorito.dto.FavoritoListagemUsuarioDto;
 import seniorcare.crudseniorcare.service.idioma.dto.IdiomaListagemDto;
+import seniorcare.crudseniorcare.utils.Coordenadas;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -38,4 +39,6 @@ public class UsuarioListagemDto {
     private List<IdiomaListagemDto> idiomas;
     private List<DenunciaListagemUsuarioDto> denuncias;
     private EnderecoListagemDto endereco;
+    private Coordenadas coordernada;
+    private Double distancia;
 }

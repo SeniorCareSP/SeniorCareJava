@@ -63,4 +63,7 @@ public class ResponsavelMapper {
         return responsaveis.stream().map(ResponsavelMapper::toUsuarioListagemResponsavelDto).toList();
 
     }
+    public static List<UsuarioListagemResponsavelDto> toUsuarioListagemResponsavelList(List<Responsavel> responsaveis) {
+        return responsaveis.stream().map(ResponsavelMapper::toUsuarioListagemResponsavelDto).toList();
+    }
 }

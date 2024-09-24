@@ -3,28 +3,25 @@
     import lombok.RequiredArgsConstructor;
     import org.slf4j.Logger;
     import org.slf4j.LoggerFactory;
-    import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.http.ResponseEntity;
     import org.springframework.web.bind.annotation.*;
     import seniorcare.crudseniorcare.domain.usuario.Administrador;
     import seniorcare.crudseniorcare.domain.usuario.Cuidador;
     import seniorcare.crudseniorcare.domain.usuario.Responsavel;
     import seniorcare.crudseniorcare.domain.usuario.Usuario;
+    import seniorcare.crudseniorcare.service.geolocalizacao.CoordenadaService;
     import seniorcare.crudseniorcare.service.usuario.CuidadorService;
     import seniorcare.crudseniorcare.service.usuario.ResponsavelService;
     import seniorcare.crudseniorcare.service.usuario.UsuarioService;
     import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioLoginDto;
     import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioTokenDto;
-    import seniorcare.crudseniorcare.service.usuario.dto.ResponsavelMapper;
     import seniorcare.crudseniorcare.service.usuario.dto.UsuarioMapper;
-    import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioCriacaoCuidadorDto;
     import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioListagemCuidadorDto;
-    import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioCriacaoResponsavelDto;
     import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioListagemResponsavelDto;
     import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioListagemDto;
 
+    import java.io.IOException;
     import java.util.List;
-    import java.util.UUID;
     import java.util.stream.Collectors;
 
     @RestController
@@ -34,8 +31,11 @@
     public class UsuarioController {
 
         private final UsuarioService usuarioService;
-
+        private final CuidadorService cuidadorService;
+        private final ResponsavelService responsavelService;
+        private final CoordenadaService coordenadaService;
         private static final Logger logger = LoggerFactory.getLogger(UsuarioController.class);
+
 
 
         @PostMapping("/login")
@@ -55,6 +55,26 @@
             usuarioService.logout();
             return ResponseEntity.status(200).build();
         }
+
+
+        @GetMapping("/listarDistanciaDoCuidador/{id}")
+        public ResponseEntity<List<UsuarioListagemResponsavelDto>> listarDistanciaDoCuidador(@PathVariable Integer id) throws IOException {
+            Cuidador cuidador = cuidadorService.byId(id);
+
+            List<UsuarioListagemResponsavelDto> usuarioListagemResponsavelDtos = coordenadaService.converterEnderecoParaCoordenadasResponsavel(cuidador);
+
+            return ResponseEntity.ok(usuarioListagemResponsavelDtos);
+        }
+
+        @GetMapping("/listarDistanciaDoResponsavel/{id}")
+        public ResponseEntity<List<UsuarioListagemCuidadorDto>> listarDistanciaDoResponsavel(@PathVariable Integer id) throws IOException {
+            Responsavel responsavel = responsavelService.byId(id);
+
+            List<UsuarioListagemCuidadorDto> usuarioListagemCuidadorDtos = coordenadaService.converterEnderecoParaCoordenadasCuidador(responsavel);
+
+            return ResponseEntity.ok(usuarioListagemCuidadorDtos);
+        }
+
 
         @GetMapping
         public ResponseEntity<List<UsuarioListagemDto>> listarUsuario(){

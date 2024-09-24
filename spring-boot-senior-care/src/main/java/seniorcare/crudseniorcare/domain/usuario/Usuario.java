@@ -9,14 +9,11 @@ import seniorcare.crudseniorcare.domain.agenda.Agenda;
 
 import seniorcare.crudseniorcare.domain.denuncia.Denuncia;
 import seniorcare.crudseniorcare.domain.endereco.Endereco;
-import seniorcare.crudseniorcare.domain.favorito.Favorito;
 import seniorcare.crudseniorcare.domain.idioma.Idioma;
-import seniorcare.crudseniorcare.service.idioma.dto.IdiomaListagemDto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 @Getter @Setter
 @Entity
@@ -52,4 +49,5 @@ public abstract class Usuario implements Serializable {
 
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private List<Denuncia> denuncias;
+
 }

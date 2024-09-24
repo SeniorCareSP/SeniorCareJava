@@ -26,5 +26,4 @@ public class UsuarioListagemFavoritoDto {
     private AgendaListagemDto agenda;
     private List<IdiomaListagemDto> idiomas;
     private EnderecoListagemDto endereco;
-
 }

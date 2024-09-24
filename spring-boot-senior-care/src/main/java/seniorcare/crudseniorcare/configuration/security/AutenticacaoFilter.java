@@ -20,7 +20,7 @@ import seniorcare.crudseniorcare.service.usuario.autenticacao.AutenticacaoServic
 import java.io.IOException;
 import java.util.Objects;
 @RequiredArgsConstructor
-public class AutenticacaoFilter extends OncePerRequestFilter {
+public class    AutenticacaoFilter extends OncePerRequestFilter {
     @Autowired
     private GerenciadorTokenJwt gerenciadorTokenJwt;
 
