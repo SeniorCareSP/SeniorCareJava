@@ -29,21 +29,30 @@ public class ChatController {
 
     @PostMapping("/chat")
     @CrossOrigin
-    public ResponseEntity<ChatMessage   > processMessage(@RequestBody ChatMessage chatMessage) {
+    public ResponseEntity<ChatMessage> processMessage(@RequestBody ChatMessage chatMessage) {
+        // Salvar a mensagem
         ChatMessage savedMsg = chatMessageService.save(chatMessage);
+
+        // Criar a notificação com todos os dados relevantes
+        ChatNotification notification = new ChatNotification(
+                savedMsg.getId(),
+                savedMsg.getSenderId(),     // ID do remetente
+                savedMsg.getRecipientId(),  // ID do destinatário
+                savedMsg.getContent()       // Conteúdo da mensagem
+        );
+
+        // Enviar a notificação ao usuário específico
         messagingTemplate.convertAndSendToUser(
                 String.valueOf(chatMessage.getRecipientId()), "/queue/messages",
-                new ChatNotification(
-                        savedMsg.getId(),
-                        savedMsg.getSenderId(),
-                        savedMsg.getRecipientId(),
-                        savedMsg.getContent()
-                )
+                notification
         );
-        messagingTemplate.convertAndSend("/topic/" + chatMessage.getChatId(), savedMsg.getContent());
+
+        // Enviar a mensagem para o tópico
+        messagingTemplate.convertAndSend("/topic/" + chatMessage.getChatId(), notification); // Enviar notificação em vez de apenas o conteúdo
 
         return ResponseEntity.ok(savedMsg);
     }
+
 
     @GetMapping("/chats/{userId}")
     public ResponseEntity<List<ChatRoomListagem>> getAllChatsForUser(@PathVariable Integer userId) {
