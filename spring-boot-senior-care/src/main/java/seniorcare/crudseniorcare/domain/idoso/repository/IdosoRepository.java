@@ -2,7 +2,9 @@ package seniorcare.crudseniorcare.domain.idoso.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import seniorcare.crudseniorcare.domain.idoso.Idoso;
+import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,4 +23,7 @@ public interface IdosoRepository extends JpaRepository<Idoso, Integer> {
             "GROUP BY faixaEtaria, i.genero " +
             "ORDER BY faixaEtaria")
     List<Object[]> countByFaixaEtariaAndGenero();
+
+    @Query("SELECT i FROM Idoso i WHERE i.responsavel = :responsavel")
+    List<Idoso> findByResponsavel(@Param("responsavel") Responsavel responsavel);
 }

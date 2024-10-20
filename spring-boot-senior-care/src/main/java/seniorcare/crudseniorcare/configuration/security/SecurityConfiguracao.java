@@ -1,6 +1,7 @@
 package seniorcare.crudseniorcare.configuration.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -38,6 +39,8 @@ public class SecurityConfiguracao {
 
     @Autowired
     private AutenticacaoEntryPoint autenticacaoJwtEntryPoint;
+
+
 
     private static final AntPathRequestMatcher[] URLS_PERMITIDAS = {
             new AntPathRequestMatcher("/swagger-ui/**"),
@@ -91,8 +94,7 @@ public class SecurityConfiguracao {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .headers(headers -> headers
-                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .cors(Customizer.withDefaults())
                 .csrf(CsrfConfigurer<HttpSecurity>::disable)
                 .authorizeHttpRequests(authorize -> authorize.requestMatchers(URLS_PERMITIDAS)
@@ -100,6 +102,8 @@ public class SecurityConfiguracao {
                         .anyRequest()
                         .authenticated()
                 )
+                .exceptionHandling(handling -> handling
+                        .authenticationEntryPoint(autenticacaoJwtEntryPoint))
                 .exceptionHandling(handling -> handling
                         .authenticationEntryPoint(autenticacaoJwtEntryPoint))
                 .sessionManagement(management -> management

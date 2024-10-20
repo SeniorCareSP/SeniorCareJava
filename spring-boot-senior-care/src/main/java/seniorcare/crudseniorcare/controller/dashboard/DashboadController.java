@@ -22,7 +22,6 @@
     public class DashboadController {
         private final VisitaService visitaService;
         private final DenunciaService denunciaService;
-        private final IdosoService idosoService;
         private final CaracteristicaService caracteristicaService;
         private final CuidadorService cuidadorService;
     
@@ -43,11 +42,7 @@
             return ResponseEntity.ok(contagemPorNome);
         }
     
-        @GetMapping("/idosos/count-by-faixa-etaria-e-genero")
-        public ResponseEntity<Map<String, Map<String, Long>>> contarIdososPorFaixaEtariaEGenero() {
-            Map<String, Map<String, Long>> contagem = idosoService.contarIdososPorFaixaEtariaEGenero();
-            return ResponseEntity.ok(contagem);
-        }
+
         @GetMapping("/count")
         public ResponseEntity<Long> contarVisitasHoje() {
             long totalVisitasHoje = visitaService.contarVisitasHoje();

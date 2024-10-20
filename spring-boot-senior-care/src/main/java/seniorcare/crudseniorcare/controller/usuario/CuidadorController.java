@@ -10,13 +10,17 @@ import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.service.agenda.dto.AgendaCriacaoDto;
 import seniorcare.crudseniorcare.service.agenda.dto.AgendaListagemDto;
 import seniorcare.crudseniorcare.service.agenda.dto.AgendaMapper;
+import seniorcare.crudseniorcare.service.endereco.dto.EnderecoMapper;
+import seniorcare.crudseniorcare.service.geolocalizacao.CoordenadaService;
 import seniorcare.crudseniorcare.service.usuario.CuidadorService;
 import seniorcare.crudseniorcare.service.usuario.dto.CuidadorMapper;
 import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioCriacaoCuidadorDto;
 import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioListagemCuidadorDto;
 import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioCriacaoResponsavelDto;
 import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioListagemDto;
+import seniorcare.crudseniorcare.utils.Coordenadas;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
@@ -38,9 +42,18 @@ public class CuidadorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioListagemCuidadorDto> porId(@PathVariable Integer id){
-
         Cuidador cuidador = service.byId(id);
         UsuarioListagemCuidadorDto dto = CuidadorMapper.toUsuarioListagemCuidadorDto(cuidador);
+
+        try {
+            // Obter coordenadas e setar no DTO
+            Coordenadas coordenadas = CoordenadaService.obterCoordenadas(EnderecoMapper.toEnderecoListagemDto(cuidador.getEndereco()));
+            dto.setCoordernada(coordenadas);
+        } catch (IOException e) {
+            // Tratar a exceção adequadamente, talvez logando ou retornando um erro
+            e.printStackTrace();
+        }
+
         return ResponseEntity.ok(dto);
     }
 

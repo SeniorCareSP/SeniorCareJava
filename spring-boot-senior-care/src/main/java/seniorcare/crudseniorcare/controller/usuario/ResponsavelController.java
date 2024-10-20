@@ -8,11 +8,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import seniorcare.crudseniorcare.domain.usuario.Responsavel;
+import seniorcare.crudseniorcare.service.endereco.dto.EnderecoMapper;
+import seniorcare.crudseniorcare.service.geolocalizacao.CoordenadaService;
 import seniorcare.crudseniorcare.service.usuario.ResponsavelService;
 import seniorcare.crudseniorcare.service.usuario.dto.ResponsavelMapper;
 import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioCriacaoResponsavelDto;
 import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioListagemResponsavelDto;
+import seniorcare.crudseniorcare.utils.Coordenadas;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -46,6 +50,16 @@ public class    ResponsavelController {
     public ResponseEntity<UsuarioListagemResponsavelDto> porId(@PathVariable Integer id) {
         Responsavel responsavel = service.byId(id);
         UsuarioListagemResponsavelDto dto = ResponsavelMapper.toUsuarioListagemResponsavelDto(responsavel);
+
+        try {
+            // Obter coordenadas e setar no DTO
+            Coordenadas coordenadas = CoordenadaService.obterCoordenadas(EnderecoMapper.toEnderecoListagemDto(responsavel.getEndereco()));
+            dto.setCoordernada(coordenadas);
+        } catch (IOException e) {
+            // Tratar a exceção adequadamente, talvez logando ou retornando um erro
+            e.printStackTrace();
+        }
+
         return ResponseEntity.ok(dto);
     }
 

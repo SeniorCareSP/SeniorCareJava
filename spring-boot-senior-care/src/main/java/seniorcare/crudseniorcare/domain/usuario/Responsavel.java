@@ -17,7 +17,7 @@ import java.util.List;
 @DiscriminatorValue("RESPONSAVEL")
 public class Responsavel extends Usuario {
 
-    @OneToMany(mappedBy = "responsavel")
+    @OneToMany(mappedBy = "responsavel", fetch = FetchType.LAZY)
     private List<Idoso> idosos;
     @OneToMany(mappedBy = "responsavel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Favorito> favoritos;

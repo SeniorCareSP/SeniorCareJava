@@ -48,7 +48,12 @@ public class IdosoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarIdoso(@PathVariable Integer id) {
-        idosoService.delete(id);
-        return ResponseEntity.noContent().build();
+        try {
+            idosoService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException  e) {
+            return ResponseEntity.notFound().build();
+        }
     }
+
 }

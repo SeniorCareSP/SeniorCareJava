@@ -48,18 +48,18 @@ public class CoordenadaService {
         Coordenadas coordenadasCuidador = obterCoordenadas(cuidador.getEndereco());
         cuidador.setCoordernada(coordenadasCuidador);
 
-        for (UsuarioListagemResponsavelDto responsavel : responsaveis) {
-            EnderecoListagemDto enderecoResponsavel = responsavel.getEndereco();
-            try {
-                Coordenadas coordenadasResponsavel = obterCoordenadas(enderecoResponsavel);
-                responsavel.setCoordernada(coordenadasResponsavel);
+            for (UsuarioListagemResponsavelDto responsavel : responsaveis) {
+                EnderecoListagemDto enderecoResponsavel = responsavel.getEndereco();
+                try {
+                    Coordenadas coordenadasResponsavel = obterCoordenadas(enderecoResponsavel);
+                    responsavel.setCoordernada(coordenadasResponsavel);
 
-                double distancia = calcularDistancia(
-                        coordenadasCuidador.getLatitude(),
-                        coordenadasCuidador.getLongitude(),
-                        coordenadasResponsavel.getLatitude(),
-                        coordenadasResponsavel.getLongitude()
-                );
+                    double distancia = calcularDistancia(
+                            coordenadasCuidador.getLatitude(),
+                            coordenadasCuidador.getLongitude(),
+                            coordenadasResponsavel.getLatitude(),
+                            coordenadasResponsavel.getLongitude()
+                    );
                 responsavel.setDistancia(distancia);
             } catch (IOException e) {
                 e.printStackTrace();

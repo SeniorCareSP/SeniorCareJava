@@ -18,6 +18,7 @@ import seniorcare.crudseniorcare.exception.NaoEncontradoException;
 import seniorcare.crudseniorcare.service.agenda.AgendaService;
 import seniorcare.crudseniorcare.service.endereco.EnderecoService;
 import seniorcare.crudseniorcare.service.idioma.IdiomaService;
+import seniorcare.crudseniorcare.service.idoso.IdosoResponsavelService;
 import seniorcare.crudseniorcare.service.idoso.IdosoService;
 
 import java.time.LocalDate;
@@ -34,7 +35,7 @@ public class ResponsavelService {
     private final EnderecoService enderecoService;
     private final AgendaService agendaService;
     private final IdiomaService idiomaService;
-
+    private final IdosoResponsavelService idosoService;
     @Transactional
     public Responsavel criar(Responsavel novoResponsavel) {
 
@@ -50,7 +51,7 @@ public class ResponsavelService {
         Endereco endereco = (usuarioSalvo.getEndereco());
         endereco.setUsuario(usuarioSalvo);
         enderecoService.create(endereco);
-//
+
         Agenda agenda = usuarioSalvo.getAgenda();
         agenda.setUsuario(usuarioSalvo);
         agendaService.create(agenda);
@@ -78,10 +79,16 @@ public class ResponsavelService {
         return repository.findById(idUsuario);
     }
 
-    public Responsavel byId(Integer id){
-        return repository.findById(id).orElseThrow(
+    public Responsavel byId(Integer id) {
+
+        Responsavel responsavel = repository.findById(id).orElseThrow(
                 () -> new NaoEncontradoException("Responsavel")
         );
+        List<Idoso> idosos = idosoService.buscarPorResponsavel(responsavel);
+
+        responsavel.setIdosos(idosos);
+
+        return responsavel;
     }
 
 

@@ -1,6 +1,8 @@
 package seniorcare.crudseniorcare.service.idoso;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.internal.util.stereotypes.Lazy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import seniorcare.crudseniorcare.domain.idioma.Idioma;
 import seniorcare.crudseniorcare.domain.idioma.repository.IdiomaRepository;
@@ -14,11 +16,14 @@ import seniorcare.crudseniorcare.service.usuario.ResponsavelService;
 import java.util.*;
 
 @Service
-@RequiredArgsConstructor
 public class IdosoService {
-
     private final IdosoRepository repository;
     private final ResponsavelService responsavelService;
+
+    public IdosoService(IdosoRepository repository, ResponsavelService responsavelService) {
+        this.repository = repository;
+        this.responsavelService = responsavelService;
+    }
 
 
     public Map<String, Map<String, Long>> contarIdososPorFaixaEtariaEGenero() {
@@ -34,6 +39,7 @@ public class IdosoService {
         }
         return contagemPorFaixaEtariaEGenero;
     }
+
 
     public List<Idoso> list(){ return repository.findAll();}
 
@@ -53,7 +59,6 @@ public class IdosoService {
         Responsavel usuarioResponsavel = responsavelService.findById(idResponsavel)
                 .orElseThrow(() -> new NaoEncontradoException("Responsável não encontrado"));
 
-        // Cria um novo idoso e copia os campos de novaIdoso
         Idoso idoso = new Idoso();
         idoso.setNome(novaIdoso.getNome());  // Exemplo de campo
         idoso.setDescricao(novaIdoso.getDescricao());

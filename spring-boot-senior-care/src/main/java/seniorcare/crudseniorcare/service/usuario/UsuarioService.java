@@ -77,7 +77,7 @@ public class UsuarioService {
 
         try {
             final Authentication authentication = authenticationManager.authenticate(credentials);
-
+            System.out.println(authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             Usuario usuarioAutenticado = usuarioRepository.findByEmailIgnoreCase(usuarioLoginDto.getEmail())
@@ -89,6 +89,8 @@ public class UsuarioService {
 
             return UsuarioMapper.of(usuarioAutenticado, token);
         } catch (AuthenticationException e) {
+            logger.error("ERRO: ", e);
+
             logger.error("Falha na autenticação para o email: {}", usuarioLoginDto.getEmail());
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciais inválidas", e);
         }

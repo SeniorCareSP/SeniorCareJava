@@ -67,7 +67,7 @@
         }
 
         @GetMapping("/listarDistanciaDoResponsavel/{id}")
-        public ResponseEntity<List<UsuarioListagemCuidadorDto>> listarDistanciaDoResponsavel(@PathVariable Integer id) throws IOException {
+            public ResponseEntity<List<UsuarioListagemCuidadorDto>> listarDistanciaDoResponsavel(@PathVariable Integer id) throws IOException {
             Responsavel responsavel = responsavelService.byId(id);
 
             List<UsuarioListagemCuidadorDto> usuarioListagemCuidadorDtos = coordenadaService.converterEnderecoParaCoordenadasCuidador(responsavel);
