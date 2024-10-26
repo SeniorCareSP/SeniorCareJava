@@ -60,14 +60,14 @@ public class IdosoService {
                 .orElseThrow(() -> new NaoEncontradoException("Responsável não encontrado"));
 
         Idoso idoso = new Idoso();
-        idoso.setNome(novaIdoso.getNome());  // Exemplo de campo
+        idoso.setNome(novaIdoso.getNome());
         idoso.setDescricao(novaIdoso.getDescricao());
         idoso.setDescricao(novaIdoso.getDescricao());
         idoso.setMobilidade(novaIdoso.isMobilidade());
         idoso.setLucido(novaIdoso.isLucido());
         idoso.setDoencasCronicas(novaIdoso.getDoencasCronicas());
         idoso.setCuidadosMin(novaIdoso.getCuidadosMin());
-        idoso.setDtNascimento(novaIdoso.getDtNascimento());  // Outro exemplo de campo
+        idoso.setDtNascimento(novaIdoso.getDtNascimento());
         idoso.setResponsavel(usuarioResponsavel);
         idoso.setGenero(novaIdoso.getGenero());
 
@@ -81,7 +81,7 @@ public class IdosoService {
         usuarioResponsavel.getIdosos().add(idoso);
 
         // Atualiza o responsável no serviço
-        responsavelService.update(usuarioResponsavel.getIdUsuario(), usuarioResponsavel);
+        responsavelService.updateToIdoso(usuarioResponsavel.getIdUsuario(), usuarioResponsavel);
 
         return idoso;
     }

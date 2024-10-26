@@ -9,6 +9,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 @RestController
 @RequestMapping("/files")
 public class FilesController {
@@ -25,14 +26,20 @@ public class FilesController {
         }
 
         try {
-            String originalFilename = file.getOriginalFilename();
             String filepath = Paths.get(UPLOAD_DIR, filename).toString();
+            Path filePath = Paths.get(filepath);
 
+            // Verifica se o arquivo já existe e, se existir, o remove
+            if (Files.exists(filePath)) {
+                Files.delete(filePath);
+            }
+
+            // Salva o novo arquivo
             InputStream inputStream = file.getInputStream();
             FileOutputStream outputStream = new FileOutputStream(filepath);
-            int readBytes = 0;
+            int readBytes;
             byte[] buffer = new byte[8192];
-            while ((readBytes = inputStream.read(buffer, 0, 8192)) != - 1) {
+            while ((readBytes = inputStream.read(buffer, 0, 8192)) != -1) {
                 outputStream.write(buffer, 0, readBytes);
             }
             outputStream.close();

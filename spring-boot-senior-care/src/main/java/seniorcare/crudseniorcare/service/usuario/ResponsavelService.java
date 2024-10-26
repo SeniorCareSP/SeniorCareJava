@@ -16,10 +16,16 @@ import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
 import seniorcare.crudseniorcare.exception.ConflitoException;
 import seniorcare.crudseniorcare.exception.NaoEncontradoException;
 import seniorcare.crudseniorcare.service.agenda.AgendaService;
+import seniorcare.crudseniorcare.service.agenda.dto.AgendaMapper;
 import seniorcare.crudseniorcare.service.endereco.EnderecoService;
+import seniorcare.crudseniorcare.service.endereco.dto.EnderecoMapper;
 import seniorcare.crudseniorcare.service.idioma.IdiomaService;
+import seniorcare.crudseniorcare.service.idioma.dto.IdiomaMapper;
 import seniorcare.crudseniorcare.service.idoso.IdosoResponsavelService;
 import seniorcare.crudseniorcare.service.idoso.IdosoService;
+import seniorcare.crudseniorcare.service.usuario.dto.ResponsavelMapper;
+import seniorcare.crudseniorcare.service.usuario.dto.responsavel.ResponsavelAtualizacaoDto;
+import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioCriacaoResponsavelDto;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -36,6 +42,7 @@ public class ResponsavelService {
     private final AgendaService agendaService;
     private final IdiomaService idiomaService;
     private final IdosoResponsavelService idosoService;
+
     @Transactional
     public Responsavel criar(Responsavel novoResponsavel) {
 
@@ -81,7 +88,7 @@ public class ResponsavelService {
 
     public Responsavel byId(Integer id) {
 
-        Responsavel responsavel = repository.findById(id).orElseThrow(
+            Responsavel responsavel = repository.findById(id).orElseThrow(
                 () -> new NaoEncontradoException("Responsavel")
         );
         List<Idoso> idosos = idosoService.buscarPorResponsavel(responsavel);
@@ -100,7 +107,51 @@ public class ResponsavelService {
         repository.delete(responsavel.get());
     }
 
-    public Responsavel update(Integer id, Responsavel responsavel){
+    public Responsavel update(Integer id, ResponsavelAtualizacaoDto responsavelDto) {
+        Optional<Responsavel> responsavelOpt = repository.findById(id);
+
+        if (responsavelOpt.isEmpty()) {
+            throw new NaoEncontradoException("Responsavel");
+        }
+
+        Responsavel responsavel = responsavelOpt.get();
+
+        if (responsavelDto.getNome() != null) {
+            responsavel.setNome(responsavelDto.getNome());
+        }
+        if (responsavelDto.getEmail() != null) {
+            responsavel.setEmail(responsavelDto.getEmail());
+        }
+        if (responsavelDto.getTelefone() != null) {
+            responsavel.setTelefone(responsavelDto.getTelefone());
+        }
+        if (responsavelDto.getApresentacao() != null) {
+            responsavel.setApresentacao(responsavelDto.getApresentacao());
+        }
+        if (responsavelDto.getStatus() != null) {
+            responsavel.setStatus(responsavelDto.getStatus());
+        }
+        if (responsavelDto.getAgendas() != null) {
+            responsavel.setAgenda(AgendaMapper.toEntity(responsavelDto.getAgendas()));
+        }
+        if (responsavelDto.getIdiomas() != null) {
+            responsavel.setIdiomas(IdiomaMapper.toListagemIdioma(responsavelDto.getIdiomas()));
+        }
+        if (responsavelDto.getEndereco() != null) {
+            Endereco novoEndereco = EnderecoMapper.toEndereco(responsavelDto.getEndereco());
+            novoEndereco.setUsuario(responsavel);
+            if (responsavel.getEndereco() != null && !novoEndereco.equals(responsavel.getEndereco())) {
+                enderecoService.update(responsavel.getEndereco().getIdEndereco(), novoEndereco);
+            } else {
+                responsavel.setEndereco(novoEndereco);
+            }
+        }
+
+        return repository.save(responsavel);
+    }
+
+
+    public Responsavel updateToIdoso(Integer id, Responsavel responsavel){
         Optional<Responsavel> responsavelOpt = repository.findById(id);
 
         if (responsavelOpt.isEmpty()) {
@@ -110,5 +161,4 @@ public class ResponsavelService {
         responsavel.setIdUsuario(id);
         return repository.save(responsavel);
     }
-
 }

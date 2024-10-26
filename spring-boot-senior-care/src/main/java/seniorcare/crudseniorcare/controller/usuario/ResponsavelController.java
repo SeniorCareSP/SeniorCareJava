@@ -12,6 +12,7 @@ import seniorcare.crudseniorcare.service.endereco.dto.EnderecoMapper;
 import seniorcare.crudseniorcare.service.geolocalizacao.CoordenadaService;
 import seniorcare.crudseniorcare.service.usuario.ResponsavelService;
 import seniorcare.crudseniorcare.service.usuario.dto.ResponsavelMapper;
+import seniorcare.crudseniorcare.service.usuario.dto.responsavel.ResponsavelAtualizacaoDto;
 import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioCriacaoResponsavelDto;
 import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioListagemResponsavelDto;
 import seniorcare.crudseniorcare.utils.Coordenadas;
@@ -92,9 +93,11 @@ public class    ResponsavelController {
             @ApiResponse(code = 400, message = "Dados inválidos para atualização do responsável"),
             @ApiResponse(code = 404, message = "Responsável não encontrado")
     })
-    public ResponseEntity<UsuarioListagemResponsavelDto> update(@PathVariable Integer id, @RequestBody Responsavel responsavel) {
-        Responsavel uptResponsavel = service.update(id, responsavel);
-        UsuarioListagemResponsavelDto dto = ResponsavelMapper.toUsuarioListagemResponsavelDto(uptResponsavel);
+    public ResponseEntity<UsuarioListagemResponsavelDto> update(@PathVariable Integer id, @RequestBody ResponsavelAtualizacaoDto responsavelDto) {
+        Responsavel responsavelAtualizado = service.update(id, responsavelDto);
+
+        UsuarioListagemResponsavelDto dto = ResponsavelMapper.toUsuarioListagemResponsavelDto(responsavelAtualizado);
         return ResponseEntity.ok(dto);
     }
+
 }

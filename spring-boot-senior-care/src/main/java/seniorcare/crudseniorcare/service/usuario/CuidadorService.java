@@ -110,7 +110,6 @@ import java.util.Optional;
             if (cuidadadorOpt.isEmpty()) {
                 throw new NaoEncontradoException("Cuidador");
             }
-
             cuidador.setIdUsuario(id);
             return repository.save(cuidador);
         }
