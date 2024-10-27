@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import seniorcare.crudseniorcare.domain.ajuda.Ajuda;
 import seniorcare.crudseniorcare.domain.ajuda.repository.AjudaRepository;
+import seniorcare.crudseniorcare.domain.usuario.Cuidador;
 import seniorcare.crudseniorcare.domain.usuario.Responsavel;
 import seniorcare.crudseniorcare.exception.NaoEncontradoException;
 
@@ -20,6 +21,12 @@ public class AjudaService {
 
 
     public List<Ajuda> list(){ return repository.findAll();}
+
+
+    public List<Ajuda> buscarPorResponsavel(Cuidador cuidador) {
+        List<Ajuda> ajudas = repository.findByCuidador(cuidador);
+        return ajudas;
+    }
 
     public Ajuda byId(Integer id){
         return repository.findById(id).orElseThrow(

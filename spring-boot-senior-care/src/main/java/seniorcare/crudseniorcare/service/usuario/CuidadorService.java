@@ -92,9 +92,12 @@ import java.util.Optional;
     public List<Cuidador> list(){ return repository.findAll();}
 
     public Cuidador byId(Integer id){
-        return repository.findById(id).orElseThrow(
+        Cuidador cuidador = repository.findById(id).orElseThrow(
                 () -> new NaoEncontradoException("Cuidador")
         );
+//        List<Ajuda> ajudas =  ajudaService.buscarPorResponsavel(cuidador);
+//        cuidador.setAjudas(ajudas);
+        return cuidador;
     }
 
         public Optional<Cuidador> findById(Integer idUsuario) {
