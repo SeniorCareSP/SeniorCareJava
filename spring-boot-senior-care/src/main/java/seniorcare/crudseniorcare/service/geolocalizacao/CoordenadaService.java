@@ -9,15 +9,9 @@
     import org.apache.http.impl.client.CloseableHttpClient;
     import org.apache.http.impl.client.HttpClients;
     import org.springframework.stereotype.Service;
-    import seniorcare.crudseniorcare.domain.usuario.Cuidador;
-    import seniorcare.crudseniorcare.domain.usuario.Responsavel;
+    import seniorcare.crudseniorcare.domain.endereco.Endereco;
+    import seniorcare.crudseniorcare.exception.EnderecoInvalidoException;
     import seniorcare.crudseniorcare.service.endereco.dto.EnderecoListagemDto;
-    import seniorcare.crudseniorcare.service.usuario.CuidadorService;
-    import seniorcare.crudseniorcare.service.usuario.ResponsavelService;
-    import seniorcare.crudseniorcare.service.usuario.dto.CuidadorMapper;
-    import seniorcare.crudseniorcare.service.usuario.dto.ResponsavelMapper;
-    import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioListagemCuidadorDto;
-    import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioListagemResponsavelDto;
     import seniorcare.crudseniorcare.utils.Coordenadas;
 
     import java.io.IOException;
@@ -26,12 +20,42 @@
     @Service
     @RequiredArgsConstructor
     public class CoordenadaService {
-        private static final String API_KEY = "39f3201c61d00d0e95e241fde3fde742";
-        private final ResponsavelService responsavelService;
-        private final CuidadorService cuidadorService;
+        private static final String API_KEY = "453a62b446530d04f22c026ae0e49927";
 
-        // Método para calcular a distância entre duas coordenadas geográficas
-        private double calcularDistancia(double lat1, double lon1, double lat2, double lon2) {
+
+        public Endereco   pegarPosicoes(Endereco endereco) throws IOException {
+
+            if (endereco.getLogradouro() == null || endereco.getLogradouro().isEmpty() ||
+                    endereco.getCidade() == null || endereco.getCidade().isEmpty()) {
+                throw new IllegalArgumentException("Logradouro e cidade devem ser fornecidos.");
+            }
+
+            String logradouro = endereco.getLogradouro().trim().replace(" ", "+");
+            String cidade = endereco.getCidade().trim().replace(" ", "+");
+
+            String url = "https://api.positionstack.com/v1/forward?access_key=" + API_KEY + "&query=" +
+                    logradouro + "," + cidade + ",Brasil";
+
+            try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                 CloseableHttpResponse response = httpClient.execute(new HttpGet(url))) {
+
+                HttpEntity entity = response.getEntity();
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode rootNode = objectMapper.readTree(entity.getContent());
+
+                if (rootNode.has("data") && rootNode.get("data").isArray() && !rootNode.get("data").isEmpty()) {
+                    double latitude = rootNode.get("data").get(0).get("latitude").asDouble();
+                    double longitude = rootNode.get("data").get(0).get("longitude").asDouble();
+                    endereco.setLatidude(latitude);
+                    endereco.setLongitude(longitude);
+                    return endereco;
+                } else {
+                    throw new EnderecoInvalidoException("Endereço inválido" );
+                }
+            }
+        }
+
+        public double calcularDistancia(double lat1, double lon1, double lat2, double lon2) {
             final int R = 6371; // Raio da Terra em km
             double latDistance = Math.toRadians(lat2 - lat1);
             double lonDistance = Math.toRadians(lon2 - lon1);
@@ -42,77 +66,7 @@
             return R * c;
         }
 
-        public List<UsuarioListagemResponsavelDto> converterEnderecoParaCoordenadasResponsavel(Cuidador cuidador2) throws IOException {
-            List<UsuarioListagemResponsavelDto> responsaveis = ResponsavelMapper.toUsuarioListagemResponsavelDtoList(responsavelService.list());
-            UsuarioListagemCuidadorDto cuidador = CuidadorMapper.toUsuarioListagemCuidadorDto(cuidador2);
-            Coordenadas coordenadasCuidador = obterCoordenadas(cuidador.getEndereco());
-            cuidador.setCoordernada(coordenadasCuidador);
-
-            for (UsuarioListagemResponsavelDto responsavel : responsaveis) {
-                EnderecoListagemDto enderecoResponsavel = responsavel.getEndereco();
-                if (enderecoResponsavel == null) {
-                    // Log ou trate a ausência do endereço de forma apropriada
-                    System.out.println("Endereço do responsável é nulo. Responsável: " + responsavel.getNome());
-                    continue; // Ignora este responsável e continua com o próximo
-                }
-
-                try {
-                    Coordenadas coordenadasResponsavel = obterCoordenadas(enderecoResponsavel);
-                    responsavel.setCoordernada(coordenadasResponsavel);
-
-                    double distancia = calcularDistancia(
-                            coordenadasCuidador.getLatitude(),
-                            coordenadasCuidador.getLongitude(),
-                            coordenadasResponsavel.getLatitude(),
-                            coordenadasResponsavel.getLongitude()
-                    );
-                    responsavel.setDistancia(distancia);
-                } catch (IOException e) {
-                    e.printStackTrace();
-
-                }
-            }
-
-            return responsaveis;
-        }
-
-
-        public List<UsuarioListagemCuidadorDto> converterEnderecoParaCoordenadasCuidador(Responsavel responsavel2) throws IOException {
-            List<UsuarioListagemCuidadorDto> cuidadores = CuidadorMapper.toUsuarioListagemCuidadorDtoList(cuidadorService.list());
-            UsuarioListagemResponsavelDto responsavel = ResponsavelMapper.toUsuarioListagemResponsavelDto(responsavel2);
-            Coordenadas coordenadasResponsavel = obterCoordenadas(responsavel.getEndereco());
-            responsavel.setCoordernada(coordenadasResponsavel);
-
-            for (UsuarioListagemCuidadorDto cuidador : cuidadores) {
-                EnderecoListagemDto enderecoCuidador = cuidador.getEndereco();
-                if (enderecoCuidador == null) {
-                    System.out.println("Endereço do cuidador é nulo. Cuidador: " + cuidador.getNome());
-                    continue;
-                }
-
-                try {
-                    Coordenadas coordenadasCuidador = obterCoordenadas(enderecoCuidador);
-                    cuidador.setCoordernada(coordenadasCuidador);
-
-                    double distancia = calcularDistancia(
-                            coordenadasResponsavel.getLatitude(),
-                            coordenadasResponsavel.getLongitude(),
-                            coordenadasCuidador.getLatitude(),
-                            coordenadasCuidador.getLongitude()
-                    );
-                    cuidador.setDistancia(distancia);
-                } catch (IOException e) {
-                    e.printStackTrace(); // ou log de erro
-                    responsavel.setDistancia(-1.0); // Define uma distância padrão
-
-                }
-            }
-
-            return cuidadores;
-        }
-
         public static Coordenadas obterCoordenadas(EnderecoListagemDto endereco) throws IOException {
-            // Validação do endereço
             if (endereco.getLogradouro() == null || endereco.getLogradouro().isEmpty() ||
                     endereco.getCidade() == null || endereco.getCidade().isEmpty()) {
                 throw new IllegalArgumentException("Logradouro e cidade devem ser fornecidos.");

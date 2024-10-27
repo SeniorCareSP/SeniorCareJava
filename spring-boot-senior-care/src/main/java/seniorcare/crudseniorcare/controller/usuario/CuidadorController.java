@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import seniorcare.crudseniorcare.domain.agenda.Agenda;
 import seniorcare.crudseniorcare.domain.usuario.Cuidador;
 import seniorcare.crudseniorcare.domain.usuario.Usuario;
+import seniorcare.crudseniorcare.exception.EnderecoInvalidoException;
 import seniorcare.crudseniorcare.service.agenda.dto.AgendaCriacaoDto;
 import seniorcare.crudseniorcare.service.agenda.dto.AgendaListagemDto;
 import seniorcare.crudseniorcare.service.agenda.dto.AgendaMapper;
@@ -45,29 +46,22 @@ public class CuidadorController {
         Cuidador cuidador = service.byId(id);
         UsuarioListagemCuidadorDto dto = CuidadorMapper.toUsuarioListagemCuidadorDto(cuidador);
 
-        try {
-            // Obter coordenadas e setar no DTO
-            Coordenadas coordenadas = CoordenadaService.obterCoordenadas(EnderecoMapper.toEnderecoListagemDto(cuidador.getEndereco()));
-            dto.setCoordernada(coordenadas);
-        } catch (IOException e) {
-            // Tratar a exceção adequadamente, talvez logando ou retornando um erro
-            e.printStackTrace();
-        }
-
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioListagemCuidadorDto> criar (
-            @RequestBody UsuarioCriacaoCuidadorDto cuidadorDto){
-
+    public ResponseEntity<?> criar (@RequestBody UsuarioCriacaoCuidadorDto cuidadorDto) throws IOException {
+        try{
         Cuidador salvoEntity = CuidadorMapper.toCuidador(cuidadorDto);
 
         Cuidador salvo = service.criar(salvoEntity);
         UsuarioListagemCuidadorDto dto = CuidadorMapper.toUsuarioListagemCuidadorDto(salvo);
 
         URI uri = URI.create("/cuidadores/" + salvo.getIdUsuario());
-        return ResponseEntity.created(uri).body(dto);
+        return ResponseEntity.created(uri).body(dto);}
+        catch (EnderecoInvalidoException e) {
+            return ResponseEntity.badRequest().body("Endereço inválido");
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -78,8 +72,10 @@ public class CuidadorController {
 
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioListagemCuidadorDto> update(@PathVariable Integer id, @RequestBody Cuidador cuidador){
+
         Cuidador uptCuidador = service.update(id, cuidador);
         UsuarioListagemCuidadorDto dto = CuidadorMapper.toUsuarioListagemCuidadorDto(uptCuidador);
+
         return ResponseEntity.ok(dto);
     }
 

@@ -17,5 +17,6 @@ public class EnderecoListagemDto {
     private String numero;
     private String cidade;
     private String bairro;
-
+    private Double latidude;
+    private Double longitude;
 }

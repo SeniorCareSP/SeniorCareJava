@@ -15,6 +15,8 @@
     import seniorcare.crudseniorcare.service.usuario.UsuarioService;
     import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioLoginDto;
     import seniorcare.crudseniorcare.service.usuario.autenticacao.dto.UsuarioTokenDto;
+    import seniorcare.crudseniorcare.service.usuario.dto.CuidadorMapper;
+    import seniorcare.crudseniorcare.service.usuario.dto.ResponsavelMapper;
     import seniorcare.crudseniorcare.service.usuario.dto.UsuarioMapper;
     import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioListagemCuidadorDto;
     import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioListagemResponsavelDto;
@@ -23,6 +25,7 @@
     import java.io.IOException;
     import java.util.List;
     import java.util.stream.Collectors;
+    import org.springframework.http.HttpStatus;
 
     @RestController
     @RequestMapping("/usuarios")
@@ -59,20 +62,46 @@
 
         @GetMapping("/listarDistanciaDoCuidador/{id}")
         public ResponseEntity<List<UsuarioListagemResponsavelDto>> listarDistanciaDoCuidador(@PathVariable Integer id) throws IOException {
-            Cuidador cuidador = cuidadorService.byId(id);
+            try {
+                Cuidador cuidador = cuidadorService.byId(id);
+                List<Responsavel> responsaveis = responsavelService.list();
+                List<UsuarioListagemResponsavelDto> responsaveisDistancia = ResponsavelMapper.toUsuarioListagemResponsavelDtoList(responsaveis);
 
-            List<UsuarioListagemResponsavelDto> usuarioListagemResponsavelDtos = coordenadaService.converterEnderecoParaCoordenadasResponsavel(cuidador);
+                for (UsuarioListagemResponsavelDto dto : responsaveisDistancia) {
+                    dto.setDistancia(coordenadaService.calcularDistancia(
+                            dto.getEndereco().getLatidude(),
+                            dto.getEndereco().getLongitude(),
+                            cuidador.getEndereco().getLatidude(),
+                            cuidador.getEndereco().getLongitude()
+                    ));
+                }
 
-            return ResponseEntity.ok(usuarioListagemResponsavelDtos);
+                return ResponseEntity.ok(responsaveisDistancia);
+            }
+            catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
         }
 
         @GetMapping("/listarDistanciaDoResponsavel/{id}")
-            public ResponseEntity<List<UsuarioListagemCuidadorDto>> listarDistanciaDoResponsavel(@PathVariable Integer id) throws IOException {
-            Responsavel responsavel = responsavelService.byId(id);
+        public ResponseEntity<List<UsuarioListagemCuidadorDto>> listarDistanciaDoResponsavel(@PathVariable Integer id) {
+            try {
+                Responsavel responsavel = responsavelService.byId(id);
+                List<Cuidador> cuidadores = cuidadorService.list();
+                List<UsuarioListagemCuidadorDto> cuidadoresDistancia = CuidadorMapper.toUsuarioListagemCuidadorDtoList(cuidadores);
 
-            List<UsuarioListagemCuidadorDto> usuarioListagemCuidadorDtos = coordenadaService.converterEnderecoParaCoordenadasCuidador(responsavel);
-
-            return ResponseEntity.ok(usuarioListagemCuidadorDtos);
+                for (UsuarioListagemCuidadorDto cuidador : cuidadoresDistancia) {
+                    cuidador.setDistancia(coordenadaService.calcularDistancia(
+                            cuidador.getEndereco().getLatidude(),
+                            cuidador.getEndereco().getLongitude(),
+                            responsavel.getEndereco().getLatidude(),
+                            responsavel.getEndereco().getLongitude()
+                    ));
+                }
+                return ResponseEntity.ok(cuidadoresDistancia);
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
         }
 
 

@@ -19,6 +19,7 @@ import seniorcare.crudseniorcare.service.agenda.AgendaService;
 import seniorcare.crudseniorcare.service.agenda.dto.AgendaMapper;
 import seniorcare.crudseniorcare.service.endereco.EnderecoService;
 import seniorcare.crudseniorcare.service.endereco.dto.EnderecoMapper;
+import seniorcare.crudseniorcare.service.geolocalizacao.CoordenadaService;
 import seniorcare.crudseniorcare.service.idioma.IdiomaService;
 import seniorcare.crudseniorcare.service.idioma.dto.IdiomaMapper;
 import seniorcare.crudseniorcare.service.idoso.IdosoResponsavelService;
@@ -27,6 +28,7 @@ import seniorcare.crudseniorcare.service.usuario.dto.ResponsavelMapper;
 import seniorcare.crudseniorcare.service.usuario.dto.responsavel.ResponsavelAtualizacaoDto;
 import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioCriacaoResponsavelDto;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -42,9 +44,10 @@ public class ResponsavelService {
     private final AgendaService agendaService;
     private final IdiomaService idiomaService;
     private final IdosoResponsavelService idosoService;
+    private final CoordenadaService coordenadaService;
 
     @Transactional
-    public Responsavel criar(Responsavel novoResponsavel) {
+    public Responsavel criar(Responsavel novoResponsavel) throws IOException {
 
         String senhaCriptografada = passwordEncoder.encode(novoResponsavel.getSenha());
         novoResponsavel.setSenha(senhaCriptografada);
@@ -52,12 +55,13 @@ public class ResponsavelService {
         if (emailJaExiste(novoResponsavel.getEmail())){
             throw new ConflitoException("Email Responsavel");
         }
-
+        Endereco endereco = (novoResponsavel.getEndereco());
+        Endereco enderecoCompleto = coordenadaService.pegarPosicoes(endereco);
         Responsavel usuarioSalvo = repository.save(novoResponsavel);
 
-        Endereco endereco = (usuarioSalvo.getEndereco());
-        endereco.setUsuario(usuarioSalvo);
-        enderecoService.create(endereco);
+
+        enderecoCompleto.setUsuario(usuarioSalvo);
+        enderecoService.create(enderecoCompleto);
 
         Agenda agenda = usuarioSalvo.getAgenda();
         agenda.setUsuario(usuarioSalvo);
@@ -107,9 +111,9 @@ public class ResponsavelService {
         repository.delete(responsavel.get());
     }
 
-    public Responsavel update(Integer id, ResponsavelAtualizacaoDto responsavelDto) {
+    public Responsavel update(Integer id, ResponsavelAtualizacaoDto responsavelDto) throws IOException {
         Optional<Responsavel> responsavelOpt = repository.findById(id);
-
+        System.out.println(responsavelDto);
         if (responsavelOpt.isEmpty()) {
             throw new NaoEncontradoException("Responsavel");
         }
@@ -132,7 +136,13 @@ public class ResponsavelService {
             responsavel.setStatus(responsavelDto.getStatus());
         }
         if (responsavelDto.getAgendas() != null) {
-            responsavel.setAgenda(AgendaMapper.toEntity(responsavelDto.getAgendas()));
+            Agenda novaAgenda = AgendaMapper.toEntity(responsavelDto.getAgendas());
+            novaAgenda.setUsuario(responsavel);
+            if (responsavel.getAgenda() != null && !novaAgenda.equals(responsavel.getAgenda())) {
+                agendaService.update(responsavel.getAgenda().getIdAgenda(), novaAgenda);
+            } else {
+                responsavel.setAgenda(novaAgenda);
+            }
         }
         if (responsavelDto.getIdiomas() != null) {
             responsavel.setIdiomas(IdiomaMapper.toListagemIdioma(responsavelDto.getIdiomas()));
@@ -140,6 +150,9 @@ public class ResponsavelService {
         if (responsavelDto.getEndereco() != null) {
             Endereco novoEndereco = EnderecoMapper.toEndereco(responsavelDto.getEndereco());
             novoEndereco.setUsuario(responsavel);
+            Endereco endereco = coordenadaService.pegarPosicoes(novoEndereco);
+            novoEndereco.setLatidude(endereco.getLatidude());
+            novoEndereco.setLatidude(endereco.getLatidude());
             if (responsavel.getEndereco() != null && !novoEndereco.equals(responsavel.getEndereco())) {
                 enderecoService.update(responsavel.getEndereco().getIdEndereco(), novoEndereco);
             } else {

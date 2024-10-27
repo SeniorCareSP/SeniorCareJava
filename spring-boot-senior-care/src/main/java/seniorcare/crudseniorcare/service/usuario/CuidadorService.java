@@ -20,8 +20,10 @@ import seniorcare.crudseniorcare.service.agenda.AgendaService;
 import seniorcare.crudseniorcare.service.ajuda.AjudaService;
 import seniorcare.crudseniorcare.service.caracteristica.CaracteristicaService;
 import seniorcare.crudseniorcare.service.endereco.EnderecoService;
+import seniorcare.crudseniorcare.service.geolocalizacao.CoordenadaService;
 import seniorcare.crudseniorcare.service.idioma.IdiomaService;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +40,8 @@ import java.util.Optional;
         private final IdiomaService idiomaService;
         private final AjudaService ajudaService;
         private final CaracteristicaService  caracteristicaService;
-        public Cuidador         criar(Cuidador novoCuidador) {
+        private final CoordenadaService coordenadaService;
+        public Cuidador criar(Cuidador novoCuidador) throws IOException {
 
             String senhaCriptografada = passwordEncoder.encode(novoCuidador.getSenha());
             novoCuidador.setSenha(senhaCriptografada);
@@ -46,13 +49,15 @@ import java.util.Optional;
             if (emailJaExiste(novoCuidador.getEmail())) {
                 throw new ConflitoException("Email Cuidador");
             }
+
+            Endereco endereco = (novoCuidador.getEndereco());
+            Endereco enderecoCompleto = coordenadaService.pegarPosicoes(endereco);
             Cuidador usuarioSalvo = repository.save(novoCuidador);
 
 
 
-            Endereco endereco = (usuarioSalvo.getEndereco());
-            endereco.setUsuario(usuarioSalvo);
-            enderecoService.create(endereco);
+            enderecoCompleto.setUsuario(usuarioSalvo);
+            enderecoService.create(enderecoCompleto);
 
 
             Agenda agenda = usuarioSalvo.getAgenda();
@@ -110,8 +115,11 @@ import java.util.Optional;
             if (cuidadadorOpt.isEmpty()) {
                 throw new NaoEncontradoException("Cuidador");
             }
+
             cuidador.setIdUsuario(id);
+
             return repository.save(cuidador);
+
         }
 
 

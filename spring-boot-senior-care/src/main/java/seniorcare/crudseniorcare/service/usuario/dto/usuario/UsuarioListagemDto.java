@@ -39,6 +39,5 @@ public class UsuarioListagemDto {
     private List<IdiomaListagemDto> idiomas;
     private List<DenunciaListagemUsuarioDto> denuncias;
     private EnderecoListagemDto endereco;
-    private Coordenadas coordernada;
     private Double distancia;
 }

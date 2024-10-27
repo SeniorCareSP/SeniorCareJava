@@ -30,6 +30,8 @@ public class EnderecoMapper {
         dto.setNumero(endereco.getNumero());
         dto.setCidade(endereco.getCidade());
         dto.setBairro(endereco.getBairro());
+        dto.setLatidude(endereco.getLatidude());
+        dto.setLongitude(endereco.getLongitude());
         return dto;
     }
 
