@@ -20,7 +20,7 @@
     @Service
     @RequiredArgsConstructor
     public class CoordenadaService {
-        private static final String API_KEY = "453a62b446530d04f22c026ae0e49927";
+        private static final String API_KEY = "pk.0066fab4a7ea3ab5e322fa5194898a35";
 
 
         public Endereco   pegarPosicoes(Endereco endereco) throws IOException {
@@ -33,8 +33,8 @@
             String logradouro = endereco.getLogradouro().trim().replace(" ", "+");
             String cidade = endereco.getCidade().trim().replace(" ", "+");
 
-            String url = "https://api.positionstack.com/v1/forward?access_key=" + API_KEY + "&query=" +
-                    logradouro + "," + cidade + ",Brasil";
+            String url = "https://us1.locationiq.com/v1/search.php?key=" + API_KEY + "&q=" +
+                    logradouro + "," + cidade + ",Brasil&format=json";
 
             try (CloseableHttpClient httpClient = HttpClients.createDefault();
                  CloseableHttpResponse response = httpClient.execute(new HttpGet(url))) {
@@ -43,14 +43,14 @@
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode rootNode = objectMapper.readTree(entity.getContent());
 
-                if (rootNode.has("data") && rootNode.get("data").isArray() && !rootNode.get("data").isEmpty()) {
-                    double latitude = rootNode.get("data").get(0).get("latitude").asDouble();
-                    double longitude = rootNode.get("data").get(0).get("longitude").asDouble();
+                if (rootNode.isArray() && rootNode.size() > 0) {
+                    double latitude = rootNode.get(0).get("lat").asDouble();
+                    double longitude = rootNode.get(0).get("lon").asDouble();
                     endereco.setLatidude(latitude);
                     endereco.setLongitude(longitude);
                     return endereco;
                 } else {
-                    throw new EnderecoInvalidoException("Endereço inválido" );
+                    throw new EnderecoInvalidoException("Endereço inválido");
                 }
             }
         }

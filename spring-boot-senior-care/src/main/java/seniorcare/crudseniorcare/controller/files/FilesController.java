@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 @RequestMapping("/files")
 public class FilesController {
 
-    private final String UPLOAD_DIR = "src/main/resources/uploaded_files/";
+    private final String UPLOAD_DIR = "spring-boot-senior-care/src/main/resources/uploaded_files/";
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(
