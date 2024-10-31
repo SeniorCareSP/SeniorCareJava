@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.*;
 import seniorcare.crudseniorcare.domain.chat.ChatMessage;
 import seniorcare.crudseniorcare.domain.chat.ChatNotification;
 import seniorcare.crudseniorcare.domain.chat.ChatRoom;
+import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.service.chat.ChatMessageService;
 import seniorcare.crudseniorcare.service.chat.ChatRoomService;
 import seniorcare.crudseniorcare.service.chat.dto.ChatMapper;
 import seniorcare.crudseniorcare.service.chat.dto.ChatRoomListagem;
+import seniorcare.crudseniorcare.service.chat.dto.ChatRoomWithLastMessageDTO;
 import seniorcare.crudseniorcare.service.usuario.UsuarioService;
 import seniorcare.crudseniorcare.service.usuario.dto.UsuarioMapper;
 
@@ -94,5 +96,27 @@ public class ChatController {
     public ResponseEntity<ChatRoom> createEmptyChatRoom(@RequestParam Integer senderId, @RequestParam Integer recipientId) {
         ChatRoom chatRoom = chatRoomService.createEmptyChatRoom(senderId, recipientId);
         return ResponseEntity.ok(chatRoom);
+    }
+
+    @GetMapping("/rooms-with-last-messages")
+    public List<ChatRoomWithLastMessageDTO> getAllChatRoomsWithLastMessages() {
+        return chatRoomService.getAllChatRoomsWithLastMessages();
+    }
+
+    @GetMapping("/with-last-messages/by-sender")
+    public List<ChatRoomWithLastMessageDTO> getChatsWithLastMessagesBySenderId(@RequestParam Integer senderId) {
+
+        List<ChatRoomWithLastMessageDTO> chatsWithLastMessagesBySenderId = chatRoomService.getChatsWithLastMessagesBySenderId(senderId);
+
+        for (ChatRoomWithLastMessageDTO chatRoom : chatsWithLastMessagesBySenderId) {
+            Usuario usuario = usuarioService.byId(chatRoom.getRecipientId());
+            if (usuario != null) {
+                chatRoom.setNome(usuario.getNome());
+            }
+        }
+
+        return chatsWithLastMessagesBySenderId;
+
+
     }
 }

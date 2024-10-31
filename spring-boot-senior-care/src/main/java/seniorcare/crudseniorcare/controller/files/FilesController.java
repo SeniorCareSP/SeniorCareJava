@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 
 @RestController
 @RequestMapping("/files")
-public class FilesController {
+public class FilesController {add
 
     private final String UPLOAD_DIR = "spring-boot-senior-care/src/main/resources/uploaded_files/";
 
