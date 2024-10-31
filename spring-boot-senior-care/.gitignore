@@ -3,7 +3,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-/src/main/resources/uploaded_files
+spring-boot-senior-care/src/main/resources/uploaded_files
 ### STS ###
 .apt_generated
 .classpath
