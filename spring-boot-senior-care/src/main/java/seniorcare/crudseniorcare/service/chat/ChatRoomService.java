@@ -2,10 +2,14 @@ package seniorcare.crudseniorcare.service.chat;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import seniorcare.crudseniorcare.domain.chat.ChatMessage;
 import seniorcare.crudseniorcare.domain.chat.ChatRoom;
 import seniorcare.crudseniorcare.domain.chat.repository.ChatRoomRepository;
+import seniorcare.crudseniorcare.domain.usuario.Usuario;
 import seniorcare.crudseniorcare.service.chat.dto.ChatRoomWithLastMessageDTO;
+import seniorcare.crudseniorcare.service.geolocalizacao.CoordenadaService;
+import seniorcare.crudseniorcare.service.usuario.UsuarioService;
 
 import java.util.Date;
 import java.util.List;
@@ -15,9 +19,10 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ChatRoomService {
+    private final CoordenadaService coordenadaService;
 
     private final ChatRoomRepository chatRoomRepository;
-
+    private final UsuarioService usuarioService;
     public List<ChatRoomWithLastMessageDTO> getAllChatRoomsWithLastMessages() {
         return chatRoomRepository.findFirstChatAndLastMessage().stream()
                 .map(result -> new ChatRoomWithLastMessageDTO(
@@ -90,5 +95,12 @@ public class ChatRoomService {
         String chatId = createChatId(senderId, recipientId);
         return chatRoomRepository.findByChatId(chatId)
                 .orElseThrow(() -> new IllegalStateException("Erro ao criar a sala de chat"));
+    }
+    public Double getDistancia(Integer senderId, Integer recipientId){
+        Usuario usuario = usuarioService.byId(senderId);
+        Usuario usuario2 = usuarioService.byId(recipientId);
+
+
+        return coordenadaService.calcularDistancia(usuario.getEndereco().getLatidude(), usuario.getEndereco().getLongitude(), usuario2.getEndereco().getLatidude(), usuario2.getEndereco().getLongitude());
     }
 }

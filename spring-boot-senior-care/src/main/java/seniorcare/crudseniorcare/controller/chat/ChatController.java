@@ -15,6 +15,7 @@ import seniorcare.crudseniorcare.service.chat.ChatRoomService;
 import seniorcare.crudseniorcare.service.chat.dto.ChatMapper;
 import seniorcare.crudseniorcare.service.chat.dto.ChatRoomListagem;
 import seniorcare.crudseniorcare.service.chat.dto.ChatRoomWithLastMessageDTO;
+import seniorcare.crudseniorcare.service.geolocalizacao.CoordenadaService;
 import seniorcare.crudseniorcare.service.usuario.UsuarioService;
 import seniorcare.crudseniorcare.service.usuario.dto.UsuarioMapper;
 
@@ -117,6 +118,15 @@ public class ChatController {
 
         return chatsWithLastMessagesBySenderId;
 
-
     }
+    @GetMapping("/pegar-distancia")
+    public ResponseEntity<Double> getDistancia(@RequestParam Integer senderId, @RequestParam Integer recipientId) {
+        Double distancia = chatRoomService.getDistancia(senderId, recipientId);
+        if (distancia != null) {
+            return ResponseEntity.ok(distancia);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
