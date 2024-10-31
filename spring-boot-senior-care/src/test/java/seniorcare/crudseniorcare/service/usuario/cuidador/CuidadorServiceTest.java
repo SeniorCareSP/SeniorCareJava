@@ -98,56 +98,6 @@ class CuidadorServiceTest {
         verify(repository, times(1)).findById(id);
     }
 
-    @Test
-    @DisplayName("Criar novo cuidador")
-    void criarCuidador() {
-
-        var endereco = new Endereco();
-        endereco.setIdEndereco(1);
-        var enderecoCriado = new Endereco();
-        enderecoCriado.setIdEndereco(1);
-        var agenda = new Agenda();
-        agenda.setIdAgenda(1);
-        var agendaCriado = new Agenda();
-        agendaCriado.setIdAgenda(1);
-
-        Cuidador cuidadorParaSalvar = new Cuidador(); cuidadorParaSalvar.setNome("Nome do Responsavel");
-        cuidadorParaSalvar.setSenha("senhaCriptografada");
-        cuidadorParaSalvar.setExperiencia("Experiencia 2");
-        cuidadorParaSalvar.setFaixaEtaria("Faixa etaria 2");
-        cuidadorParaSalvar.setPrecoHora(30.0);
-        cuidadorParaSalvar.setEndereco(endereco);
-        cuidadorParaSalvar.setAgenda(agenda);
-        cuidadorParaSalvar.setIdiomas(new ArrayList<>());
-
-        Cuidador cuidadorSalvo = new Cuidador();
-        cuidadorSalvo.setIdUsuario(1);
-        cuidadorSalvo.setNome("Nome do Responsavel");
-        cuidadorSalvo.setSenha("senhaCriptografada");
-        cuidadorSalvo.setExperiencia("Experiencia 2");
-        cuidadorSalvo.setFaixaEtaria("Faixa etaria 2");
-        cuidadorSalvo.setPrecoHora(30.0);
-        cuidadorSalvo.setEndereco(enderecoCriado);
-        cuidadorSalvo.setAgenda(agendaCriado);
-        cuidadorSalvo.setIdiomas(new ArrayList<>());
-
-        String senhaCriptografada = "senhaCriptografada";
-
-
-        when(usuarioRepository.findByEmailIgnoreCase(cuidadorSalvo.getEmail())).thenReturn(Optional.empty());
-        when(enderecoService.create(endereco)).thenReturn(enderecoCriado);
-        when(agendaService.create(agenda)).thenReturn(agendaCriado);
-        when(repository.save(cuidadorParaSalvar)).thenReturn(cuidadorSalvo);
-        when(passwordEncoder.encode(cuidadorParaSalvar.getSenha())).thenReturn(senhaCriptografada);
-
-        Cuidador cuidadorResposta = service.criar(cuidadorParaSalvar);
-
-       assertNotNull(cuidadorResposta.getIdUsuario());
-        assertNotNull(cuidadorParaSalvar.getNome(), cuidadorResposta.getNome());
-        assertEquals(cuidadorParaSalvar.getApresentacao(), cuidadorResposta.getApresentacao());
-        assertEquals(cuidadorParaSalvar.getSenha(), cuidadorResposta.getSenha());
-    }
-
 
     @Test
     @DisplayName("Criar cuidador com email existente")

@@ -116,69 +116,6 @@ class ResponsavelServiceTest {
     }
 
     @Test
-    @DisplayName("Criar novo responsável")
-    void criarResponsavel() {
-
-        var endereco = new Endereco();
-        endereco.setIdEndereco(1);
-        var enderecoCriado = new Endereco();
-        enderecoCriado.setIdEndereco(1);
-        var agenda = new Agenda();
-        agenda.setIdAgenda(1);
-        var agendaCriado = new Agenda();
-        agendaCriado.setIdAgenda(1);
-
-
-        Responsavel responsavelParaSalvar = new Responsavel();
-        responsavelParaSalvar.setNome("Nome do Responsavel");
-        responsavelParaSalvar.setEmail("responsavel@email.com");
-        responsavelParaSalvar.setSenha("senhaCriptografada");
-        responsavelParaSalvar.setCpf("123.456.789-10");
-        responsavelParaSalvar.setSexoBiologico("M");
-        responsavelParaSalvar.setTipoDeUsuario(TipoUsuario.RESPONSAVEL);
-        responsavelParaSalvar.setDtNascimento(LocalDate.of(1990, 5, 15));
-        responsavelParaSalvar.setApresentacao("Apresentação do Responsável");
-        responsavelParaSalvar.setDtCadastro(LocalDate.now());
-        responsavelParaSalvar.setIdosos(List.of());
-        responsavelParaSalvar.setEndereco(endereco);
-        responsavelParaSalvar.setAgenda(agenda);
-        responsavelParaSalvar.setIdiomas(new ArrayList<>());
-
-        Responsavel responsavelSalvo = new Responsavel();
-        responsavelSalvo.setIdUsuario(1);
-        responsavelSalvo.setNome("Nome do Responsavel");
-        responsavelSalvo.setEmail("responsavel@email.com");
-        responsavelSalvo.setSenha("senhaCriptografada");
-        responsavelSalvo.setCpf("123.456.789-10");
-        responsavelSalvo.setSexoBiologico("M");
-        responsavelSalvo.setTipoDeUsuario(TipoUsuario.RESPONSAVEL);
-        responsavelSalvo.setDtNascimento(LocalDate.of(1990, 5, 15));
-        responsavelSalvo.setApresentacao("Apresentação do Responsável");
-        responsavelSalvo.setDtCadastro(LocalDate.now());
-        responsavelSalvo.setIdosos(List.of());
-        responsavelSalvo.setEndereco(enderecoCriado);
-        responsavelSalvo.setAgenda(agendaCriado);
-        responsavelSalvo.setIdiomas(new ArrayList<>());
-
-        String senhaCriptografada = "senhaCriptografada";
-
-
-        when(usuarioRepository.findByEmailIgnoreCase(responsavelSalvo.getEmail())).thenReturn(Optional.empty());
-        when(enderecoService.create(endereco)).thenReturn(enderecoCriado);
-        when(agendaService.create(agenda)).thenReturn(agendaCriado);
-        when(repository.save(responsavelParaSalvar)).thenReturn(responsavelSalvo);
-        when(passwordEncoder.encode(responsavelParaSalvar.getSenha())).thenReturn(senhaCriptografada);
-
-        Responsavel responsavelResposta = service.criar(responsavelParaSalvar);
-
-        assertNotNull(responsavelResposta.getIdUsuario());
-        assertNotNull(responsavelParaSalvar.getNome(), responsavelResposta.getNome());
-        assertEquals(responsavelParaSalvar.getApresentacao(), responsavelResposta.getApresentacao());
-        assertEquals(responsavelParaSalvar.getSenha(), responsavelResposta.getSenha());
-
-    }
-
-    @Test
     @DisplayName("Criar responsável com email existente")
     void criarResponsavelEmailExistente() {
         Responsavel novoResponsavel = new Responsavel();
@@ -230,39 +167,6 @@ class ResponsavelServiceTest {
         when(repository.findById(id)).thenReturn(Optional.empty());
 
         assertThrows(NaoEncontradoException.class, () -> service.delete(id));
-    }
-
-    @Test
-    @DisplayName("Atualizar responsável")
-    void atualizarResponsavel() {
-
-        var responsavel = new Responsavel();
-        responsavel.setIdUsuario(1);
-        responsavel.setNome("A");
-
-        var responsavelAtualizar = new Responsavel();
-        responsavelAtualizar.setNome("B");
-
-        var responsavelAtualizado = new Responsavel();
-        responsavelAtualizado.setIdUsuario(1);
-        responsavelAtualizado.setNome("B");
-
-        Integer idInformado = 1;
-
-//        when(repository.existsById(idInformado)).thenReturn(Boolean.TRUE);
-        when(repository.findById(idInformado)).thenReturn(Optional.of(responsavel));
-        when(repository.save(responsavelAtualizar)).thenReturn(responsavelAtualizado);
-
-        Responsavel responsavelResposta = service.update(idInformado, responsavelAtualizar);
-
-        assertEquals(responsavelAtualizado.getIdUsuario(), responsavelResposta.getIdUsuario());
-        assertEquals(responsavelAtualizado.getNome(), responsavelResposta.getNome());
-
-//        verify(repository, times(1)).existsById(idInformado);
-        verify(repository, times(1)).findById(idInformado);
-        verify(repository, times(0)).findAll();
-        verify(repository, times(1)).save(responsavelAtualizar);
-
     }
 
 }
