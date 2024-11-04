@@ -9,12 +9,11 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
 @RestController
 @RequestMapping("/files")
 public class FilesController {
 
-    private final String UPLOAD_DIR = "spring-boot-senior-care/src/main/resources/uploaded_files/";
+    private final String UPLOAD_DIR = "/uploaded_files/";
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(
@@ -26,6 +25,11 @@ public class FilesController {
         }
 
         try {
+            File uploadDir = new File(UPLOAD_DIR);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs(); // Cria o diretório se não existir
+            }
+
             String filepath = Paths.get(UPLOAD_DIR, filename).toString();
             Path filePath = Paths.get(filepath);
 
@@ -35,15 +39,14 @@ public class FilesController {
             }
 
             // Salva o novo arquivo
-            InputStream inputStream = file.getInputStream();
-            FileOutputStream outputStream = new FileOutputStream(filepath);
-            int readBytes;
-            byte[] buffer = new byte[8192];
-            while ((readBytes = inputStream.read(buffer, 0, 8192)) != -1) {
-                outputStream.write(buffer, 0, readBytes);
+            try (InputStream inputStream = file.getInputStream();
+                 FileOutputStream outputStream = new FileOutputStream(filepath)) {
+                byte[] buffer = new byte[8192];
+                int readBytes;
+                while ((readBytes = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, readBytes);
+                }
             }
-            outputStream.close();
-            inputStream.close();
 
             return ResponseEntity.ok("File uploaded successfully: " + filename);
         } catch (IOException e) {
