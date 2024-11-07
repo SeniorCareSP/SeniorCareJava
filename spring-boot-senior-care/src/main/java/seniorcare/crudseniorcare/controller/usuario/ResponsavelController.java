@@ -130,7 +130,6 @@ public class    ResponsavelController {
     })
     public ResponseEntity<UsuarioListagemResponsavelDto> update(@PathVariable Integer id, @RequestBody ResponsavelAtualizacaoDto responsavelDto) throws IOException {
         Responsavel responsavelAtualizado = service.update(id, responsavelDto);
-
         UsuarioListagemResponsavelDto dto = ResponsavelMapper.toUsuarioListagemResponsavelDto(responsavelAtualizado);
         return ResponseEntity.ok(dto);
     }

@@ -17,11 +17,15 @@ import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
 import seniorcare.crudseniorcare.exception.ConflitoException;
 import seniorcare.crudseniorcare.exception.NaoEncontradoException;
 import seniorcare.crudseniorcare.service.agenda.AgendaService;
+import seniorcare.crudseniorcare.service.agenda.dto.AgendaMapper;
 import seniorcare.crudseniorcare.service.ajuda.AjudaService;
 import seniorcare.crudseniorcare.service.caracteristica.CaracteristicaService;
 import seniorcare.crudseniorcare.service.endereco.EnderecoService;
+import seniorcare.crudseniorcare.service.endereco.dto.EnderecoMapper;
 import seniorcare.crudseniorcare.service.geolocalizacao.CoordenadaService;
 import seniorcare.crudseniorcare.service.idioma.IdiomaService;
+import seniorcare.crudseniorcare.service.idioma.dto.IdiomaMapper;
+import seniorcare.crudseniorcare.service.usuario.dto.cuidador.CuidadorAtualizacaoDto;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -112,13 +116,64 @@ import java.util.Optional;
         repository.delete(cuidador.get());
     }
 
-        public Cuidador update(Integer id, Cuidador cuidador){
+        public Cuidador update(Integer id, CuidadorAtualizacaoDto cuidadorAtualizacaoDto) throws IOException {
             Optional<Cuidador> cuidadadorOpt = repository.findById(id);
-
             if (cuidadadorOpt.isEmpty()) {
                 throw new NaoEncontradoException("Cuidador");
             }
+            Cuidador cuidador = cuidadadorOpt.get();
+            if (cuidadorAtualizacaoDto.getNome() != null){
+                cuidador.setNome(cuidadorAtualizacaoDto.getNome());
+            }
+            if (cuidadorAtualizacaoDto.getEmail() != null){
+                cuidador.setEmail(cuidadorAtualizacaoDto.getEmail());
+            }
+            if (cuidadorAtualizacaoDto.getSenha() != null){
+                cuidador.setSenha(cuidadorAtualizacaoDto.getSenha());
+            }
+            if (cuidadorAtualizacaoDto.getTelefone() != null){
+                cuidador.setTelefone(cuidadorAtualizacaoDto.getTelefone());
+            }
+            if (cuidadorAtualizacaoDto.getCpf() != null){
+                cuidador.setCpf(cuidadorAtualizacaoDto.getCpf());
+            }
+            if (cuidadorAtualizacaoDto.getSexoBiologico() != null){
+                cuidador.setSexoBiologico(cuidadorAtualizacaoDto.getSexoBiologico());
+            }
+            if (cuidadorAtualizacaoDto.getDtNascimento() != null){
+                cuidador.setDtNascimento(cuidadorAtualizacaoDto.getDtNascimento());
+            }
+            if(cuidadorAtualizacaoDto.getApresentacao() != null){
+                cuidador.setApresentacao(cuidadorAtualizacaoDto.getApresentacao());
+            }
+            if (cuidadorAtualizacaoDto.getAgendas() != null) {
+                Agenda novaAgenda = AgendaMapper.toEntity(cuidadorAtualizacaoDto.getAgendas());
+                novaAgenda.setUsuario(cuidador);
+                if (cuidador.getAgenda() != null && !novaAgenda.equals(cuidador.getAgenda())) {
+                    agendaService.update(cuidador.getAgenda().getIdAgenda(), novaAgenda);
+                } else {
+                    cuidador.setAgenda(novaAgenda);
+                }
+            }
+            if (cuidadorAtualizacaoDto.getExperiencia() != null){
+                cuidador.setExperiencia(cuidadorAtualizacaoDto.getExperiencia());
+            }
+            if(cuidadorAtualizacaoDto.getFaixaEtaria() != null){
+                cuidador.setFaixaEtaria(cuidadorAtualizacaoDto.getFaixaEtaria());
+            }
 
+            if (cuidadorAtualizacaoDto.getEndereco() != null){
+                Endereco novoEndereco = EnderecoMapper.toEndereco(cuidadorAtualizacaoDto.getEndereco());
+                novoEndereco.setUsuario(cuidador);
+                Endereco endereco = coordenadaService.pegarPosicoes(novoEndereco);
+                novoEndereco.setLatidude(endereco.getLatidude());
+                novoEndereco.setLatidude(endereco.getLatidude());
+                if (cuidador.getEndereco() != null && !novoEndereco.equals(cuidador.getEndereco())) {
+                    enderecoService.update(cuidador.getEndereco().getIdEndereco(), novoEndereco);
+                } else {
+                    cuidador.setEndereco(novoEndereco);
+                }
+            }
             cuidador.setIdUsuario(id);
 
             return repository.save(cuidador);

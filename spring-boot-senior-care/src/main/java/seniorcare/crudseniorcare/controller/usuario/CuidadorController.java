@@ -15,6 +15,7 @@ import seniorcare.crudseniorcare.service.endereco.dto.EnderecoMapper;
 import seniorcare.crudseniorcare.service.geolocalizacao.CoordenadaService;
 import seniorcare.crudseniorcare.service.usuario.CuidadorService;
 import seniorcare.crudseniorcare.service.usuario.dto.CuidadorMapper;
+import seniorcare.crudseniorcare.service.usuario.dto.cuidador.CuidadorAtualizacaoDto;
 import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioCriacaoCuidadorDto;
 import seniorcare.crudseniorcare.service.usuario.dto.cuidador.UsuarioListagemCuidadorDto;
 import seniorcare.crudseniorcare.service.usuario.dto.responsavel.UsuarioCriacaoResponsavelDto;
@@ -71,9 +72,9 @@ public class CuidadorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioListagemCuidadorDto> update(@PathVariable Integer id, @RequestBody Cuidador cuidador){
+    public ResponseEntity<UsuarioListagemCuidadorDto> update(@PathVariable Integer id, @RequestBody CuidadorAtualizacaoDto cuidadorAtualizacaoDto){
 
-        Cuidador uptCuidador = service.update(id, cuidador);
+        Cuidador uptCuidador = service.update(id, cuidadorAtualizacaoDto);
         UsuarioListagemCuidadorDto dto = CuidadorMapper.toUsuarioListagemCuidadorDto(uptCuidador);
 
         return ResponseEntity.ok(dto);

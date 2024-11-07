@@ -23,7 +23,7 @@
         private static final String API_KEY = "pk.0066fab4a7ea3ab5e322fa5194898a35";
 
 
-        public Endereco   pegarPosicoes(Endereco endereco) throws IOException {
+        public Endereco pegarPosicoes(Endereco endereco) throws IOException {
 
             if (endereco.getLogradouro() == null || endereco.getLogradouro().isEmpty() ||
                     endereco.getCidade() == null || endereco.getCidade().isEmpty()) {

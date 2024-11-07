@@ -152,7 +152,7 @@ public class ResponsavelService {
             novoEndereco.setUsuario(responsavel);
             Endereco endereco = coordenadaService.pegarPosicoes(novoEndereco);
             novoEndereco.setLatidude(endereco.getLatidude());
-            novoEndereco.setLatidude(endereco.getLatidude());
+            novoEndereco.setLongitude(endereco.getLongitude());
             if (responsavel.getEndereco() != null && !novoEndereco.equals(responsavel.getEndereco())) {
                 enderecoService.update(responsavel.getEndereco().getIdEndereco(), novoEndereco);
             } else {
