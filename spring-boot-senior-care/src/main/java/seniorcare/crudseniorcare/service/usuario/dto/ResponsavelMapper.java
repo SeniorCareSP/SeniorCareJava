@@ -20,6 +20,7 @@ public class ResponsavelMapper {
         Responsavel responsavel = new Responsavel();
         responsavel.setNome(dto.getNome());
         responsavel.setEmail(dto.getEmail());
+        responsavel.setImagemUrl(dto.getImagemUrl());
         responsavel.setSenha(dto.getSenha());
         responsavel.setTelefone(dto.getTelefone());
         responsavel.setCpf(dto.getCpf());
@@ -42,6 +43,7 @@ public class ResponsavelMapper {
         dto.setIdUsuario(responsavel.getIdUsuario());
         dto.setNome(responsavel.getNome());
         dto.setEmail(responsavel.getEmail());
+        dto.setImagemUrl(responsavel.getImagemUrl());
         dto.setTelefone(responsavel.getTelefone());
         dto.setCpf(responsavel.getCpf());
         dto.setSexoBiologico(responsavel.getSexoBiologico());

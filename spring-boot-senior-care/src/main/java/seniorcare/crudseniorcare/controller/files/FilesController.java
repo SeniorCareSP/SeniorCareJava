@@ -1,69 +1,95 @@
 package seniorcare.crudseniorcare.controller.files;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import seniorcare.crudseniorcare.domain.usuario.Cuidador;
+import seniorcare.crudseniorcare.domain.usuario.Responsavel;
+import seniorcare.crudseniorcare.domain.usuario.Usuario;
+import seniorcare.crudseniorcare.domain.usuario.repository.CuidadorRepository;
+import seniorcare.crudseniorcare.domain.usuario.repository.ResponsavelRepository;
+import seniorcare.crudseniorcare.domain.usuario.repository.UsuarioRepository;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/files")
 public class FilesController {
 
-    private final String UPLOAD_DIR = "/uploaded_files/";
+    private final Cloudinary cloudinary;
+    private final UsuarioRepository usuarioRepository;
+    private final ResponsavelRepository responsavelRepository;
+    private final CuidadorRepository cuidadorRepository;
+
+    public FilesController(UsuarioRepository usuarioRepository, ResponsavelRepository responsavelRepository, CuidadorRepository cuidadorRepository) {
+        this.usuarioRepository = usuarioRepository;
+        this.responsavelRepository = responsavelRepository;
+        this.cuidadorRepository = cuidadorRepository;
+        this.cloudinary = new Cloudinary(ObjectUtils.asMap(
+                "cloud_name", "dzmebshlz",
+                "api_key", "748152826583596",
+                "api_secret", "qNK8lZInYzr6iid0D9ccz9bDLrg"
+        ));
+    }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("filename") String filename) {
-
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam Integer idUsuario) {
         if (file.isEmpty()) {
-            return ResponseEntity.badRequest().body("Please select a file to upload");
+            return ResponseEntity.badRequest().body("Por favor, selecione um arquivo para upload.");
         }
-
         try {
-            File uploadDir = new File(UPLOAD_DIR);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs(); // Cria o diretório se não existir
-            }
+            File tempFile = convertMultipartFileToFile(file);
 
-            String filepath = Paths.get(UPLOAD_DIR, filename).toString();
-            Path filePath = Paths.get(filepath);
+            Map uploadResult = cloudinary.uploader().upload(tempFile, ObjectUtils.emptyMap());
 
-            // Verifica se o arquivo já existe e, se existir, o remove
-            if (Files.exists(filePath)) {
-                Files.delete(filePath);
-            }
+            tempFile.delete();
+            String url = uploadResult.get("url").toString();
 
-            // Salva o novo arquivo
-            try (InputStream inputStream = file.getInputStream();
-                 FileOutputStream outputStream = new FileOutputStream(filepath)) {
-                byte[] buffer = new byte[8192];
-                int readBytes;
-                while ((readBytes = inputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, readBytes);
+            if (Objects.nonNull(idUsuario)) {
+                Optional<Usuario> usuario = usuarioRepository.findByIdUsuario(idUsuario);
+                if (usuario.isPresent()) {
+                    switch (usuario.get().getTipoDeUsuario().toString()) {
+                        case "CUIDADOR":
+                            Optional<Cuidador> byId = cuidadorRepository.findById(usuario.get().getIdUsuario());
+                            byId.get().setImagemUrl(url);
+                            cuidadorRepository.save(byId.get());
+                            break;
+                        case "RESPONSAVEL":
+                            Optional<Responsavel> byId1 = responsavelRepository.findById(usuario.get().getIdUsuario());
+                            byId1.get().setImagemUrl(url);
+                            responsavelRepository.save(byId1.get());
+                            break;
+                        default:
+                            return ResponseEntity.badRequest().body("Tipo de usuário não reconhecido.");
+                    }
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.");
                 }
             }
 
-            return ResponseEntity.ok("File uploaded successfully: " + filename);
+            return ResponseEntity.ok(url);
+
         } catch (IOException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload file");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Falha ao fazer upload do arquivo.");
         }
     }
 
-    @GetMapping("/view/{filename:.+}")
-    public ResponseEntity<byte[]> viewFile(@PathVariable String filename) {
-        try {
-            Path filepath = Paths.get(UPLOAD_DIR, filename);
-            byte[] fileBytes = Files.readAllBytes(filepath);
-            return ResponseEntity.ok().body(fileBytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.notFound().build();
+
+    private File convertMultipartFileToFile(MultipartFile multipartFile) throws IOException {
+        File file = File.createTempFile("temp", multipartFile.getOriginalFilename());
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            fos.write(multipartFile.getBytes());
         }
+        return file;
     }
 }

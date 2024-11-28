@@ -68,12 +68,20 @@ public class UsuarioService {
         logger.info("Tentativa de autenticação para o email: {}", usuarioLoginDto.getEmail());
 
         Optional<Usuario> usuario = usuarioRepository.findByEmailIgnoreCase(usuarioLoginDto.getEmail());
+        logger.info("credentials: {}", usuario.get().getSenha());
+
         if (usuario.isEmpty()) {
             logger.info("Usuário não encontrado para o email: {}", usuarioLoginDto.getEmail());
             throw new ResponseStatusException(HttpStatus.NO_CONTENT);
         }
+                if (!passwordEncoder.matches(usuarioLoginDto.getSenha(), usuario.get().getSenha())) {
+            logger.error("Senha inválida para o email: {}", usuarioLoginDto.getEmail());
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciais inválidas");
+        }
+
         final UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(
                 usuarioLoginDto.getEmail(), usuarioLoginDto.getSenha());
+        logger.info("credentials: {}", credentials);
 
         try {
             final Authentication authentication = authenticationManager.authenticate(credentials);

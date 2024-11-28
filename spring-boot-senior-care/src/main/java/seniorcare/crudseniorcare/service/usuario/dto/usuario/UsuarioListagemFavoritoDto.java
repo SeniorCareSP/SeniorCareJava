@@ -14,7 +14,7 @@ import java.util.List;
 public class UsuarioListagemFavoritoDto {
     private Integer idUsuario;
     private String nome;
-    private String email;
+    private String imagemUrl;    private String email;
     private String telefone;
     private String cpf;
     private String sexoBiologico;

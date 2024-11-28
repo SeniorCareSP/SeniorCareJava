@@ -126,6 +126,9 @@ public class ResponsavelService {
         if (responsavelDto.getEmail() != null) {
             responsavel.setEmail(responsavelDto.getEmail());
         }
+        if (responsavelDto.getImagemUrl() != null){
+            responsavelDto.setImagemUrl(responsavelDto.getImagemUrl());
+        }
         if (responsavelDto.getTelefone() != null) {
             responsavel.setTelefone(responsavelDto.getTelefone());
         }

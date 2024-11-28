@@ -113,6 +113,7 @@ public class ChatController {
             Usuario usuario = usuarioService.byId(chatRoom.getRecipientId());
             if (usuario != null) {
                 chatRoom.setNome(usuario.getNome());
+                chatRoom.setImagemUrl(usuario.getImagemUrl());
             }
         }
 

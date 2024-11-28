@@ -26,6 +26,7 @@ public abstract class Usuario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idUsuario;
+    private String imagemUrl;
     private String nome;
     private String email;
     private String senha;

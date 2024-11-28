@@ -18,6 +18,7 @@ public class UsuarioListagemDenunciaDto {
     private Integer idUsuario;
     private String nome;
     private String email;
+    private String imagemUrl;;
     private String telefone;
     private String sexoBiologico;
     @Enumerated(EnumType.STRING)

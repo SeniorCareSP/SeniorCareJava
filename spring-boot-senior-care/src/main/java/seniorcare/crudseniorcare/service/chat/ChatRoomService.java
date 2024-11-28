@@ -33,21 +33,27 @@ public class ChatRoomService {
                         (Integer) result[4],          // messageId
                         (String) result[5],           // content
                         (Date) result[6],              // timestamp
+                        null,
                         null
+
                 ))
                 .collect(Collectors.toList());
     }
 
     public List<ChatRoomWithLastMessageDTO> getChatsWithLastMessagesBySenderId(Integer senderId) {
         return chatRoomRepository.findChatsWithLastMessagesBySenderId(senderId).stream()
-                .map(result -> new ChatRoomWithLastMessageDTO(
+                .map(
+                        result
+
+                        -> new ChatRoomWithLastMessageDTO(
                         (Integer) result[0],          // chatRoomId
                         (String) result[1],           // chatId
                         (Integer) result[2],          // senderId
                         (Integer) result[3],          // recipientId
                         (Integer) result[4],          // messageId
                         (String) result[5],           // content
-                        (Date) result[6],              // timestamp
+                        (Date) result[6],
+                        null,
                         null
                 ))
                 .collect(Collectors.toList());

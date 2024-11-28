@@ -72,7 +72,7 @@ public class CuidadorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioListagemCuidadorDto> update(@PathVariable Integer id, @RequestBody CuidadorAtualizacaoDto cuidadorAtualizacaoDto){
+    public ResponseEntity<UsuarioListagemCuidadorDto> update(@PathVariable Integer id, @RequestBody CuidadorAtualizacaoDto cuidadorAtualizacaoDto) throws IOException {
 
         Cuidador uptCuidador = service.update(id, cuidadorAtualizacaoDto);
         UsuarioListagemCuidadorDto dto = CuidadorMapper.toUsuarioListagemCuidadorDto(uptCuidador);

@@ -32,7 +32,7 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-public class SecurityConfiguracao {
+public class        SecurityConfiguracao {
 
     @Autowired
     private AutenticacaoService autenticacaoService;

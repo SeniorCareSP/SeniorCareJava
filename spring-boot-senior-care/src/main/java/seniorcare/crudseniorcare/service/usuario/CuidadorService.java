@@ -125,6 +125,9 @@ import java.util.Optional;
             if (cuidadorAtualizacaoDto.getNome() != null){
                 cuidador.setNome(cuidadorAtualizacaoDto.getNome());
             }
+            if(cuidadorAtualizacaoDto.getImagemUrl() != null){
+                cuidador.setImagemUrl(cuidadorAtualizacaoDto.getImagemUrl());
+            }
             if (cuidadorAtualizacaoDto.getEmail() != null){
                 cuidador.setEmail(cuidadorAtualizacaoDto.getEmail());
             }

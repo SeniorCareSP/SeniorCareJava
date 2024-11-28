@@ -12,7 +12,7 @@ import seniorcare.crudseniorcare.service.usuario.dto.usuario.UsuarioCriacaoDto;
 
 import java.util.List;
 @Data
-public class UsuarioCriacaoCuidadorDto extends UsuarioCriacaoDto {
+public class    UsuarioCriacaoCuidadorDto extends UsuarioCriacaoDto {
     private String experiencia;
     private String faixaEtaria;
     private double precoHora;

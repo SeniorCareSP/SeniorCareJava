@@ -28,6 +28,7 @@ public class CuidadorMapper {
         cuidador.setEmail(dto.getEmail());
         cuidador.setSenha(dto.getSenha());
         cuidador.setTelefone(dto.getTelefone());
+        cuidador.setImagemUrl(dto.getImagemUrl());
         cuidador.setCpf(dto.getCpf());
         cuidador.setSexoBiologico(dto.getSexoBiologico());
         cuidador.setTipoDeUsuario(dto.getTipoDeUsuario());
@@ -57,6 +58,7 @@ public class CuidadorMapper {
         dto.setCpf(cuidador.getCpf());
         dto.setSexoBiologico(cuidador.getSexoBiologico());
         dto.setTipoDeUsuario(cuidador.getTipoDeUsuario());
+        dto.setImagemUrl(cuidador.getImagemUrl());
         dto.setDtNascimento(cuidador.getDtNascimento());
         dto.setApresentacao(cuidador.getApresentacao());
         dto.setExperiencia(cuidador.getExperiencia());

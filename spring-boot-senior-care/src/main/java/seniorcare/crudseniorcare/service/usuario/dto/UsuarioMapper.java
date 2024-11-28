@@ -27,6 +27,7 @@ public class UsuarioMapper {
         if (usuario == null) return null;
         UsuarioListagemDto dto = new UsuarioListagemDto();
         dto.setIdUsuario(usuario.getIdUsuario());
+        dto.setImagemUrl(usuario.getImagemUrl());
         dto.setNome(usuario.getNome());
         dto.setEmail(usuario.getEmail());
         dto.setTelefone(usuario.getTelefone());
@@ -46,7 +47,7 @@ public class UsuarioMapper {
     public static UsuarioListagemFavoritoDto toUsuarioListagemFavoritoDto(Usuario usuario) {
         if (usuario == null) return null;
         UsuarioListagemFavoritoDto dto = new UsuarioListagemFavoritoDto();
-
+        dto.setImagemUrl(usuario.getImagemUrl());
         dto.setIdUsuario(usuario.getIdUsuario());
         dto.setNome(usuario.getNome());
         dto.setEmail(usuario.getEmail());
@@ -66,7 +67,7 @@ public class UsuarioMapper {
     public static UsuarioListagemDenunciaDto toUsuarioListagemDenunciaDto(Usuario usuario) {
         if (usuario == null) return null;
         UsuarioListagemDenunciaDto dto = new UsuarioListagemDenunciaDto();
-
+        dto.setImagemUrl(usuario.getImagemUrl());
         dto.setIdUsuario(usuario.getIdUsuario());
         dto.setNome(usuario.getNome());
         dto.setEmail(usuario.getEmail());
@@ -82,8 +83,10 @@ public class UsuarioMapper {
     public static UsuarioTokenDto of(Usuario usuario, String token){
         if (usuario == null ) return null;
 
+
         UsuarioTokenDto usuarioTokenDto = new UsuarioTokenDto();
 
+        usuarioTokenDto.setImagemUrl(usuario.getImagemUrl());
         usuarioTokenDto.setUserId(usuario.getIdUsuario());
         usuarioTokenDto.setEmail(usuario.getEmail());
         usuarioTokenDto.setTipoUsuario(usuario.getTipoDeUsuario());

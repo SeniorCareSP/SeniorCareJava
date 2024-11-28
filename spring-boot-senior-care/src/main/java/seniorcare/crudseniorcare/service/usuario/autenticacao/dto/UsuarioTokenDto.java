@@ -11,6 +11,7 @@ public class   UsuarioTokenDto {
     private Integer userId;
     private String nome;
     private String email;
+    private String imagemUrl;
     private TipoUsuario tipoUsuario;
     private String token;
     private Boolean status;

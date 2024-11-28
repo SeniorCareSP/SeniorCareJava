@@ -16,4 +16,5 @@ public class ChatRoomWithLastMessageDTO {
     private String content;
     private Date timestamp;
     private String nome;
+    private String imagemUrl;
 }

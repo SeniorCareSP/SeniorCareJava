@@ -22,7 +22,7 @@ import seniorcare.crudseniorcare.service.idioma.dto.IdiomaCriacaoDto;
 import java.time.LocalDate;
 import java.util.List;
 @Data
-public class UsuarioCriacaoDto {
+public class    UsuarioCriacaoDto {
     @Size(min = 3, max = 100)
     @NotBlank
     private String nome;
@@ -43,6 +43,7 @@ public class UsuarioCriacaoDto {
     private LocalDate dtNascimento;
     private String apresentacao;
     private LocalDate dtCadastro;
+    private String imagemUrl;
     private Boolean status;
     private AgendaCriacaoDto agendas;
     private List<IdiomaCriacaoDto> idiomas;

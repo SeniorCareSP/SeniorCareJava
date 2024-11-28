@@ -22,6 +22,7 @@ public class UsuarioAtualizaçãoDto {
     @Email
     @NotBlank
     private String email;
+    private String imagemUrl;
     @Pattern(regexp = "^\\([1-9]{2}\\)\\s9?[0-9]{4}-?[0-9]{4}$")
     private String telefone;
     @Past
